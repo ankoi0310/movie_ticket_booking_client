@@ -7,8 +7,28 @@ import 'package:movie_ticket_booking_flutter_nlu/provider/loading_provider.dart'
 import 'package:movie_ticket_booking_flutter_nlu/routing/movie_route_information_parser.dart';
 import 'package:movie_ticket_booking_flutter_nlu/routing/movie_router_delegate.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:movie_ticket_booking_flutter_nlu/config/routes.dart';
+import 'package:movie_ticket_booking_flutter_nlu/screen/register/register_screen.dart';
 
 import 'config/theme.dart';
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      themeMode: ThemeMode.system,
+      debugShowCheckedModeBanner: false,
+      darkTheme: darkThemeData(context),
+      theme: themeData(context),
+      title: 'Flutter Demo',
+      home: HomeScreen(),
+    );
+  }
+}
 
 void main() async {
   // usePathUrlStrategy();
@@ -20,31 +40,27 @@ void main() async {
           storageBucket: "movie-ticket-booking-383806.appspot.com",
           messagingSenderId: "915458067606",
           appId: "1:915458067606:web:8e7fc8b87c32abcbaf06b7",
-          measurementId: "G-NJNWB7JVLV"));
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => SearchingProvider()),
-        ChangeNotifierProvider(create: (_) => ScrollingProvider()),
-        ChangeNotifierProvider(create: (_) => InformationTicketSelectedProvider()),
-        ChangeNotifierProvider(create: (_) => FirebaseStorageProvider()),
-        ChangeNotifierProvider(create: (_) => LoadingProvider()),
-        ChangeNotifierProvider(create: (_) => MovieProvider())
-      ],
-      child: const MyApp(),
-    ),
+          measurementId: "G-NJNWB7JVLV")
   );
-}
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  initializeDateFormatting().then(
+        (_) => runApp(
+          MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (_) => SearchingProvider()),
+              ChangeNotifierProvider(create: (_) => ScrollingProvider()),
+              ChangeNotifierProvider(create: (_) => InformationTicketSelectedProvider()),
+              ChangeNotifierProvider(create: (_) => FirebaseStorageProvider()),
+              ChangeNotifierProvider(create: (_) => LoadingProvider()),
+              ChangeNotifierProvider(create: (_) => MovieProvider())
+            ],
+            child: const MyApp(),
+          ),
+        )),
+  );
 
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
     return MaterialApp.router(
       themeMode: ThemeMode.system,
-      debugShowCheckedModeBanner: false,
       darkTheme: darkThemeData(),
       theme: themeData(),
       title: 'Đặt vé xem phim',
@@ -53,6 +69,3 @@ class MyApp extends StatelessWidget {
       routeInformationProvider: PlatformRouteInformationProvider(
         initialRouteInformation: RouteInformation(location: '/'),
       ),
-    );
-  }
-}
