@@ -45,11 +45,11 @@ class _MovieCarouselCardState extends State<MovieCarouselCard> {
             SizedBox(
               height: size.height * .01,
             ),
-            GenresFormat(widget.movie.genres, Colors.white, MainAxisAlignment.center),
+            GenresFormat(widget.movie.genres, Theme.of(context).textTheme.bodyMedium!.color!, MainAxisAlignment.center, 18),
             SizedBox(
               height: size.height * .005,
             ),
-            StarRating(widget.movie.rating, MainAxisAlignment.center),
+            StarRating(widget.movie.rating, MainAxisAlignment.center, 16.0),
             SizedBox(
               height: size.height * .01,
             ),

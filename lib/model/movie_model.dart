@@ -55,6 +55,10 @@ var movies = [
           photo: Image.asset("assets/image/cast/christopher.jpg"),
         ),
         MovieCastModel(
+          name: "Nicolai Nikolaeff",
+          photo: Image.asset("assets/image/cast/nicolai.jpg"),
+        ),
+        MovieCastModel(
           name: "Michael McElhatton",
           photo: Image.asset("assets/image/cast/michael.jpg"),
         )
@@ -84,8 +88,16 @@ var movies = [
           photo: Image.asset("assets/image/cast/zazie.jpg"),
         ),
         MovieCastModel(
+          name: 'Glen Fleshler',
+          photo: Image.asset("assets/image/cast/glen.jpg"),
+        ),
+        MovieCastModel(
           name: "Frances Conroy",
           photo: Image.asset("assets/image/cast/frances.jpg"),
+        ),
+        MovieCastModel(
+          name: "Dante Pereira-Olson",
+          photo: Image.asset("assets/image/cast/dante.jpg"),
         ),
       ]),
   MovieModel(
@@ -115,6 +127,10 @@ var movies = [
         MovieCastModel(
           name: "Nova",
           photo: Image.asset("assets/image/cast/nova.jpg"),
-        )
+        ),
+        MovieCastModel(
+          name: "Nova",
+          photo: Image.asset("assets/image/cast/nova.jpg"),
+        ),
       ]),
 ];

@@ -30,32 +30,44 @@ class _TrailerVideoState extends State<TrailerVideo> {
 
   @override
   Widget build(BuildContext context) {
-    return YoutubePlayerBuilder(
-      player: YoutubePlayer(
-        controller: _controller,
-        showVideoProgressIndicator: false,
-        bottomActions: [
-          CurrentPosition(),
-          ProgressBar(
-              isExpanded: true,
-              colors: const ProgressBarColors(
-                playedColor: Colors.amber,
-                handleColor: Colors.amberAccent,
-                bufferedColor: Colors.lightGreen,
-                backgroundColor: Colors.grey,
-              )),
-          RemainingDuration(),
-          FullScreenButton(),
-          const PlaybackSpeedButton(),
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: const Offset(0, 3), // changes position of shadow
+          ),
         ],
       ),
-      builder: (context, player) {
-        return Column(
-          children: [
-            player,
+      child: YoutubePlayerBuilder(
+        player: YoutubePlayer(
+          controller: _controller,
+          showVideoProgressIndicator: false,
+          bottomActions: [
+            CurrentPosition(),
+            ProgressBar(
+                isExpanded: true,
+                colors: const ProgressBarColors(
+                  playedColor: Colors.amber,
+                  handleColor: Colors.amberAccent,
+                  bufferedColor: Colors.lightGreen,
+                  backgroundColor: Colors.grey,
+                )),
+            RemainingDuration(),
+            FullScreenButton(),
+            const PlaybackSpeedButton(),
           ],
-        );
-      },
+        ),
+        builder: (context, player) {
+          return Column(
+            children: [
+              player,
+            ],
+          );
+        },
+      ),
     );
   }
 }

@@ -4,9 +4,10 @@ class GenresFormat extends StatefulWidget {
 
   final List<String> genres;
   final dynamic mainAlignment;
+  final double fontSize;
   Color color;
 
-  GenresFormat(this.genres, this.color, this.mainAlignment, {super.key});
+  GenresFormat(this.genres, this.color, this.mainAlignment, this.fontSize, {super.key});
 
   @override
   _GenresFormatState createState() => _GenresFormatState();
@@ -19,7 +20,7 @@ class _GenresFormatState extends State<GenresFormat> {
     Widget dot = Container(
       width: 4.0,
       height: 4.0,
-      margin: EdgeInsets.symmetric(horizontal: 4.0),
+      margin: const EdgeInsets.symmetric(horizontal: 4.0),
       decoration: BoxDecoration(
           color: widget.color, borderRadius: BorderRadius.circular(50.0)),
     );
@@ -32,14 +33,16 @@ class _GenresFormatState extends State<GenresFormat> {
             children: [
               Text(
                 widget.genres[index],
-                style: TextStyle(color: widget.color, fontSize: 16),
+                style: TextStyle(color: widget.color,
+                    fontSize: widget.fontSize),
               ),
               dot,
             ],
           );
         }
         else {
-          return Text(widget.genres[index],style: TextStyle(color: widget.color,fontSize: 16),);
+          return Text(widget.genres[index],
+            style: TextStyle(color: widget.color,fontSize: widget.fontSize),);
         }
       }),
     );
