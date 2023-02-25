@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_ticket_booking_flutter_nlu/config/responsive.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/profile/component/body.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -23,7 +24,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: buildAppBar(context),
+        appBar: Responsive.isMobile(context) ? buildAppBar(context) : null,
         body: Body(isLoggedIn: isLoggedIn),
       ),
     );
