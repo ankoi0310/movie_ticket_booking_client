@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_ticket_booking_flutter_nlu/component/custom_button.dart';
 import 'package:movie_ticket_booking_flutter_nlu/component/custom_input_form_field.dart';
 import 'package:movie_ticket_booking_flutter_nlu/config/constants.dart';
+import 'package:movie_ticket_booking_flutter_nlu/config/responsive.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/profile/profile_screen.dart';
 
 class LoginWidget extends StatefulWidget {
@@ -37,6 +38,14 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   @override
   Widget build(BuildContext context) {
+    return Responsive(
+      mobile: buildMobileBody(context),
+      tablet: buildMobileBody(context),
+      desktop: buildDesktopBody(context),
+    );
+  }
+
+  Container buildMobileBody(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(25),
       alignment: Alignment.center,
@@ -95,6 +104,95 @@ class _LoginWidgetState extends State<LoginWidget> {
           ),
         ),
       ),
+    );
+  }
+
+  Row buildDesktopBody(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Container(),
+        ),
+        Expanded(
+          flex: 1,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                margin: const EdgeInsets.only(bottom: 20),
+                child: const Text(
+                  'Đăng nhập',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      buildInputFormField(
+                        title: 'Full Name',
+                        icon: const Icon(Icons.person),
+                        obscureText: false,
+                        controller: emailController,
+                        focusNode: emailFocusNode,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return kEmailNullError;
+                          }
+
+                          if (!emailValidatorRegExp.hasMatch(value)) {
+                            return kInvalidEmailError;
+                          }
+
+                          return null;
+                        },
+                        onFieldSubmitted: (value) {
+                          passwordFocusNode.requestFocus();
+                        },
+                      ),
+                      buildInputFormField(
+                        title: 'Password',
+                        icon: const Icon(Icons.lock),
+                        obscureText: true,
+                        controller: passwordController,
+                        focusNode: passwordFocusNode,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return kPassNullError;
+                          }
+
+                          return null;
+                        },
+                        onFieldSubmitted: (value) {
+                          login(context);
+                        },
+                      ),
+                      SizedBox(height: (20)),
+                      CustomButton(
+                        title: 'Đăng nhập',
+                        width: double.infinity,
+                        height: (50),
+                        onPressed: () => login(context),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Container(),
+        ),
+      ],
     );
   }
 
