@@ -1,53 +1,132 @@
 import 'package:flutter/material.dart';
-// import 'package:google_fonts/google_fonts.dart';
+
 import 'constants.dart';
 
 // Our light/Primary Theme
-ThemeData themeData(BuildContext context) {
-  return ThemeData(
+ThemeData themeData() {
+  return ThemeData.light().copyWith(
     appBarTheme: appBarTheme,
     primaryColor: kPrimaryColor,
-    scaffoldBackgroundColor: Colors.white,
+    brightness: Brightness.light,
+    scaffoldBackgroundColor: kBackgroundLightColor,
     colorScheme: const ColorScheme.light(
       secondary: kSecondaryLightColor,
-      background: kBackgroundLightColor
-      // on light theme surface = Colors.white by default
+      background: kBackgroundLightColor,
+      surface: kBackgroundLightColor,
+      shadow: kShadowColor,
     ),
-    iconTheme: IconThemeData(color: kBodyTextColorLight),
-    // accentIconTheme: IconThemeData(color: kAccentIconLightColor),
-    // primaryIconTheme: IconThemeData(color: kPrimaryIconLightColor),
-    // textTheme: GoogleFonts.latoTextTheme().copyWith(
-    //   bodyText1: TextStyle(color: kBodyTextColorLight),
-    //   bodyText2: TextStyle(color: kBodyTextColorLight),
-    //   headline4: TextStyle(color: kTitleTextLightColor, fontSize: 32),
-    //   headline1: TextStyle(color: kTitleTextLightColor, fontSize: 80),
-    // ),
+    iconTheme: const IconThemeData(color: kPrimaryIconColor),
+    useMaterial3: true,
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Colors.black,
+    ),
+    inputDecorationTheme: const InputDecorationTheme(
+      border: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: kBackgroundLightColor,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.black,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.red,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.red,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+    ),
   );
 }
 
 // Dark Them
-ThemeData darkThemeData(BuildContext context) {
+ThemeData darkThemeData() {
   return ThemeData.dark().copyWith(
+    appBarTheme: appBarDarkTheme,
     primaryColor: kPrimaryColor,
-    // accentColor: kAccentDarkColor,
-    scaffoldBackgroundColor: Color(0xFF0D0C0E),
-    appBarTheme: appBarTheme,
-    colorScheme: const ColorScheme.light(
+    brightness: Brightness.dark,
+    scaffoldBackgroundColor: kBackgroundDarkColor,
+    colorScheme: const ColorScheme.dark(
       background: kBackgroundDarkColor,
       secondary: kSecondaryDarkColor,
       surface: kSurfaceDarkColor,
+      shadow: Colors.white30,
     ),
-    backgroundColor: kBackgroundDarkColor,
-    iconTheme: IconThemeData(color: kBodyTextColorDark),
-    // accentIconTheme: IconThemeData(color: kAccentIconDarkColor),
-    // primaryIconTheme: IconThemeData(color: kPrimaryIconDarkColor),
-    // textTheme: GoogleFonts.latoTextTheme().copyWith(
-    //   bodyText1: TextStyle(color: kBodyTextColorDark),
-    //   bodyText2: TextStyle(color: kBodyTextColorDark),
-    //   headline4: TextStyle(color: kTitleTextDarkColor, fontSize: 32),
-    //   headline1: TextStyle(color: kTitleTextDarkColor, fontSize: 80),
-    // ),
+    iconTheme: const IconThemeData(color: kPrimaryIconColor),
+    useMaterial3: true,
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: kTextDarkColor,
+    ),
+    inputDecorationTheme: const InputDecorationTheme(
+      filled: true,
+      fillColor: kSecondaryDarkColor,
+      border: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: kSecondaryDarkColor,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: kTextDarkColor,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.red,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.red,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+    ),
   );
 }
 
-AppBarTheme appBarTheme = const AppBarTheme(color: Colors.transparent, elevation: 0);
+AppBarTheme appBarTheme = const AppBarTheme(
+  color: kBackgroundLightColor,
+  elevation: 1,
+  centerTitle: true,
+  iconTheme: IconThemeData(color: kTextLightColor),
+  titleTextStyle: TextStyle(
+    color: kTextLightColor,
+    fontSize: 22,
+  ),
+  shadowColor: kShadowColor,
+);
+
+AppBarTheme appBarDarkTheme = const AppBarTheme(
+  color: kBackgroundDarkColor,
+  elevation: 1,
+  centerTitle: true,
+  iconTheme: IconThemeData(color: kTextDarkColor),
+  titleTextStyle: TextStyle(
+    color: kTextDarkColor,
+    fontSize: 22,
+  ),
+  shadowColor: Colors.white,
+);
+

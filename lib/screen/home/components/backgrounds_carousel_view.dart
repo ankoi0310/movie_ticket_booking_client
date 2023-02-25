@@ -1,4 +1,5 @@
 ﻿import 'package:flutter/material.dart';
+import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/movie_model.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/page_carousel_provider.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +13,6 @@ class BackgroundsCarouselView extends StatefulWidget {
 }
 
 class _BackgroundsCarouselViewState extends State<BackgroundsCarouselView> {
-  Size get size => MediaQuery.of(context).size;
   PageController pageController = PageController(
     viewportFraction: 1,
     initialPage: 0,
@@ -20,6 +20,7 @@ class _BackgroundsCarouselViewState extends State<BackgroundsCarouselView> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Consumer<PageCarouselProvider>(
       builder: (context, pageCarouselProvider, child) {
         if (pageController.hasClients) {
@@ -30,7 +31,7 @@ class _BackgroundsCarouselViewState extends State<BackgroundsCarouselView> {
           );
         }
         return SizedBox(
-          height: size.height ,
+          height: SizeConfig.screenHeight ,
           child: NotificationListener<OverscrollIndicatorNotification>(
             onNotification: (overScroll) {
               overScroll.disallowIndicator();
@@ -43,14 +44,14 @@ class _BackgroundsCarouselViewState extends State<BackgroundsCarouselView> {
                   movies.length,
                   (index) {
                     return SizedBox(
-                      width: size.width,
-                      height: size.height,
+                      width: SizeConfig.screenWidth,
+                      height: SizeConfig.screenHeight,
                       child: Stack(
                         alignment: Alignment.topCenter,
                         children: <Widget>[
                           Positioned(
-                            left: -size.width / movies.length ,
-                            right: -size.width / movies.length ,
+                            left: -SizeConfig.screenWidth / movies.length ,
+                            right: -SizeConfig.screenWidth / movies.length ,
                             child: Image(
                               image: movies[index].image.image,
                             ),

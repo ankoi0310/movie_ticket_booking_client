@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/movie_model.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/page_carousel_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/home/components/movie_carousel_card.dart';
@@ -18,10 +19,10 @@ class _MoviesCarouselViewState extends State<MoviesCarouselView> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    SizeConfig().init(context);
 
     return SizedBox(
-      height: size.height ,
+      height: SizeConfig.screenHeight ,
       child: NotificationListener<OverscrollIndicatorNotification>(
         onNotification: (overScroll) {
           overScroll.disallowGlow();

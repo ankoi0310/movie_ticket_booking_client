@@ -5,9 +5,9 @@ class GenresFormat extends StatefulWidget {
   final List<String> genres;
   final dynamic mainAlignment;
   final double fontSize;
-  Color color;
+  final Color color;
 
-  GenresFormat(this.genres, this.color, this.mainAlignment, this.fontSize, {super.key});
+  GenresFormat({super.key, required this.genres, required this.color, required this.mainAlignment, required this.fontSize});
 
   @override
   _GenresFormatState createState() => _GenresFormatState();
@@ -17,6 +17,7 @@ class _GenresFormatState extends State<GenresFormat> {
 
   @override
   Widget build(BuildContext context) {
+
     Widget dot = Container(
       width: 4.0,
       height: 4.0,

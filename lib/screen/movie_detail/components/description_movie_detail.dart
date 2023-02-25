@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_text/flutter_expandable_text.dart';
+import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/movie_model.dart';
+import 'package:movie_ticket_booking_flutter_nlu/screen/movie_detail/cast_movie_screen.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/movie_detail/components/cast_movie_card.dart';
 
 class DescriptionMovieDetail extends StatefulWidget {
@@ -16,11 +18,10 @@ class DescriptionMovieDetail extends StatefulWidget {
 class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    SizeConfig().init(context);
     return Container(
       margin: const EdgeInsets.only(top: 15),
-      width: size.width,
-      height: size.height,
+      width: SizeConfig.screenWidth,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -28,12 +29,12 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
             "Story line",
             style: TextStyle(
               color: Theme.of(context).textTheme.bodyMedium!.color,
-              fontSize: 20,
+              fontSize: getProportionateScreenWidth(20),
               fontWeight: FontWeight.bold,
             ),
           ),
           SizedBox(
-            height: size.height * .01,
+            height: SizeConfig.screenHeight * .01,
           ),
           ExpandableText(
               widget.movie.storyLine,
@@ -44,7 +45,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
             trimType: TrimType.lines,
             linkTextStyle: TextStyle(
               color: Theme.of(context).primaryColor,
-              fontSize: 16,
+              fontSize: getProportionateScreenWidth(16),
               fontWeight: FontWeight.bold,
             ),
 
@@ -54,12 +55,12 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                   .bodyMedium!
                   .color
                   ?.withOpacity(0.45),
-              fontSize: 16,
+              fontSize: getProportionateScreenWidth(16),
               height: 1.5,
             ),
           ),
           SizedBox(
-            height: size.height * .04,
+            height: SizeConfig.screenHeight * .04,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,25 +70,29 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                 "Cast movie",
                 style: TextStyle(
                   color: Theme.of(context).textTheme.bodyMedium!.color,
-                  fontSize: 20,
+                  fontSize: getProportionateScreenWidth(20),
                   fontWeight: FontWeight.bold,
                 ),
               ),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CastMovieScreen(casts: widget.movie.castList))
+                  );
+                },
                 child: Text(
                   'View all',
                   style: TextStyle(
                     color: Theme.of(context).primaryColor,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
+                    fontSize: getProportionateScreenWidth(16),
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ],
           ),
           SizedBox(
-            height: size.height * .01,
+            height: SizeConfig.screenHeight * .01,
           ),
           Column(
             children: List.generate(3, (index) {
