@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_ticket_booking_flutter_nlu/config/responsive.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/register/component/body.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -15,7 +16,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: buildAppBar(context),
+        appBar: Responsive.isMobile(context) ? buildAppBar(context) : null,
         body: const Body(),
       ),
     );
