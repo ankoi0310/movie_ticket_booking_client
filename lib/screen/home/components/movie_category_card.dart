@@ -41,7 +41,7 @@ class MovieCategoryCard extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            StarRating(movie.rating, MainAxisAlignment.start),
+            StarRating(movie.rating, MainAxisAlignment.start, 16.0),
             const SizedBox(
               height: 10,
             ),

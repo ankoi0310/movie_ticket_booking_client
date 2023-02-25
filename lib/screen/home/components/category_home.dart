@@ -38,7 +38,7 @@ class _CategoryHomeState extends State<CategoryHome> {
                                 .textTheme
                                 .titleMedium!
                                 .color!
-                                .withOpacity(0.45)),
+                                .withOpacity(0.95)),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Icon(
@@ -47,7 +47,7 @@ class _CategoryHomeState extends State<CategoryHome> {
                             .textTheme
                             .titleMedium!
                             .color!
-                            .withOpacity(0.45),
+                            .withOpacity(0.95),
                         size: 30,
                       ),
                     ),
@@ -60,7 +60,7 @@ class _CategoryHomeState extends State<CategoryHome> {
                                 .textTheme
                                 .titleMedium!
                                 .color!
-                                .withOpacity(0.45)),
+                                .withOpacity(0.95)),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Padding(
@@ -75,7 +75,7 @@ class _CategoryHomeState extends State<CategoryHome> {
                                         .textTheme
                                         .titleMedium!
                                         .color!
-                                        .withOpacity(0.45),
+                                        .withOpacity(0.95),
                                     fontSize: 18,
                                     fontWeight: FontWeight.w400),
                               ),
@@ -85,7 +85,7 @@ class _CategoryHomeState extends State<CategoryHome> {
                                     .textTheme
                                     .titleMedium!
                                     .color!
-                                    .withOpacity(0.35),
+                                    .withOpacity(0.95),
                                 size: 30,
                               )
                             ]),
@@ -107,7 +107,7 @@ class _CategoryHomeState extends State<CategoryHome> {
                             .textTheme
                             .titleMedium!
                             .color!
-                            .withOpacity(0.45)),
+                    ),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: TabBar(
@@ -146,20 +146,20 @@ class _CategoryHomeState extends State<CategoryHome> {
                       labelStyle: TextStyle(
                           color:
                               Theme.of(context).textTheme.titleMedium!.color!,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400),
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold),
                       unselectedLabelColor: Theme.of(context)
                           .textTheme
                           .titleMedium!
                           .color!
-                          .withOpacity(0.45),
+                          .withOpacity(0.65),
                       unselectedLabelStyle: TextStyle(
                           color: Theme.of(context)
                               .textTheme
                               .titleMedium!
                               .color!
-                              .withOpacity(0.45),
-                          fontSize: 18,
+                              .withOpacity(0.65),
+                          fontSize: 17,
                           fontWeight: FontWeight.w400)),
                 ),
               ),
