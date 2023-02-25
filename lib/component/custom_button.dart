@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
@@ -28,10 +27,10 @@ class CustomButton extends StatelessWidget {
               backgroundColor: Theme.of(context).primaryColor,
             ),
             child: Text(
-              'Create Account',
+              title,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: getProportionateScreenWidth(18),
+                fontSize: (18),
                 fontWeight: FontWeight.w600,
               ),
             ),

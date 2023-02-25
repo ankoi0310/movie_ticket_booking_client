@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
 
 Padding buildInputFormField({
   required String title,
@@ -12,8 +11,8 @@ Padding buildInputFormField({
 }) {
   return Padding(
     padding: EdgeInsets.only(
-      top: getProportionateScreenHeight(10),
-      bottom: getProportionateScreenHeight(10),
+      top: (10),
+      bottom: (10),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,11 +20,11 @@ Padding buildInputFormField({
         Text(
           title.toUpperCase(),
           style: TextStyle(
-            fontSize: getProportionateScreenWidth(14),
+            fontSize: (14),
             fontWeight: FontWeight.w600,
           ),
         ),
-        SizedBox(height: getProportionateScreenHeight(10)),
+        SizedBox(height: (10)),
         TextFormField(
           autocorrect: true,
           autovalidateMode: AutovalidateMode.onUserInteraction,
