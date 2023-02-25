@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/home/components/backgrounds_carousel_view.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/home/components/movies_carousel_view.dart';
 

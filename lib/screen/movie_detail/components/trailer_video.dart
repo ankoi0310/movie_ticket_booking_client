@@ -33,12 +33,19 @@ class _TrailerVideoState extends State<TrailerVideo> {
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: const Offset(0, 3), // changes position of shadow
-          ),
+          Theme.of(context).brightness == Brightness.light
+              ? BoxShadow(
+                  color: Colors.grey.withOpacity(0.6),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3), // changes position of shadow
+                )
+              : BoxShadow(
+                  color: Colors.black.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 10,
+                  offset: const Offset(0, 3), // changes position of shadow
+                ),
         ],
       ),
       child: YoutubePlayerBuilder(

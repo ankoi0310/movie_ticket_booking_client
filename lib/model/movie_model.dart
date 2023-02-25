@@ -7,6 +7,7 @@ class MovieModel {
   List<String> genres;
   double rating;
   String director;
+  int duration;
   String storyLine;
   String trailerVideoUrl;
   Image image;
@@ -19,6 +20,7 @@ class MovieModel {
     required this.name,
     required this.rating,
     required this.director,
+    required this.duration,
     required this.storyLine,
     required this.trailerVideoUrl,
     required this.image,
@@ -36,6 +38,7 @@ var movies = [
         "Drama",
       ],
       director: 'Ericson Core',
+      duration: 114,
       storyLine:
           'Togo (1913 – December 5, 1929) was the lead sled dog of Leonhard Seppala and his dog sled team in the 1925 serum run to Nome across central and northern Alaska. Even though he covered more distance (260 miles) than his co-sledder Balto (55 miles), he didn\'t get as much fame.',
       trailerVideoUrl: 'https://www.youtube.com/watch?v=HMfyueM-ZBQ',
@@ -69,6 +72,7 @@ var movies = [
       rating: 8.5,
       genres: ["Crime", "Drama"],
       director: 'Todd Phillips',
+      duration: 122,
       storyLine:
           "Forever alone in a crowd, failed comedian Arthur Fleck seeks connection as he walks the streets of Gotham City. Arthur wears two masks -- the one he paints for his day job as a clown, and the guise he projects in a futile attempt to feel like he's part of the world around him. Isolated, bullied and disregarded by society, Fleck begins a slow descent into madness as he transforms into the criminal mastermind known as the Joker.",
       trailerVideoUrl: 'https://www.youtube.com/watch?v=zAGVQLHvwOY',
@@ -106,6 +110,7 @@ var movies = [
       rating: 5.7,
       genres: ["Action", "Adventure", "Fantasy"],
       director: 'Tim Burton',
+      duration: 131,
       storyLine:
           "Complex sociological themes run through this science-fiction classic about three astronauts marooned on a futuristic planet where apes rule and humans are slaves. The stunned trio discovers that these highly intellectual simians can both walk upright and talk. They have even established a class system and a political structure. The astronauts suddenly find themselves part of a devalued species, trapped and imprisoned by the apes.",
       trailerVideoUrl: 'https://www.youtube.com/watch?v=qxjPjPzQ1iU',
