@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:movie_ticket_booking_flutter_nlu/responsive/desktop_layout.dart';
-import 'package:movie_ticket_booking_flutter_nlu/responsive/mobile_layout.dart';
-import 'package:movie_ticket_booking_flutter_nlu/responsive/responsive.dart';
-import 'package:movie_ticket_booking_flutter_nlu/screen/home/components/backgrounds_carousel_view.dart';
-import 'package:movie_ticket_booking_flutter_nlu/screen/home/components/carousel_home.dart';
-import 'package:movie_ticket_booking_flutter_nlu/screen/home/components/category_home.dart';
-import 'package:movie_ticket_booking_flutter_nlu/screen/home/components/movies_carousel_view.dart';
-import 'package:provider/provider.dart';
-
-import '../../provider/page_carousel_provider.dart';
+import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
+import 'package:movie_ticket_booking_flutter_nlu/screen/home/components/carousel.dart';
+import 'package:movie_ticket_booking_flutter_nlu/screen/home/components/movies.dart';
 
 class HomeScreen extends StatefulWidget {
+  static const routeName = "/home";
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -20,10 +14,14 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Responsive(
-      mobile: MobileLayout(),
-      tablet: Container(),
-      desktop: DesktopLayout(),
+    SizeConfig().init(context);
+    return SingleChildScrollView(
+      child: const Column(
+        children: [
+          Carousel(),
+          Movies(),
+        ],
+      ),
     );
   }
 }

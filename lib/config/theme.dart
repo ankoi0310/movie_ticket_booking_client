@@ -107,7 +107,7 @@ ThemeData darkThemeData() {
 }
 
 AppBarTheme appBarTheme = const AppBarTheme(
-  color: kBackgroundLightColor,
+  color: Colors.transparent,
   elevation: 1,
   centerTitle: true,
   iconTheme: IconThemeData(color: kTextLightColor),
@@ -115,12 +115,12 @@ AppBarTheme appBarTheme = const AppBarTheme(
     color: kTextLightColor,
     fontSize: 22,
   ),
-  shadowColor: kShadowColor,
+  shadowColor: Colors.transparent,
 );
 
 AppBarTheme appBarDarkTheme = const AppBarTheme(
   color: kBackgroundDarkColor,
-  elevation: 1,
+  elevation: 0,
   centerTitle: true,
   iconTheme: IconThemeData(color: kTextDarkColor),
   titleTextStyle: TextStyle(

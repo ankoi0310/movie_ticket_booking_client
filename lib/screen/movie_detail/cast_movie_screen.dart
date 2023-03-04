@@ -20,10 +20,10 @@ class _CastMovieScreenState extends State<CastMovieScreen> {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
-            title: Text('Cast movie',
+            title: Text('Dàn diễn viên',
                 style: TextStyle(
                   color: Theme.of(context).textTheme.titleLarge!.color,
-                  fontSize: getProportionateScreenWidth(20),
+                  fontSize: getProportionateScreenWidth(32),
                   fontWeight: FontWeight.bold,
                 )),
             backgroundColor: Theme.of(context).colorScheme.background,

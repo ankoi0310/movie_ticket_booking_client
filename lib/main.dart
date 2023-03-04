@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_ticket_booking_flutter_nlu/config/routes.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/home/home_screen.dart';
 
 import 'config/theme.dart';
@@ -17,8 +18,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       darkTheme: darkThemeData(),
       theme: themeData(),
-      title: 'Flutter Demo',
-      home: HomeScreen(),
+      title: 'Đặt vé xem phim',
+      routes: routes,
+      initialRoute: HomeScreen.routeName,
     );
   }
 }
