@@ -13,7 +13,7 @@ class DurationFormat extends StatelessWidget {
     return Align(
       alignment: mainAlignment,
       child: Text(
-        _formatDuration(duration),
+        formatDuration(duration),
         style: TextStyle(
           color: color,
           fontSize: fontSize,
@@ -22,7 +22,7 @@ class DurationFormat extends StatelessWidget {
     );
   }
 
-  String _formatDuration(int duration) {
-    return duration < 60 ? '$duration min' : '${duration ~/ 60} hr ${duration % 60} min';
+  static String formatDuration(int duration) {
+    return duration < 60 ? '$duration phút' : '${duration ~/ 60} tiếng ${duration % 60} phút';
   }
 }

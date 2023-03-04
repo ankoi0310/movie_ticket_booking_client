@@ -8,26 +8,31 @@ import 'package:movie_ticket_booking_flutter_nlu/widget/genres_format.dart';
 import 'package:movie_ticket_booking_flutter_nlu/widget/star_rating.dart';
 
 class MovieDetailScreen extends StatefulWidget {
-  final MovieModel movie;
+  static const routeName = "/movie_detail";
 
-  const MovieDetailScreen({Key? key, required this.movie}) : super(key: key);
+  const MovieDetailScreen({Key? key}) : super(key: key);
 
   @override
   State<MovieDetailScreen> createState() => _MovieDetailScreenState();
 }
 
 class _MovieDetailScreenState extends State<MovieDetailScreen> {
+  late final MovieModel movie;
+
   @override
   Widget build(BuildContext context) {
+    int id = ModalRoute.of(context)!.settings.arguments as int;
+    movie = movies.firstWhere((element) => element.id == id);
+
     SizeConfig().init(context);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Movie detail',
+            'Chi tiết phim',
             style: TextStyle(
               color: Theme.of(context).textTheme.titleLarge!.color,
-              fontSize: getProportionateScreenWidth(20),
+              fontSize: getProportionateScreenWidth(32),
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -54,7 +59,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TrailerVideo(trailerVideoUrl: widget.movie.trailerVideoUrl),
+                  TrailerVideo(trailerVideoUrl: movie.trailerVideoUrl),
                   Container(
                       margin: const EdgeInsets.only(top: 15),
                       height: SizeConfig.screenHeight * 0.3,
@@ -77,18 +82,18 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                         ],
                         borderRadius: BorderRadius.circular(20),
                         image: DecorationImage(
-                          image: widget.movie.image.image,
+                          image: movie.image.image,
                           fit: BoxFit.cover,
                         ),
                       )),
                   Container(
-                    margin: EdgeInsets.only(top: getProportionateScreenWidth(10)),
+                    margin: EdgeInsets.only(top: getProportionateScreenWidth(50)),
                     child: Text(
-                      widget.movie.name,
+                      movie.name,
                       style: TextStyle(
                         color:
                             Theme.of(context).textTheme.titleLarge!.color,
-                        fontSize: getProportionateScreenWidth(26),
+                        fontSize: getProportionateScreenWidth(45),
                         fontWeight: FontWeight.bold,
                         height: getProportionateScreenWidth(1.5),
                         letterSpacing: getProportionateScreenWidth(1.1),
@@ -96,16 +101,16 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: getProportionateScreenHeight(3)),
+                    margin: EdgeInsets.only(top: getProportionateScreenHeight(10)),
                     child: GenresFormat(
-                        genres: widget.movie.genres,
+                        genres: movie.genres,
                         color: Theme.of(context)
                             .textTheme
                             .titleLarge!
                             .color!
                             .withOpacity(0.65),
                         mainAlignment: MainAxisAlignment.center,
-                        fontSize: getProportionateScreenWidth(16)),
+                        fontSize: getProportionateScreenWidth(30)),
                   ),
                   Container(
                     margin: EdgeInsets.only(top: getProportionateScreenHeight(3)),
@@ -114,20 +119,20 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                            "${(widget.movie.rating / 2).toStringAsFixed(1)}/5",
+                            "${(movie.rating / 2).toStringAsFixed(1)}/5",
                             style: TextStyle(
                               color: Theme.of(context)
                                   .textTheme
                                   .titleLarge!
                                   .color,
-                              fontSize: getProportionateScreenWidth(28),
+                              fontSize: getProportionateScreenWidth(50),
                               fontWeight: FontWeight.w400,
                               height: 1.5,
                               letterSpacing: 1.1,
                             )),
                         const SizedBox(width: 10),
-                        StarRating(widget.movie.rating,
-                            MainAxisAlignment.center, getProportionateScreenWidth(28)),
+                        StarRating(movie.rating,
+                            MainAxisAlignment.center, getProportionateScreenWidth(50)),
                       ],
                     ),
                   ),
@@ -135,7 +140,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     width: SizeConfig.screenWidth * 0.9,
                     padding: const EdgeInsets.all(3),
                     margin: const EdgeInsets.only(top: 10),
-                    child: DescriptionMovieDetail(movie: widget.movie),
+                    child: DescriptionMovieDetail(movie: movie),
                   ),
                 ],
               ),
@@ -144,7 +149,8 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
         ),
         // Booking Ticket Button
         bottomNavigationBar: Container(
-          height: getProportionateScreenHeight(50),
+          color: Colors.transparent,
+          height: getProportionateScreenHeight(70),
           width: SizeConfig.screenWidth,
           margin: const EdgeInsets.only(
             left: 20,
@@ -153,7 +159,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
           child: InkWell(
             onTap: () {
               Navigator.pushNamed(context, '/booking_ticket',
-                  arguments: widget.movie);
+                  arguments: movie);
             },
             child: Container(
               alignment: Alignment.center,
@@ -162,10 +168,10 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                 color: Theme.of(context).primaryColor,
               ),
               child: Text(
-                'Booking Ticket'.toUpperCase(),
+                'Mua vé'.toUpperCase(),
                 style: TextStyle(
                   color: Theme.of(context).textTheme.titleLarge!.color,
-                  fontSize: getProportionateScreenWidth(16),
+                  fontSize: getProportionateScreenWidth(28),
                   fontWeight: FontWeight.bold,
                   height: getProportionateScreenHeight(1.5),
                 ),

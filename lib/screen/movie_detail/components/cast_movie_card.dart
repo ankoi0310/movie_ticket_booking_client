@@ -16,8 +16,8 @@ class CastMovieCard extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: getProportionateScreenWidth(50),
-            height: getProportionateScreenHeight(50),
+            width: getProportionateScreenWidth(75),
+            height: getProportionateScreenHeight(75),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
               image: DecorationImage(
@@ -33,7 +33,7 @@ class CastMovieCard extends StatelessWidget {
             cast.name,
             style: TextStyle(
                 color: Theme.of(context).textTheme.titleMedium!.color,
-                fontSize: getProportionateScreenWidth(18),
+                fontSize: getProportionateScreenWidth(28),
                 fontWeight: FontWeight.w500),
           ),
         ],

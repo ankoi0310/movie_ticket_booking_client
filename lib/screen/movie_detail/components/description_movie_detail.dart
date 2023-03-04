@@ -26,10 +26,10 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Story line",
+            "Cốt truyện",
             style: TextStyle(
               color: Theme.of(context).textTheme.bodyMedium!.color,
-              fontSize: getProportionateScreenWidth(20),
+              fontSize: getProportionateScreenWidth(34),
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -38,14 +38,14 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
           ),
           ExpandableText(
               widget.movie.storyLine,
-            readLessText: 'Show less',
-            readMoreText: 'Show more',
+            readLessText: 'Ít hơn',
+            readMoreText: 'Nhiều hơn',
             textAlign: TextAlign.left,
             trim: 5,
             trimType: TrimType.lines,
             linkTextStyle: TextStyle(
               color: Theme.of(context).primaryColor,
-              fontSize: getProportionateScreenWidth(16),
+              fontSize: getProportionateScreenWidth(26),
               fontWeight: FontWeight.bold,
             ),
 
@@ -55,7 +55,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                   .bodyMedium!
                   .color
                   ?.withOpacity(0.45),
-              fontSize: getProportionateScreenWidth(16),
+              fontSize: getProportionateScreenWidth(26),
               height: 1.5,
             ),
           ),
@@ -67,10 +67,10 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Cast movie",
+                "Dàn diễn viên",
                 style: TextStyle(
                   color: Theme.of(context).textTheme.bodyMedium!.color,
-                  fontSize: getProportionateScreenWidth(20),
+                  fontSize: getProportionateScreenWidth(34),
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -81,10 +81,10 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                   );
                 },
                 child: Text(
-                  'View all',
+                  'Xem tất cả',
                   style: TextStyle(
                     color: Theme.of(context).primaryColor,
-                    fontSize: getProportionateScreenWidth(16),
+                    fontSize: getProportionateScreenWidth(26),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
