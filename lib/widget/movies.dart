@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/movie_model.dart';
+import 'package:movie_ticket_booking_flutter_nlu/provider/scrolling_provider.dart';
+import 'package:movie_ticket_booking_flutter_nlu/routing/movie_router_delegate.dart';
+import 'package:movie_ticket_booking_flutter_nlu/routing/route_handler.dart';
+import 'package:provider/provider.dart';
 
 class Movies extends StatefulWidget {
   const Movies({Key? key}) : super(key: key);
@@ -15,7 +19,10 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 2,
+        vsync: this, initialIndex: 0,
+      animationDuration: const Duration(milliseconds: 500)
+    );
   }
 
   @override
@@ -26,6 +33,8 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final scrollingProvider = Provider.of<ScrollingProvider>(context);
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
       margin: const EdgeInsets.only(top: 20),
@@ -84,6 +93,7 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
               child: SizedBox(
                 height: 600,
                 child: TabBarView(
+                  controller: _tabController,
                   children: [
                     Container(
                       padding: const EdgeInsets.only(
@@ -97,36 +107,42 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
                         children: [
                           ...List.generate(
                             6,
-                            (index) => Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: SizeConfig.screenWidth * 0.31,
-                                  height: 200,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    image: DecorationImage(
-                                      image: movies[index].imageDesktop.image,
-                                      fit: BoxFit.cover,
+                            (index) => InkWell(
+                              onTap: () {
+                                scrollingProvider.scrollToTop();
+                                MovieRouterDelegate().setPathName("${RouteData.movie.name}/${movies[index].id}");
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: SizeConfig.screenWidth * 0.31,
+                                    height: 200,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      image: DecorationImage(
+                                        image: movies[index].imageDesktop.image,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  movies[index].name,
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .color,
-                                    fontSize: getProportionateScreenWidth(28),
-                                    fontWeight: FontWeight.bold,
+                                  const SizedBox(
+                                    height: 10,
                                   ),
-                                ),
-                              ],
+                                  Text(
+                                    movies[index].name,
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .color,
+                                      fontSize: getProportionateScreenWidth(28),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],

@@ -3,8 +3,10 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class TrailerVideo extends StatefulWidget {
   final String trailerVideoUrl;
+  final Image thumbnail;
 
-  const TrailerVideo({Key? key, required this.trailerVideoUrl})
+  const TrailerVideo(
+      {Key? key, required this.trailerVideoUrl, required this.thumbnail})
       : super(key: key);
 
   @override
@@ -21,11 +23,22 @@ class _TrailerVideoState extends State<TrailerVideo> {
     _controller = YoutubePlayerController(
       initialVideoId: videoID!,
       flags: const YoutubePlayerFlags(
-        autoPlay: false,
-        mute: false,
+          autoPlay: true,
+          mute: false,
+          disableDragSeek: true,
+          loop: false,
+          enableCaption: false
       ),
     );
+    _controller.play();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _controller.dispose();
   }
 
   @override
@@ -33,33 +46,34 @@ class _TrailerVideoState extends State<TrailerVideo> {
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
-          Theme.of(context).brightness == Brightness.light
-              ? BoxShadow(
-                  color: Colors.grey.withOpacity(0.6),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: Offset(0, 3), // changes position of shadow
-                )
-              : BoxShadow(
-                  color: Colors.black.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 10,
-                  offset: const Offset(0, 3), // changes position of shadow
-                ),
+          BoxShadow(
+            color: Colors.black.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 10,
+            offset: const Offset(0, 3), // changes position of shadow
+          ),
         ],
       ),
       child: YoutubePlayerBuilder(
         player: YoutubePlayer(
+          onReady: () {
+            print('Player is ready.');
+          },
+          thumbnail: Center(
+              // Image movie poster
+              child: Image(
+            image: widget.thumbnail.image,
+          )),
           controller: _controller,
-          showVideoProgressIndicator: false,
+          showVideoProgressIndicator: true,
           bottomActions: [
             CurrentPosition(),
             ProgressBar(
                 isExpanded: true,
-                colors: const ProgressBarColors(
-                  playedColor: Colors.amber,
-                  handleColor: Colors.amberAccent,
-                  bufferedColor: Colors.lightGreen,
+                colors: ProgressBarColors(
+                  playedColor: Theme.of(context).primaryColor,
+                  handleColor: Theme.of(context).primaryColor,
+                  bufferedColor: Theme.of(context).primaryColor,
                   backgroundColor: Colors.grey,
                 )),
             RemainingDuration(),

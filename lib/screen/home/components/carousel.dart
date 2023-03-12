@@ -153,7 +153,7 @@ List<Container> buildPageCarousel(BuildContext context,
               children: [
                 Container(
                   width: SizeConfig.screenWidth,
-                  height: 1000,
+                  height: 695,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: movies[index].imageDesktop.image,
@@ -161,146 +161,144 @@ List<Container> buildPageCarousel(BuildContext context,
                     ),
                   ),
                 ),
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: Container(
-                    width: SizeConfig.screenWidth,
-                    height: 1000,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.centerRight,
-                        end: Alignment.centerLeft,
-                        colors: [
-                          Colors.black.withOpacity(0.2),
-                          Colors.black.withOpacity(0.4),
-                          Colors.black.withOpacity(0.7),
-                          Colors.black.withOpacity(0.9),
-                        ],
-                      ),
+                Container(
+                  width: SizeConfig.screenWidth,
+                  height: 1000,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.centerRight,
+                      end: Alignment.centerLeft,
+                      colors: [
+                        Colors.black.withOpacity(0.2),
+                        Colors.black.withOpacity(0.6),
+                        Colors.black.withOpacity(0.8),
+                        Colors.black.withOpacity(0.9),
+                      ],
                     ),
                   ),
                 ),
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: Container(
-                    width: SizeConfig.screenWidth * 0.5,
-                    padding: const EdgeInsets.only(
-                      top: 150,
-                      left: 80,
-                      right: 50,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                              border: Border(
-                            left: BorderSide(
-                              color: Theme.of(context).primaryColor,
-                              width: 3,
-                            ),
-                          )),
-                          child: Text(
-                            "Phim đang chiếu".toUpperCase(),
-                            style: TextStyle(
-                              color: Colors.white.withOpacity(0.9),
-                              fontWeight: FontWeight.w600,
-                              fontSize: getProportionateScreenWidth(20),
-                              letterSpacing: 1.5,
-                            ),
+                Container(
+                  width: SizeConfig.screenWidth * 0.7,
+                  padding: const EdgeInsets.only(
+                    top: 150,
+                    left: 80,
+                    right: 50,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        decoration: BoxDecoration(
+                            border: Border(
+                          left: BorderSide(
+                            color: Theme.of(context).primaryColor,
+                            width: 3,
+                          ),
+                        )),
+                        child: Text(
+                          "Phim đang chiếu".toUpperCase(),
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.9),
+                            fontWeight: FontWeight.w600,
+                            fontSize: getProportionateScreenWidth(20),
+                            letterSpacing: 1.5,
                           ),
                         ),
-                        const SizedBox(height: 20),
-                        Container(
-                          child: Text(
-                            movies[index].name,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: getProportionateScreenWidth(120),
-                              letterSpacing: 1.5,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        StarRating(
-                            movies[index].rating,
-                            MainAxisAlignment.start,
-                            getProportionateScreenWidth(40)),
-                        const SizedBox(height: 20),
-                        GenresFormat(
-                          genres: movies[index].genres,
-                          mainAlignment: MainAxisAlignment.start,
-                          fontSize: getProportionateScreenWidth(40),
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        movies[index].name,
+                        style: TextStyle(
                           color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: getProportionateScreenWidth(80),
+                          letterSpacing: 1.5,
                         ),
-                        const SizedBox(height: 20),
-                        Container(
-                          width: SizeConfig.screenWidth * 0.5,
-                          padding: EdgeInsets.only(
-                              right: getProportionateScreenWidth(30)),
-                          child: Text(
-                            movies[index].storyLine,
-                            style: TextStyle(
-                              color: Colors.white.withOpacity(0.9),
-                              fontWeight: FontWeight.w400,
-                              fontSize: getProportionateScreenWidth(20),
-                              letterSpacing: 1.5,
-                            ),
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 20),
+                      StarRating(movies[index].rating, MainAxisAlignment.start,
+                          getProportionateScreenWidth(50)),
+                      const SizedBox(height: 20),
+                      GenresFormat(
+                        genres: movies[index].genres,
+                        mainAlignment: MainAxisAlignment.start,
+                        fontSize: getProportionateScreenWidth(40),
+                        color: Colors.white,
+                      ),
+                      const SizedBox(height: 20),
+                      Container(
+                        width: SizeConfig.screenWidth * 0.5,
+                        padding: EdgeInsets.only(
+                            right: getProportionateScreenWidth(30)),
+                        child: Text(
+                          movies[index].storyLine,
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.9),
+                            fontWeight: FontWeight.w400,
+                            fontSize: getProportionateScreenWidth(20),
+                            letterSpacing: 1.5,
                           ),
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: 20),
-                        Row(
-                          children: [
-                            Text("Thời lượng:".toUpperCase(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: getProportionateScreenWidth(20),
-                                  letterSpacing: 1.5,
-                                )),
-                            SizedBox(width: getProportionateScreenWidth(20)),
-                            DurationFormat(
-                                duration: movies[index].duration,
-                                fontSize: getProportionateScreenWidth(22),
-                                color: Colors.white,
-                                mainAlignment: Alignment.centerLeft),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        Container(
-                          width: getProportionateScreenWidth(300),
-                          height: getProportionateScreenHeight(80),
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).primaryColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            child: Text(
-                              "Đặt vé ngay".toUpperCase(),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Text("Thời lượng:".toUpperCase(),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontSize: getProportionateScreenWidth(24),
+                                fontSize: getProportionateScreenWidth(20),
                                 letterSpacing: 1.5,
-                              ),
+                              )),
+                          SizedBox(width: getProportionateScreenWidth(20)),
+                          DurationFormat(
+                              duration: movies[index].duration,
+                              fontSize: getProportionateScreenWidth(22),
+                              color: Colors.white,
+                              mainAlignment: Alignment.centerLeft),
+                        ],
+                      ),
+                      const SizedBox(height: 40),
+                      Container(
+                        width: getProportionateScreenWidth(250),
+                        height: getProportionateScreenHeight(80),
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            primary: Theme.of(context).primaryColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                const IconData(0xf916,
+                                    fontFamily: CupertinoIcons.iconFont,
+                                    fontPackage:
+                                        CupertinoIcons.iconFontPackage),
+                                size: getProportionateScreenWidth(30),
+                                color: Colors.white,
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                "Đặt vé ngay".toUpperCase(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: getProportionateScreenWidth(18),
+                                  letterSpacing: 1.5,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ],
