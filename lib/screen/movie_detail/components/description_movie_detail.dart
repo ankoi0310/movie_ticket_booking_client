@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_expandable_text/flutter_expandable_text.dart';
 import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/movie_model.dart';
-import 'package:movie_ticket_booking_flutter_nlu/screen/movie_detail/cast_movie_screen.dart';
-import 'package:movie_ticket_booking_flutter_nlu/screen/movie_detail/components/cast_movie_card.dart';
+import 'package:movie_ticket_booking_flutter_nlu/provider/scrolling_provider.dart';
+import 'package:movie_ticket_booking_flutter_nlu/routing/movie_router_delegate.dart';
+import 'package:movie_ticket_booking_flutter_nlu/routing/route_handler.dart';
+import 'package:movie_ticket_booking_flutter_nlu/widget/duration_format.dart';
+import 'package:movie_ticket_booking_flutter_nlu/widget/genres_format.dart';
+import 'package:movie_ticket_booking_flutter_nlu/widget/star_rating.dart';
+import 'package:provider/provider.dart';
 
 class DescriptionMovieDetail extends StatefulWidget {
   final MovieModel movie;
+  final void Function(bool) onTapTrailerVideo;
 
-  const DescriptionMovieDetail({Key? key, required this.movie})
+  const DescriptionMovieDetail(
+      {Key? key, required this.movie, required this.onTapTrailerVideo})
       : super(key: key);
 
   @override
@@ -18,86 +24,309 @@ class DescriptionMovieDetail extends StatefulWidget {
 class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
   @override
   Widget build(BuildContext context) {
+    final scrollingProvider = Provider.of<ScrollingProvider>(context);
+
     SizeConfig().init(context);
     return Container(
-      margin: const EdgeInsets.only(top: 15),
       width: SizeConfig.screenWidth,
+      padding: EdgeInsets.only(
+        right: getProportionateScreenWidth(100),
+        left: getProportionateScreenWidth(100),
+        top: getProportionateScreenHeight(50),
+        bottom: getProportionateScreenHeight(10),
+      ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Cốt truyện",
-            style: TextStyle(
-              color: Theme.of(context).textTheme.bodyMedium!.color,
-              fontSize: getProportionateScreenWidth(34),
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(
-            height: SizeConfig.screenHeight * .01,
-          ),
-          ExpandableText(
-              widget.movie.storyLine,
-            readLessText: 'Ít hơn',
-            readMoreText: 'Nhiều hơn',
-            textAlign: TextAlign.left,
-            trim: 5,
-            trimType: TrimType.lines,
-            linkTextStyle: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontSize: getProportionateScreenWidth(26),
-              fontWeight: FontWeight.bold,
-            ),
-
-            style: TextStyle(
-              color: Theme.of(context)
-                  .textTheme
-                  .bodyMedium!
-                  .color
-                  ?.withOpacity(0.45),
-              fontSize: getProportionateScreenWidth(26),
-              height: 1.5,
-            ),
-          ),
-          SizedBox(
-            height: SizeConfig.screenHeight * .04,
-          ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                "Dàn diễn viên",
-                style: TextStyle(
-                  color: Theme.of(context).textTheme.bodyMedium!.color,
-                  fontSize: getProportionateScreenWidth(34),
-                  fontWeight: FontWeight.bold,
+              Expanded(
+                flex: 2,
+                child: Stack(
+                  children: [
+                    Container(
+                      height: getProportionateScreenHeight(600),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                          image: widget.movie.image.image,
+                          fit: BoxFit.cover,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black.withOpacity(0.25),
+                              offset: Offset(0, 4),
+                              blurRadius: 6,
+                              spreadRadius: 5),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: getProportionateScreenHeight(600),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            widget.onTapTrailerVideo(true);
+                          });
+                        },
+                        child: const Center(
+                          child: Icon(
+                            Icons.play_circle,
+                            color: Colors.white,
+                            size: 100,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CastMovieScreen(casts: widget.movie.castList))
-                  );
-                },
-                child: Text(
-                  'Xem tất cả',
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontSize: getProportionateScreenWidth(26),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+              Expanded(
+                  flex: 8,
+                  child: Container(
+                      padding: EdgeInsets.only(
+                        right: getProportionateScreenWidth(100),
+                        left: getProportionateScreenWidth(100),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.movie.name,
+                            style: TextStyle(
+                              fontSize: getProportionateScreenWidth(60),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(
+                                top: getProportionateScreenHeight(10)),
+                            child: GenresFormat(
+                                genres: widget.movie.genres,
+                                color: Colors.black.withOpacity(0.75),
+                                mainAlignment: MainAxisAlignment.start,
+                                fontSize: getProportionateScreenWidth(30)),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(
+                                top: getProportionateScreenHeight(3)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                    "${(widget.movie.rating / 2).toStringAsFixed(1)}/5",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: getProportionateScreenWidth(30),
+                                      fontWeight: FontWeight.w400,
+                                      height: 1.5,
+                                      letterSpacing: 1.1,
+                                    )),
+                                const SizedBox(width: 10),
+                                StarRating(
+                                    widget.movie.rating,
+                                    MainAxisAlignment.start,
+                                    getProportionateScreenWidth(30)),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            widget.movie.storyLine,
+                            style: TextStyle(
+                              fontSize: getProportionateScreenWidth(22),
+                              color: Colors.black.withOpacity(0.75),
+                              height: 1.5,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          Row(
+                            children: [
+                              Text(
+                                "Nhà sản xuất: ",
+                                style: TextStyle(
+                                  fontSize: getProportionateScreenWidth(22),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                widget.movie.production,
+                                style: TextStyle(
+                                  fontSize: getProportionateScreenWidth(22),
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Text(
+                                "Đạo diễn: ",
+                                style: TextStyle(
+                                  fontSize: getProportionateScreenWidth(22),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                widget.movie.director,
+                                style: TextStyle(
+                                  fontSize: getProportionateScreenWidth(22),
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Text(
+                                "Dàn diễn viên: ",
+                                style: TextStyle(
+                                  fontSize: getProportionateScreenWidth(22),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  ...List.generate(
+                                    widget.movie.castList.length,
+                                    (index) => Text(
+                                      "${widget.movie.castList[index].name}${widget.movie.castList.length == index ? "" : ", "}",
+                                      style: TextStyle(
+                                        fontSize:
+                                            getProportionateScreenWidth(22),
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Text(
+                                "Thời gian phim: ",
+                                style: TextStyle(
+                                  fontSize: getProportionateScreenWidth(22),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              DurationFormat(
+                                duration: widget.movie.duration,
+                                fontSize: getProportionateScreenWidth(22),
+                                color: Colors.black.withOpacity(0.95),
+                                mainAlignment: Alignment.centerLeft,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          Row(children: [
+                            Align(
+                              heightFactor: 1,
+                              alignment: Alignment.centerLeft,
+                              child: InkWell(
+                                onTap: () {
+                                  scrollingProvider.scrollToTop();
+                                  MovieRouterDelegate().setPathName(RouteData.booking.name);
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: getProportionateScreenWidth(20),
+                                    vertical: getProportionateScreenHeight(20),
+                                  ),
+                                  width: getProportionateScreenWidth(250),
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColor,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.notifications_active,
+                                        color: Colors.white,
+                                        size: getProportionateScreenWidth(26),
+                                      ),
+                                      SizedBox(
+                                          width: getProportionateScreenWidth(20)),
+                                      Text(
+                                        "Đặt vé ngay".toUpperCase(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize:
+                                              getProportionateScreenWidth(20),
+                                          fontWeight: FontWeight.bold,
+                                          height: 1.5,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Align(
+                              heightFactor: 1,
+                              alignment: Alignment.centerLeft,
+                              child: InkWell(
+                                onTap: () {
+                                  widget.onTapTrailerVideo(true);
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: getProportionateScreenWidth(20),
+                                    vertical: getProportionateScreenHeight(20),
+                                  ),
+                                  width: getProportionateScreenWidth(250),
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.ondemand_video,
+                                        color: Colors.white,
+                                        size: getProportionateScreenWidth(26),
+                                      ),
+                                      const SizedBox(
+                                          width: 10),
+                                      Text(
+                                        "Xem trailer".toUpperCase(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize:
+                                              getProportionateScreenWidth(20),
+                                          fontWeight: FontWeight.bold,
+                                          height: 1.5,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ]),
+                        ],
+                      )))
             ],
-          ),
-          SizedBox(
-            height: SizeConfig.screenHeight * .01,
-          ),
-          Column(
-            children: List.generate(3, (index) {
-              return CastMovieCard(cast: widget.movie.castList[index]);
-            }),
           )
         ],
       ),

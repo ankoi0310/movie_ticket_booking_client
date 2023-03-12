@@ -7,6 +7,7 @@ class MovieModel {
   List<String> genres;
   double rating;
   String director;
+  String production;
   int duration;
   String storyLine;
   String trailerVideoUrl;
@@ -21,6 +22,7 @@ class MovieModel {
     required this.name,
     required this.rating,
     required this.director,
+    required this.production,
     required this.duration,
     required this.storyLine,
     required this.trailerVideoUrl,
@@ -33,7 +35,7 @@ class MovieModel {
 
 var movies = [
   MovieModel(
-      id: 0,
+      id: 1,
       name: 'Togo',
       rating: 8.0,
       genres: [
@@ -68,9 +70,9 @@ var movies = [
           name: "Michael McElhatton",
           photo: Image.asset("assets/image/cast/michael.jpg"),
         )
-      ]),
+      ], production: 'Walt Disney Pictures'),
   MovieModel(
-      id: 1,
+      id: 2,
       name: 'Joker',
       rating: 8.5,
       genres: ["Tội phạm", "Drama"],
@@ -107,9 +109,9 @@ var movies = [
           name: "Dante Pereira-Olson",
           photo: Image.asset("assets/image/cast/dante.jpg"),
         ),
-      ]),
+      ], production: 'Warner Bros. Pictures'),
   MovieModel(
-      id: 2,
+      id: 3,
       name: 'Planet of the Apes',
       rating: 5.7,
       genres: ["Hành động", "Adventure", "Fantasy"],
@@ -142,9 +144,9 @@ var movies = [
           name: "Nova",
           photo: Image.asset("assets/image/cast/nova.jpg"),
         ),
-      ]),
+      ], production: '20th Century Fox'),
   MovieModel(
-      id: 0,
+      id: 4,
       name: 'Togo',
       rating: 8.0,
       genres: [
@@ -179,9 +181,9 @@ var movies = [
           name: "Michael McElhatton",
           photo: Image.asset("assets/image/cast/michael.jpg"),
         )
-      ]),
+      ], production: '20th Century Fox'),
   MovieModel(
-      id: 1,
+      id: 5,
       name: 'Joker',
       rating: 8.5,
       genres: ["Crime", "Drama"],
@@ -218,9 +220,9 @@ var movies = [
           name: "Dante Pereira-Olson",
           photo: Image.asset("assets/image/cast/dante.jpg"),
         ),
-      ]),
+      ], production: 'Warner Bros. Pictures'),
   MovieModel(
-      id: 2,
+      id: 6,
       name: 'Planet of the Apes',
       rating: 5.7,
       genres: ["Action", "Adventure", "Fantasy"],
@@ -253,9 +255,9 @@ var movies = [
           name: "Nova",
           photo: Image.asset("assets/image/cast/nova.jpg"),
         ),
-      ]),
+      ], production: '20th Century Fox'),
   MovieModel(
-      id: 0,
+      id: 7,
       name: 'Togo',
       rating: 8.0,
       genres: [
@@ -290,9 +292,9 @@ var movies = [
           name: "Michael McElhatton",
           photo: Image.asset("assets/image/cast/michael.jpg"),
         )
-      ]),
+      ], production: '20th Century Fox'),
   MovieModel(
-      id: 1,
+      id: 8,
       name: 'Joker',
       rating: 8.5,
       genres: ["Crime", "Drama"],
@@ -329,9 +331,9 @@ var movies = [
           name: "Dante Pereira-Olson",
           photo: Image.asset("assets/image/cast/dante.jpg"),
         ),
-      ]),
+      ], production: 'Warner Bros. Pictures'),
   MovieModel(
-      id: 2,
+      id: 9,
       name: 'Planet of the Apes',
       rating: 5.7,
       genres: ["Action", "Adventure", "Fantasy"],
@@ -364,5 +366,5 @@ var movies = [
           name: "Nova",
           photo: Image.asset("assets/image/cast/nova.jpg"),
         ),
-      ]),
+      ], production: ''),
 ];

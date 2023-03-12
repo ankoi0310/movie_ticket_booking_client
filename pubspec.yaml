@@ -30,7 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  flutter_web_plugins:
+    sdk: flutter
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -40,9 +41,16 @@ dependencies:
   youtube_player_flutter: ^8.1.2
   flutter_inappwebview: ^5.7.2+3
   flutter_expandable_text: ^1.0.0
+  dropdown_button2: ^2.0.0
+  intl: ^0.18.0
+
+
 
 dev_dependencies:
   flutter_test:
+    sdk: flutter
+
+  flutter_web_plugins:
     sdk: flutter
 
   # The "flutter_lints" package below contains a set of recommended lints to
