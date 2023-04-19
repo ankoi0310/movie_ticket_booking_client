@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/movie_model.dart';
@@ -10,11 +12,12 @@ import 'package:movie_ticket_booking_flutter_nlu/widget/star_rating.dart';
 import 'package:provider/provider.dart';
 
 class DescriptionMovieDetail extends StatefulWidget {
-  final MovieModel movie;
+  final Movie? movie;
+  final Uint8List? image;
   final void Function(bool) onTapTrailerVideo;
 
   const DescriptionMovieDetail(
-      {Key? key, required this.movie, required this.onTapTrailerVideo})
+      {Key? key, required this.movie, required this.onTapTrailerVideo, required this.image})
       : super(key: key);
 
   @override
@@ -48,7 +51,9 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         image: DecorationImage(
-                          image: widget.movie.image.image,
+                          image: Image.memory(
+                            widget.image!
+                          ).image,
                           fit: BoxFit.cover,
                         ),
                         boxShadow: [
@@ -95,7 +100,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.movie.name,
+                            widget.movie!.name,
                             style: TextStyle(
                               fontSize: getProportionateScreenWidth(60),
                               fontWeight: FontWeight.bold,
@@ -105,7 +110,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                             margin: EdgeInsets.only(
                                 top: getProportionateScreenHeight(10)),
                             child: GenresFormat(
-                                genres: widget.movie.genres,
+                                genres: widget.movie!.genres,
                                 color: Colors.black.withOpacity(0.75),
                                 mainAlignment: MainAxisAlignment.start,
                                 fontSize: getProportionateScreenWidth(30)),
@@ -118,7 +123,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                    "${(widget.movie.rating / 2).toStringAsFixed(1)}/5",
+                                    "${(widget.movie!.rating / 2).toStringAsFixed(1)}/5",
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: getProportionateScreenWidth(30),
@@ -128,7 +133,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                                     )),
                                 const SizedBox(width: 10),
                                 StarRating(
-                                    widget.movie.rating,
+                                    widget.movie!.rating,
                                     MainAxisAlignment.start,
                                     getProportionateScreenWidth(30)),
                               ],
@@ -136,7 +141,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            widget.movie.storyLine,
+                            widget.movie!.storyLine,
                             style: TextStyle(
                               fontSize: getProportionateScreenWidth(22),
                               color: Colors.black.withOpacity(0.75),
@@ -155,7 +160,67 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                               ),
                               const SizedBox(width: 5),
                               Text(
-                                widget.movie.production,
+                                widget.movie!.producer,
+                                style: TextStyle(
+                                  fontSize: getProportionateScreenWidth(22),
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Text(
+                                "Quốc gia: ",
+                                style: TextStyle(
+                                  fontSize: getProportionateScreenWidth(22),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                widget.movie!.country,
+                                style: TextStyle(
+                                  fontSize: getProportionateScreenWidth(22),
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Text(
+                                "Ngôn ngữ:  ",
+                                style: TextStyle(
+                                  fontSize: getProportionateScreenWidth(22),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                widget.movie!.language,
+                                style: TextStyle(
+                                  fontSize: getProportionateScreenWidth(22),
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Text(
+                                "Phụ đề: ",
+                                style: TextStyle(
+                                  fontSize: getProportionateScreenWidth(22),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                widget.movie!.subtitle,
                                 style: TextStyle(
                                   fontSize: getProportionateScreenWidth(22),
                                   fontWeight: FontWeight.w400,
@@ -175,7 +240,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                               ),
                               const SizedBox(width: 5),
                               Text(
-                                widget.movie.director,
+                                widget.movie!.director,
                                 style: TextStyle(
                                   fontSize: getProportionateScreenWidth(22),
                                   fontWeight: FontWeight.w400,
@@ -198,9 +263,9 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   ...List.generate(
-                                    widget.movie.castList.length,
+                                    widget.movie!.actors.length,
                                     (index) => Text(
-                                      "${widget.movie.castList[index].name}${widget.movie.castList.length == index ? "" : ", "}",
+                                      "${widget.movie!.actors[index]}${widget.movie!.actors.length == index ? "" : ", "}",
                                       style: TextStyle(
                                         fontSize:
                                             getProportionateScreenWidth(22),
@@ -224,7 +289,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                               ),
                               const SizedBox(width: 5),
                               DurationFormat(
-                                duration: widget.movie.duration,
+                                duration: widget.movie!.duration,
                                 fontSize: getProportionateScreenWidth(22),
                                 color: Colors.black.withOpacity(0.95),
                                 mainAlignment: Alignment.centerLeft,
@@ -239,7 +304,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                               child: InkWell(
                                 onTap: () {
                                   scrollingProvider.scrollToTop();
-                                  MovieRouterDelegate().setPathName(RouteData.booking.name);
+                                  MovieRouterDelegate().setPathName(RouteData.ticket.name);
                                 },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(

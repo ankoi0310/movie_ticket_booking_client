@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 import 'package:movie_ticket_booking_flutter_nlu/layout/full_width.dart';
+import 'package:movie_ticket_booking_flutter_nlu/screen/seating_booking/seat_booking_screen.dart';
+import 'package:movie_ticket_booking_flutter_nlu/screen/ticket_booking/ticket_booking_screen.dart';
 
 enum RouteData {
   home,
@@ -8,7 +10,8 @@ enum RouteData {
   // register,
   notFound,
   movie,
-  booking,
+  ticket,
+  seat,
   contact,
 }
 
@@ -41,8 +44,10 @@ class RouteHandler {
                 return const HomeScreen();
               case RouteData.movie:
                 return const MovieScreen();
-              case RouteData.booking:
-                return const BookingScreen();
+              case RouteData.ticket:
+                return const TicketBookingScreen();
+              case RouteData.seat:
+                return const SeatBookingScreen();
               // case RouteData.contact:
               //   return const ContactScreen();
               case RouteData.notFound:
@@ -55,9 +60,9 @@ class RouteHandler {
           }
         } else if (uri.pathSegments.length == 2) {
           if (uri.pathSegments[0] == "movie") {
-            int? id = int.tryParse(uri.pathSegments[1]);
-            if (id == null) return const FullWidth();
-            return MovieDetailScreen(id: id);
+            String? slug = uri.pathSegments[1];
+            if (slug.isEmpty) return const FullWidth();
+            return MovieDetailScreen(slug: slug);
           }
           return const FullWidth();
         } else {

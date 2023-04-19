@@ -23,10 +23,10 @@ class MovieRouteInformationParser extends RouteInformationParser<RoutePath> {
     if (uri.pathSegments.length == 2) {
       if (uri.pathSegments[0] != 'movie') return RoutePath.unknown();
       final remaining = uri.pathSegments.elementAt(1);
-      final id = int.tryParse(remaining);
+      final slug = remaining;
 
-      if (id == null) return RoutePath.unknown();
-      return RoutePath.otherPage("/movie/$id");
+      if (slug == null) return RoutePath.unknown();
+      return RoutePath.otherPage("/movie/$slug");
     }
 
     // Handle unknown routes

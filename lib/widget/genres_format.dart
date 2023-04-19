@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/genre_model.dart';
 
 class GenresFormat extends StatefulWidget {
-  final List<String> genres;
+  final List<Genre> genres;
   final dynamic mainAlignment;
   final double fontSize;
   final Color color;
@@ -35,7 +36,7 @@ class _GenresFormatState extends State<GenresFormat> {
           return Row(
             children: [
               Text(
-                widget.genres[index],
+                widget.genres[index].name,
                 style: TextStyle(
                     color: widget.color,
                     fontSize: widget.fontSize,
@@ -46,7 +47,7 @@ class _GenresFormatState extends State<GenresFormat> {
           );
         } else {
           return Text(
-            widget.genres[index],
+            widget.genres[index].name,
             style: TextStyle(
                 color: widget.color,
                 fontSize: widget.fontSize,

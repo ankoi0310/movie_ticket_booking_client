@@ -43,6 +43,9 @@ dependencies:
   flutter_expandable_text: ^1.0.0
   dropdown_button2: ^2.0.0
   intl: ^0.18.0
+  http: ^0.13.5
+  firebase_storage: ^11.1.0
+  firebase_core: ^2.9.0
 
 
 

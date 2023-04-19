@@ -1,9 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class TrailerVideo extends StatefulWidget {
   final String trailerVideoUrl;
-  final Image thumbnail;
+  final Uint8List? thumbnail;
 
   const TrailerVideo(
       {Key? key, required this.trailerVideoUrl, required this.thumbnail})
@@ -62,7 +64,7 @@ class _TrailerVideoState extends State<TrailerVideo> {
           thumbnail: Center(
               // Image movie poster
               child: Image(
-            image: widget.thumbnail.image,
+            image: Image.memory(widget.thumbnail!).image,
           )),
           controller: _controller,
           showVideoProgressIndicator: true,
