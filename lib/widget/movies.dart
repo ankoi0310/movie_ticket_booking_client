@@ -1,13 +1,20 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/movie_model.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/scrolling_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/routing/movie_router_delegate.dart';
 import 'package:movie_ticket_booking_flutter_nlu/routing/route_handler.dart';
+import 'package:movie_ticket_booking_flutter_nlu/provider/firebase_storage_provider.dart';
 import 'package:provider/provider.dart';
 
 class Movies extends StatefulWidget {
-  const Movies({Key? key}) : super(key: key);
+  final List<Movie> movies;
+  final Map<String, Uint8List> images;
+
+  const Movies({Key? key, required this.movies, required this.images})
+      : super(key: key);
 
   @override
   State<Movies> createState() => _MoviesState();
@@ -16,13 +23,16 @@ class Movies extends StatefulWidget {
 class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+  // late MovieProvider _movieProvider;
+
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2,
-        vsync: this, initialIndex: 0,
-      animationDuration: const Duration(milliseconds: 500)
-    );
+    _tabController = TabController(
+        length: 2,
+        vsync: this,
+        initialIndex: 0,
+        animationDuration: const Duration(milliseconds: 500));
   }
 
   @override
@@ -99,30 +109,40 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
                       padding: const EdgeInsets.only(
                         top: 20,
                         bottom: 10,
+                        left: 20,
+                        right: 20,
                       ),
                       child: Wrap(
                         spacing: 20,
                         runSpacing: 20,
-                        alignment: WrapAlignment.center,
+                        alignment: WrapAlignment.start,
                         children: [
                           ...List.generate(
-                            6,
-                            (index) => InkWell(
+                            widget.movies.length,
+                                (index) => InkWell(
                               onTap: () {
                                 scrollingProvider.scrollToTop();
-                                MovieRouterDelegate().setPathName("${RouteData.movie.name}/${movies[index].id}");
+                                MovieRouterDelegate().setPathName(
+                                    "${RouteData.movie.name}/${widget.movies[index].slug}");
                               },
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                MainAxisAlignment.start,
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
                                 children: [
                                   Container(
                                     width: SizeConfig.screenWidth * 0.31,
                                     height: 200,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
+                                      borderRadius:
+                                      BorderRadius.circular(10),
                                       image: DecorationImage(
-                                        image: movies[index].imageDesktop.image,
+                                        image: Image.memory(
+                                          widget.images[
+                                          widget.movies[index]
+                                              .imageHorizontal]!,
+                                        ).image,
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -130,15 +150,19 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
                                   const SizedBox(
                                     height: 10,
                                   ),
-                                  Text(
-                                    movies[index].name,
-                                    style: TextStyle(
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .color,
-                                      fontSize: getProportionateScreenWidth(28),
-                                      fontWeight: FontWeight.bold,
+                                  Container(
+                                    child: Text(
+                                      widget.movies[index].name,
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .color,
+                                        fontSize:
+                                        getProportionateScreenWidth(
+                                            28),
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -159,18 +183,25 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
                         alignment: WrapAlignment.center,
                         children: [
                           ...List.generate(
-                            6,
-                            (index) => Column(
+                            widget.movies.length,
+                                (index) => Column(
                               mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
                               children: [
                                 Container(
                                   width: SizeConfig.screenWidth * 0.31,
                                   height: 200,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius:
+                                    BorderRadius.circular(10),
                                     image: DecorationImage(
-                                      image: movies[index].imageDesktop.image,
+                                      image: Image.memory(
+                                        widget.images[
+                                        widget.movies[index]
+                                            .imageHorizontal]!,
+                                      )
+                                          .image,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -179,13 +210,14 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
                                   height: 10,
                                 ),
                                 Text(
-                                  movies[index].name,
+                                  widget.movies[index].name,
                                   style: TextStyle(
                                     color: Theme.of(context)
                                         .textTheme
                                         .bodyMedium!
                                         .color,
-                                    fontSize: getProportionateScreenWidth(28),
+                                    fontSize:
+                                    getProportionateScreenWidth(28),
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),

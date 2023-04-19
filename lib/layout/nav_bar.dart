@@ -43,7 +43,6 @@ class _NavBarState extends State<NavBar> {
     SizeConfig().init(context);
     final searchingProvider = Provider.of<SearchingProvider>(context);
     final scrollingProvider = Provider.of<ScrollingProvider>(context);
-    print("NavBar: ${scrollingProvider.totalScrollDelta}");
     return AppBar(
       automaticallyImplyLeading: false,
       elevation: scrollingProvider.totalScrollDelta > 50 ? 1 : 0,
@@ -96,12 +95,12 @@ class _NavBarState extends State<NavBar> {
                     buildButtonNavBar(
                       context,
                       title: "Rạp/Giá vé",
-                      routeName: RouteData.booking.name,
+                      routeName: RouteData.ticket.name,
                     ),
                     buildButtonNavBar(
                       context,
                       title: "Liên hệ",
-                      routeName: RouteData.booking.name,
+                      routeName: RouteData.seat.name,
                     ),
                     const Expanded(flex: 5, child: SizedBox(width: 100)),
                   ],

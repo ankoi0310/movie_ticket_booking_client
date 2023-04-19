@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:movie_ticket_booking_flutter_nlu/layout/default_layout.dart';
-import 'package:movie_ticket_booking_flutter_nlu/provider/scrolling_provider.dart';
+import 'package:movie_ticket_booking_flutter_nlu/routing/custom_transition_delegate.dart';
 import 'package:movie_ticket_booking_flutter_nlu/routing/route_handler.dart';
 import 'package:movie_ticket_booking_flutter_nlu/routing/route_path.dart';
 import 'package:movie_ticket_booking_flutter_nlu/services/custom_navigation_key.dart';
-import 'package:provider/provider.dart';
 
 import '../layout/full_width.dart';
 
@@ -21,6 +20,8 @@ class MovieRouterDelegate extends RouterDelegate<RoutePath>
   }
 
   MovieRouterDelegate._();
+
+  TransitionDelegate transitionDelegate = CustomTransitionDelegate();
 
   @override
   final GlobalKey<NavigatorState> navigatorKey =
@@ -76,6 +77,7 @@ class MovieRouterDelegate extends RouterDelegate<RoutePath>
     }
     return Navigator(
       key: navigatorKey,
+      transitionDelegate: transitionDelegate,
       pages: _stack,
       onPopPage: (route, result) {
         if (!route.didPop(result)) return false;

@@ -13,7 +13,7 @@ class MovieScreen extends StatefulWidget {
 class _MovieScreenState extends State<MovieScreen> {
   @override
   Widget build(BuildContext context) {
-    return  const SingleChildScrollView(
+    return  SingleChildScrollView(
       child: Column(
         children: [
           Breadcrumb(
@@ -23,6 +23,8 @@ class _MovieScreenState extends State<MovieScreen> {
                 "Tất cả các phim đang chiếu và sắp chiếu tại rạp phim Cinema StarLineX Entertainment",
           ),
           Movies(
+            movies: [],
+            images: Map.identity(),
           ),
         ],
       ),

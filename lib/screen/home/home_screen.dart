@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
-import 'package:movie_ticket_booking_flutter_nlu/model/movie_model.dart';
+import 'package:movie_ticket_booking_flutter_nlu/dto/movie/movie_search.dart';
+import 'package:movie_ticket_booking_flutter_nlu/provider/api/movie_provider.dart';
+import 'package:movie_ticket_booking_flutter_nlu/provider/firebase_storage_provider.dart';
+import 'package:movie_ticket_booking_flutter_nlu/provider/loading_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/home/components/carousel.dart';
 import 'package:movie_ticket_booking_flutter_nlu/widget/movies.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,17 +16,53 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Carousel(),
-          Movies(
-          ),
-        ],
-      ),
-    );
+    final movieProvider = Provider.of<MovieProvider>(context, listen: false);
+    final firebaseProvider = Provider.of<FirebaseStorageProvider>(context, listen: false);
+    final loadingProvider =
+    Provider.of<LoadingProvider>(context, listen: false);
+
+    return FutureBuilder(
+        future: movieProvider.getMoviesSearch(1),
+        builder: (context, snapshotMovie) {
+          if (snapshotMovie.hasData) {
+            return FutureBuilder(
+                future: firebaseProvider.getImages(
+                    movieProvider.movies.map((e) => e.imageHorizontal).toList()
+                ),
+                builder: (context, snapshotFirebase) {
+                  if (snapshotFirebase.hasData) {
+                    Future.delayed(Duration.zero, () {
+                      loadingProvider.setLoading(false);
+                    });
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Carousel(
+                            movies: movieProvider.movies,
+                            images: firebaseProvider.mapImage,
+                          ),
+                          Movies(
+                            movies: movieProvider.movies,
+                            images: firebaseProvider.mapImage,
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    Future.delayed(Duration.zero, () {
+                      loadingProvider.setLoading(true);
+                    });
+                    return Container();
+                  }
+                }
+            );
+          } else {
+            return Container();
+          }
+        });
   }
 }
