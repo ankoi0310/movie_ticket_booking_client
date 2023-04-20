@@ -1,11 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/api/movie_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/firebase_storage_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/loading_provider.dart';
-import 'package:movie_ticket_booking_flutter_nlu/provider/scrolling_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/routing/movie_route_information_parser.dart';
 import 'package:movie_ticket_booking_flutter_nlu/routing/movie_router_delegate.dart';
 import 'package:provider/provider.dart';
@@ -22,8 +20,7 @@ void main() async {
           storageBucket: "movie-ticket-booking-383806.appspot.com",
           messagingSenderId: "915458067606",
           appId: "1:915458067606:web:8e7fc8b87c32abcbaf06b7",
-          measurementId: "G-NJNWB7JVLV")
-  );
+          measurementId: "G-NJNWB7JVLV"));
   runApp(
     MultiProvider(
       providers: [

@@ -18,3 +18,11 @@ const kTextDarkColor = Colors.white;
 const emptySeatColor = Color(0xff323d4c);
 
 const kShadowColor = Color(0xff000000);
+// Icon Colors
+const kPrimaryIconLightColor = Color(0xff47cfff);
+const kPrimaryIconDarkColor = Color(0xff47cfff);
+// Text Colors
+const kBodyTextColorLight = Color(0xff0f1b2b);
+const kBodyTextColorDark = Colors.white;
+const kTitleTextLightColor = Color(0xff0f1b2b);
+const kTitleTextDarkColor = Colors.white;
