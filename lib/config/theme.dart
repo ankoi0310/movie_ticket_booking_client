@@ -60,12 +60,6 @@ ThemeData darkThemeData() {
     primaryColor: kPrimaryColor,
     brightness: Brightness.dark,
     scaffoldBackgroundColor: kBackgroundDarkColor,
-    colorScheme: const ColorScheme.dark(
-      background: kBackgroundDarkColor,
-      secondary: kSecondaryDarkColor,
-      surface: kSurfaceDarkColor,
-      shadow: Colors.white30,
-    ),
     iconTheme: const IconThemeData(color: kPrimaryIconColor),
     useMaterial3: true,
     textSelectionTheme: const TextSelectionThemeData(
@@ -103,12 +97,18 @@ ThemeData darkThemeData() {
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
     ),
+    colorScheme: const ColorScheme.dark(
+      background: kBackgroundDarkColor,
+      secondary: kSecondaryDarkColor,
+      surface: kSurfaceDarkColor,
+      shadow: Colors.white30,
+    ).copyWith(background: kBackgroundDarkColor),
   );
 }
 
 AppBarTheme appBarTheme = const AppBarTheme(
   color: Colors.transparent,
-  elevation: 1,
+  elevation: 0,
   centerTitle: true,
   iconTheme: IconThemeData(color: kTextLightColor),
   titleTextStyle: TextStyle(
@@ -119,7 +119,7 @@ AppBarTheme appBarTheme = const AppBarTheme(
 );
 
 AppBarTheme appBarDarkTheme = const AppBarTheme(
-  color: kBackgroundDarkColor,
+  color: Colors.transparent,
   elevation: 0,
   centerTitle: true,
   iconTheme: IconThemeData(color: kTextDarkColor),
@@ -129,4 +129,3 @@ AppBarTheme appBarDarkTheme = const AppBarTheme(
   ),
   shadowColor: Colors.white,
 );
-
