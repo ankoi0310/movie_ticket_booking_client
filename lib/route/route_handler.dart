@@ -1,13 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
-import 'package:movie_ticket_booking_flutter_nlu/layout/full_width.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/seating_booking/seat_booking_screen.dart';
-import 'package:movie_ticket_booking_flutter_nlu/screen/ticket_booking/ticket_booking_screen.dart';
 
 enum RouteData {
   home,
   login,
-  // register,
+  register,
   notFound,
   movie,
   ticket,
@@ -22,10 +19,14 @@ class RouteHandler {
 
   RouteHandler._();
 
+  static RouteHandler get instance => _instance;
+
+  final AuthenticationService _authentacationService = AuthenticationService.instance;
+
   /// Return [WidgetToRender, PathName]
   /// [WidgetToRender] - Render specific widget
   /// [PathName] - Redirect to [PathName] if invalid path is entered
-  Widget getRouteWidget(String? routeName) {
+  Future<Widget> getRouteWidget(String? routeName) async {
     RouteData routeData;
 
     if (routeName != null) {
@@ -34,11 +35,10 @@ class RouteHandler {
       if (uri.pathSegments.isNotEmpty) {
         if (uri.pathSegments.length == 1) {
           final pathName = uri.pathSegments.elementAt(0).toString();
-          routeData = RouteData.values.firstWhere(
-              (element) => element.name == pathName,
-              orElse: () => RouteData.notFound);
+          routeData = RouteData.values.firstWhere((element) => element.name == pathName, orElse: () => RouteData.notFound);
 
           if (routeData != RouteData.notFound) {
+            bool isLoggedIn = await _authentacationService.isLoggedIn();
             switch (routeData) {
               case RouteData.home:
                 return const HomeScreen();
@@ -53,7 +53,7 @@ class RouteHandler {
               case RouteData.notFound:
                 return const FullWidth();
               default:
-                return const HomeScreen();
+                return isLoggedIn && routeData == RouteData.login ? const HomeScreen() : const LoginScreen();
             }
           } else {
             return const FullWidth();
@@ -78,51 +78,37 @@ class RouteHandler {
 
   /// Return [RouteTitle]
   /// [RouteTitle] - Return specific title for each route
-// String getRouteTitle(String? routeName) {
-//   RouteData routeData;
-//
-//   if (routeName != null) {
-//     final uri = Uri.parse(routeName);
-//
-//     if (uri.pathSegments.isNotEmpty) {
-//       final pathName = uri.pathSegments.elementAt(0).toString();
-//       routeData = RouteData.values.firstWhere((element) => element.name == pathName, orElse: () => RouteData.notFound);
-//
-//       if (routeData != RouteData.notFound) {
-//         switch (routeData) {
-//           case RouteData.unknown:
-//             return 'Unknown';
-//           case RouteData.dashboard:
-//             return 'Dashboard';
-//           case RouteData.user:
-//             return 'User';
-//           case RouteData.movie:
-//             return 'Movie';
-//           case RouteData.genre:
-//             return 'Genre';
-//           case RouteData.branch:
-//             return 'Branch';
-//           case RouteData.showtime:
-//             return 'Showtime';
-//           case RouteData.ticket:
-//             return 'Ticket';
-//           case RouteData.promotion:
-//             return 'Promotion';
-//           case RouteData.advertisement:
-//             return 'Advertisement';
-//           case RouteData.statistic:
-//             return 'Statistic';
-//           default:
-//             return 'Dashboard';
-//         }
-//       } else {
-//         return 'Unknown';
-//       }
-//     } else {
-//       return 'Dashboard';
-//     }
-//   } else {
-//     return 'Unknown';
-//   }
-// }
+  String getRouteTitle(String? routeName) {
+    RouteData routeData;
+
+    if (routeName != null) {
+      final uri = Uri.parse(routeName);
+
+      if (uri.pathSegments.isNotEmpty) {
+        final pathName = uri.pathSegments.elementAt(0).toString();
+        routeData = RouteData.values.firstWhere((element) => element.name == pathName, orElse: () => RouteData.notFound);
+
+        if (routeData != RouteData.notFound) {
+          switch (routeData) {
+            case RouteData.notFound:
+              return 'Not Found';
+            case RouteData.login:
+              return 'Đăng nhập';
+            case RouteData.home:
+              return 'Trang chủ';
+            case RouteData.movie:
+              return 'Phim';
+            default:
+              return 'Trang chủ';
+          }
+        } else {
+          return 'Not Found';
+        }
+      } else {
+        return 'Dashboard';
+      }
+    } else {
+      return 'Not Found';
+    }
+  }
 }

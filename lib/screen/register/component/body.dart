@@ -1,9 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:movie_ticket_booking_flutter_nlu/component/custom_button.dart';
 import 'package:movie_ticket_booking_flutter_nlu/component/custom_input_form_field.dart';
-import 'package:movie_ticket_booking_flutter_nlu/config/constants.dart';
-import 'package:movie_ticket_booking_flutter_nlu/config/responsive.dart';
-import 'package:movie_ticket_booking_flutter_nlu/screen/profile/profile_screen.dart';
+import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -52,6 +49,12 @@ class _BodyState extends State<Body> {
     super.dispose();
   }
 
+  void register(BuildContext context) {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Responsive(
@@ -77,10 +80,7 @@ class _BodyState extends State<Body> {
                 controller: fullNameController,
                 focusNode: fullNameFocusNode,
                 validator: (value) {
-                  if (value.isEmpty) {
-                    return kNameNullError;
-                  }
-
+                  if (value.isEmpty) return nullNameError;
                   return null;
                 },
                 onFieldSubmitted: (value) {
@@ -94,14 +94,8 @@ class _BodyState extends State<Body> {
                 controller: emailController,
                 focusNode: emailFocusNode,
                 validator: (value) {
-                  if (value.isEmpty) {
-                    return kEmailNullError;
-                  }
-
-                  if (!emailValidatorRegExp.hasMatch(value)) {
-                    return kInvalidEmailError;
-                  }
-
+                  if (value.isEmpty) return nullEmailError;
+                  if (!AppUtil.isValidEmail(value)) return invalidEmailError;
                   return null;
                 },
                 onFieldSubmitted: (value) {
@@ -115,9 +109,7 @@ class _BodyState extends State<Body> {
                 controller: phoneController,
                 focusNode: phoneFocusNode,
                 validator: (value) {
-                  if (value.isEmpty) {
-                    return kPhoneNullError;
-                  }
+                  if (value.isEmpty) return nullPhoneError;
                   return null;
                 },
                 onFieldSubmitted: (value) {
@@ -131,9 +123,7 @@ class _BodyState extends State<Body> {
                 controller: birthdayController,
                 focusNode: birthdayFocusNode,
                 validator: (value) {
-                  if (value.isEmpty) {
-                    return kBirthdayNullError;
-                  }
+                  if (value.isEmpty) return nullBirthdayError;
                   return null;
                 },
                 onFieldSubmitted: (value) {
@@ -147,12 +137,8 @@ class _BodyState extends State<Body> {
                 controller: passwordController,
                 focusNode: passwordFocusNode,
                 validator: (value) {
-                  if (value.isEmpty) {
-                    return kPassNullError;
-                  }
-                  if (value.length < 8) {
-                    return kShortPassError;
-                  }
+                  if (value.isEmpty) return nullPasswordError;
+                  if (AppUtil.isShortPassword(value)) return shortPasswordError;
                   return null;
                 },
                 onFieldSubmitted: (value) {
@@ -166,19 +152,15 @@ class _BodyState extends State<Body> {
                 controller: retypePasswordController,
                 focusNode: retypePasswordFocusNode,
                 validator: (value) {
-                  if (value.isEmpty) {
-                    return kRePassNullError;
-                  }
-                  if (passwordController.text != retypePasswordController.text) {
-                    return kMatchPassError;
-                  }
+                  if (value.isEmpty) return nullRetypePasswordError;
+                  if (passwordController.text != retypePasswordController.text) return notMatchPasswordError;
                   return null;
                 },
                 onFieldSubmitted: (value) {
                   register(context);
                 },
               ),
-              SizedBox(height: (20)),
+              const SizedBox(height: (20)),
               CustomButton(
                 title: 'Create Account',
                 width: double.infinity,
@@ -207,7 +189,7 @@ class _BodyState extends State<Body> {
             children: [
               Container(
                 margin: const EdgeInsets.only(bottom: 20),
-                child: Text(
+                child: const Text(
                   'Đăng ký tài khoản',
                   style: TextStyle(
                     fontSize: 30,
@@ -228,10 +210,7 @@ class _BodyState extends State<Body> {
                         controller: fullNameController,
                         focusNode: fullNameFocusNode,
                         validator: (value) {
-                          if (value.isEmpty) {
-                            return kNameNullError;
-                          }
-
+                          if (value.isEmpty) return nullNameError;
                           return null;
                         },
                         onFieldSubmitted: (value) {
@@ -245,14 +224,8 @@ class _BodyState extends State<Body> {
                         controller: emailController,
                         focusNode: emailFocusNode,
                         validator: (value) {
-                          if (value.isEmpty) {
-                            return kEmailNullError;
-                          }
-
-                          if (!emailValidatorRegExp.hasMatch(value)) {
-                            return kInvalidEmailError;
-                          }
-
+                          if (value.isEmpty) return nullEmailError;
+                          if (!AppUtil.isValidEmail(value)) return invalidEmailError;
                           return null;
                         },
                         onFieldSubmitted: (value) {
@@ -266,9 +239,7 @@ class _BodyState extends State<Body> {
                         controller: phoneController,
                         focusNode: phoneFocusNode,
                         validator: (value) {
-                          if (value.isEmpty) {
-                            return kPhoneNullError;
-                          }
+                          if (value.isEmpty) return nullPhoneError;
                           return null;
                         },
                         onFieldSubmitted: (value) {
@@ -282,9 +253,7 @@ class _BodyState extends State<Body> {
                         controller: birthdayController,
                         focusNode: birthdayFocusNode,
                         validator: (value) {
-                          if (value.isEmpty) {
-                            return kBirthdayNullError;
-                          }
+                          if (value.isEmpty) return nullBirthdayError;
                           return null;
                         },
                         onFieldSubmitted: (value) {
@@ -298,12 +267,8 @@ class _BodyState extends State<Body> {
                         controller: passwordController,
                         focusNode: passwordFocusNode,
                         validator: (value) {
-                          if (value.isEmpty) {
-                            return kPassNullError;
-                          }
-                          if (value.length < 8) {
-                            return kShortPassError;
-                          }
+                          if (value.isEmpty) return nullPasswordError;
+                          if (value.length < 8) return shortPasswordError;
                           return null;
                         },
                         onFieldSubmitted: (value) {
@@ -317,19 +282,15 @@ class _BodyState extends State<Body> {
                         controller: retypePasswordController,
                         focusNode: retypePasswordFocusNode,
                         validator: (value) {
-                          if (value.isEmpty) {
-                            return kRePassNullError;
-                          }
-                          if (passwordController.text != retypePasswordController.text) {
-                            return kMatchPassError;
-                          }
+                          if (value.isEmpty) return nullRetypePasswordError;
+                          if (passwordController.text != retypePasswordController.text) return notMatchPasswordError;
                           return null;
                         },
                         onFieldSubmitted: (value) {
                           register(context);
                         },
                       ),
-                      SizedBox(height: (20)),
+                      const SizedBox(height: (20)),
                       CustomButton(
                         title: 'Create Account',
                         width: double.infinity,
@@ -349,13 +310,5 @@ class _BodyState extends State<Body> {
         ),
       ],
     );
-  }
-
-  void register(BuildContext context) {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-
-      Navigator.pushNamed(context, ProfileScreen.routeName);
-    }
   }
 }

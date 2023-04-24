@@ -1,28 +1,20 @@
-import 'package:flutter/material.dart';
-import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
+import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 import 'package:movie_ticket_booking_flutter_nlu/layout/nav_bar.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/movie_model.dart';
-import 'package:movie_ticket_booking_flutter_nlu/provider/information_ticket_selected_provider.dart';
-import 'package:movie_ticket_booking_flutter_nlu/provider/loading_provider.dart';
-import 'package:movie_ticket_booking_flutter_nlu/provider/scrolling_provider.dart';
-import 'package:movie_ticket_booking_flutter_nlu/provider/searching_provider.dart';
-import 'package:movie_ticket_booking_flutter_nlu/routing/route_handler.dart';
 import 'package:movie_ticket_booking_flutter_nlu/widget/duration_format.dart';
 import 'package:movie_ticket_booking_flutter_nlu/widget/genres_format.dart';
-import 'package:provider/provider.dart';
 
 class DefaultLayout extends StatefulWidget {
+  const DefaultLayout({Key? key, required this.routeName}) : super(key: key);
+
   final String routeName;
-
-  // final void Function(String)? onTapChangeScreen;
-
-  DefaultLayout({Key? key, required this.routeName}) : super(key: key);
 
   @override
   State<DefaultLayout> createState() => _DefaultLayoutState();
 }
 
 class _DefaultLayoutState extends State<DefaultLayout> {
+  final RouteHandler _routeHandler = RouteHandler.instance;
   String query = '';
   late TextEditingController _textEditingController;
   final _scrollController = ScrollController();
@@ -51,16 +43,12 @@ class _DefaultLayoutState extends State<DefaultLayout> {
     List<Movie> movies = [];
 
     return Consumer<SearchingProvider>(
-      builder: (context, searchingProvider, child) =>
-          Consumer<ScrollingProvider>(
-        builder: (context, scrollingProvider, child) =>
-            NotificationListener<ScrollUpdateNotification>(
+      builder: (context, searchingProvider, child) => Consumer<ScrollingProvider>(
+        builder: (context, scrollingProvider, child) => NotificationListener<ScrollUpdateNotification>(
           onNotification: (notification) {
             setState(() {
               if (!searchingProvider.isSearching) {
-                scrollingProvider.updateScrollDelta(
-                    scrollingProvider.totalScrollDelta +
-                        notification.scrollDelta!);
+                scrollingProvider.updateScrollDelta(scrollingProvider.totalScrollDelta + notification.scrollDelta!);
               }
             });
             return true;
@@ -69,13 +57,22 @@ class _DefaultLayoutState extends State<DefaultLayout> {
             children: [
               Scaffold(
                 extendBodyBehindAppBar: true,
-                appBar: NavBar(),
+                appBar: const NavBar(),
                 body: SizedBox(
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
                   child: Stack(
                     children: [
-                      RouteHandler().getRouteWidget(widget.routeName),
+                      FutureBuilder(
+                        future: _routeHandler.getRouteWidget(widget.routeName),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return snapshot.data as Widget;
+                          } else {
+                            return const Center(child: CircularProgressIndicator());
+                          }
+                        },
+                      ),
                       searchingProvider.isSearching
                           ? Positioned(
                               top: 0,
@@ -87,8 +84,7 @@ class _DefaultLayoutState extends State<DefaultLayout> {
                                 splashColor: Colors.transparent,
                                 focusColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
-                                overlayColor: MaterialStateProperty.all(
-                                    Colors.transparent),
+                                overlayColor: MaterialStateProperty.all(Colors.transparent),
                                 onTap: () {
                                   setState(() {
                                     query = '';
@@ -128,10 +124,8 @@ class _DefaultLayoutState extends State<DefaultLayout> {
                                     width: SizeConfig.screenWidth * 0.5,
                                     height: 60,
                                     padding: EdgeInsets.symmetric(
-                                      horizontal:
-                                          getProportionateScreenWidth(10),
-                                      vertical:
-                                          getProportionateScreenHeight(10),
+                                      horizontal: getProportionateScreenWidth(10),
+                                      vertical: getProportionateScreenHeight(10),
                                     ),
                                     decoration: const BoxDecoration(
                                       color: Colors.white,
@@ -143,23 +137,19 @@ class _DefaultLayoutState extends State<DefaultLayout> {
                                       ),
                                     ),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         IconButton(
                                           onPressed: () {},
                                           icon: Icon(
                                             Icons.search,
                                             color: Colors.black,
-                                            size:
-                                                getProportionateScreenWidth(36),
+                                            size: getProportionateScreenWidth(36),
                                           ),
                                         ),
                                         SizedBox(
-                                          width:
-                                              getProportionateScreenWidth(10),
+                                          width: getProportionateScreenWidth(10),
                                         ),
                                         Expanded(
                                           child: TextField(
@@ -168,32 +158,20 @@ class _DefaultLayoutState extends State<DefaultLayout> {
                                             onChanged: (value) => {
                                               setState(() {
                                                 query = value;
-                                                value.isNotEmpty
-                                                    ? searchingProvider
-                                                        .startSearching()
-                                                    : searchingProvider
-                                                        .stopSearching();
+                                                value.isNotEmpty ? searchingProvider.startSearching() : searchingProvider.stopSearching();
                                               }),
                                             },
                                             style: TextStyle(
                                               color: Colors.black,
-                                              fontSize:
-                                                  getProportionateScreenWidth(
-                                                      22),
-                                              height:
-                                                  getProportionateScreenHeight(
-                                                      2),
+                                              fontSize: getProportionateScreenWidth(22),
+                                              height: getProportionateScreenHeight(2),
                                             ),
                                             decoration: InputDecoration(
                                               hintText: "Tìm kiếm phim ...",
                                               hintStyle: TextStyle(
                                                 color: Colors.black,
-                                                fontSize:
-                                                    getProportionateScreenWidth(
-                                                        22),
-                                                height:
-                                                    getProportionateScreenHeight(
-                                                        1.8),
+                                                fontSize: getProportionateScreenWidth(22),
+                                                height: getProportionateScreenHeight(1.8),
                                               ),
                                               border: InputBorder.none,
                                               focusedBorder: InputBorder.none,
@@ -206,19 +184,15 @@ class _DefaultLayoutState extends State<DefaultLayout> {
                                             ? IconButton(
                                                 onPressed: () {
                                                   setState(() {
-                                                    searchingProvider
-                                                        .stopSearching();
+                                                    searchingProvider.stopSearching();
                                                     query = '';
-                                                    _textEditingController
-                                                        .text = '';
+                                                    _textEditingController.text = '';
                                                   });
                                                 },
                                                 icon: Icon(
                                                   Icons.close,
                                                   color: Colors.red,
-                                                  size:
-                                                      getProportionateScreenWidth(
-                                                          36),
+                                                  size: getProportionateScreenWidth(36),
                                                 ),
                                               )
                                             : Container(),
@@ -235,8 +209,7 @@ class _DefaultLayoutState extends State<DefaultLayout> {
                                     ),
                                     color: Colors.white,
                                     child: GridView.builder(
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 1,
                                         childAspectRatio: 5,
                                         crossAxisSpacing: 10,
@@ -244,129 +217,78 @@ class _DefaultLayoutState extends State<DefaultLayout> {
                                       ),
                                       padding: EdgeInsets.only(
                                         top: getProportionateScreenHeight(30),
-                                        bottom:
-                                            getProportionateScreenHeight(20),
+                                        bottom: getProportionateScreenHeight(20),
                                       ),
                                       itemCount: 4,
-                                      itemBuilder: (context, index) =>
-                                          Container(
+                                      itemBuilder: (context, index) => Container(
                                         width: SizeConfig.screenWidth * 0.5,
-                                        height:
-                                            getProportionateScreenHeight(100),
+                                        height: getProportionateScreenHeight(100),
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Container(
-                                              width: SizeConfig.screenWidth *
-                                                  0.5 *
-                                                  0.4,
+                                              width: SizeConfig.screenWidth * 0.5 * 0.4,
                                               height: 300,
                                               decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          getProportionateScreenWidth(
-                                                              10)),
+                                                  borderRadius: BorderRadius.circular(getProportionateScreenWidth(10)),
                                                   image: DecorationImage(
-                                                    image: Image.asset(
-                                                            movies[index]
-                                                                .imageVertical)
-                                                        .image,
+                                                    image: Image.asset(movies[index].imageVertical).image,
                                                     fit: BoxFit.cover,
                                                   )),
                                             ),
                                             SizedBox(
-                                              width:
-                                                  getProportionateScreenWidth(
-                                                      10),
+                                              width: getProportionateScreenWidth(10),
                                             ),
                                             Container(
                                               padding: EdgeInsets.symmetric(
-                                                horizontal:
-                                                    getProportionateScreenWidth(
-                                                        10),
+                                                horizontal: getProportionateScreenWidth(10),
                                               ),
                                               child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    movies[index]
-                                                        .name
-                                                        .toUpperCase(),
+                                                    movies[index].name.toUpperCase(),
                                                     style: TextStyle(
                                                       color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize:
-                                                          getProportionateScreenWidth(
-                                                              26),
-                                                      height:
-                                                          getProportionateScreenHeight(
-                                                              1.8),
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: getProportionateScreenWidth(26),
+                                                      height: getProportionateScreenHeight(1.8),
                                                     ),
                                                   ),
                                                   SizedBox(
-                                                    height:
-                                                        getProportionateScreenHeight(
-                                                            15),
+                                                    height: getProportionateScreenHeight(15),
                                                   ),
                                                   GenresFormat(
-                                                      genres:
-                                                          movies[index].genres,
-                                                      color: Colors.black
-                                                          .withOpacity(0.8),
-                                                      mainAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      fontSize:
-                                                          getProportionateScreenWidth(
-                                                              20)),
+                                                      genres: movies[index].genres,
+                                                      color: Colors.black.withOpacity(0.8),
+                                                      mainAlignment: MainAxisAlignment.start,
+                                                      fontSize: getProportionateScreenWidth(20)),
                                                   SizedBox(
-                                                    height:
-                                                        getProportionateScreenHeight(
-                                                            10),
+                                                    height: getProportionateScreenHeight(10),
                                                   ),
                                                   SizedBox(
-                                                    width:
-                                                        SizeConfig.screenWidth *
-                                                            0.5 *
-                                                            0.5,
+                                                    width: SizeConfig.screenWidth * 0.5 * 0.5,
                                                     child: Text(
                                                       movies[index].storyLine,
                                                       style: TextStyle(
-                                                        color: Colors.black
-                                                            .withOpacity(0.9),
-                                                        fontSize:
-                                                            getProportionateScreenWidth(
-                                                                20),
-                                                        height:
-                                                            getProportionateScreenHeight(
-                                                                2.2),
+                                                        color: Colors.black.withOpacity(0.9),
+                                                        fontSize: getProportionateScreenWidth(20),
+                                                        height: getProportionateScreenHeight(2.2),
                                                       ),
                                                       maxLines: 2,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
+                                                      overflow: TextOverflow.ellipsis,
                                                     ),
                                                   ),
                                                   SizedBox(
-                                                    height:
-                                                        getProportionateScreenHeight(
-                                                            10),
+                                                    height: getProportionateScreenHeight(10),
                                                   ),
                                                   DurationFormat(
-                                                    duration:
-                                                        movies[index].duration,
+                                                    duration: movies[index].duration,
                                                     color: Colors.black,
-                                                    fontSize:
-                                                        getProportionateScreenWidth(
-                                                            20),
-                                                    mainAlignment:
-                                                        Alignment.centerLeft,
+                                                    fontSize: getProportionateScreenWidth(20),
+                                                    mainAlignment: Alignment.centerLeft,
                                                   ),
                                                 ],
                                               ),
@@ -384,16 +306,18 @@ class _DefaultLayoutState extends State<DefaultLayout> {
                   ),
                 ),
               ),
-              loadingProvider.loading ? Container(
-                width: SizeConfig.screenWidth,
-                height: SizeConfig.screenHeight,
-                color: Colors.black,
-                child: Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.red,
-                  ),
-                ),
-              ): Container(),
+              // loadingProvider.loading
+              //     ? Container(
+              //         width: SizeConfig.screenWidth,
+              //         height: SizeConfig.screenHeight,
+              //         color: Colors.black,
+              //         child: const Center(
+              //           child: CircularProgressIndicator(
+              //             color: Colors.red,
+              //           ),
+              //         ),
+              //       )
+              //     : Container(),
             ],
           ),
         ),

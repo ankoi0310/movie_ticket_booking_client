@@ -1,38 +1,33 @@
-import 'package:flutter/material.dart';
-import 'package:movie_ticket_booking_flutter_nlu/layout/default_layout.dart';
-import 'package:movie_ticket_booking_flutter_nlu/routing/custom_transition_delegate.dart';
-import 'package:movie_ticket_booking_flutter_nlu/routing/route_handler.dart';
-import 'package:movie_ticket_booking_flutter_nlu/routing/route_path.dart';
-import 'package:movie_ticket_booking_flutter_nlu/services/custom_navigation_key.dart';
+import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 
-import '../layout/full_width.dart';
+class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, PopNavigatorRouterDelegateMixin<RoutePath> {
+  static final AppRouterDelegate _instance = AppRouterDelegate._();
 
-class MovieRouterDelegate extends RouterDelegate<RoutePath>
-    with ChangeNotifier, PopNavigatorRouterDelegateMixin<RoutePath> {
-  static final MovieRouterDelegate _instance = MovieRouterDelegate._();
-
-  bool? isLoggedIn = true;
+  bool? isLoggedIn;
   String? pathName;
   bool isError = false;
 
-  factory MovieRouterDelegate() {
+  factory AppRouterDelegate({bool? isLoggedIn}) {
+    _instance.isLoggedIn = isLoggedIn;
     return _instance;
   }
 
-  MovieRouterDelegate._();
+  AppRouterDelegate._();
+
+  static AppRouterDelegate get instance => _instance;
 
   TransitionDelegate transitionDelegate = CustomTransitionDelegate();
 
-  @override
-  final GlobalKey<NavigatorState> navigatorKey =
-      CustomNavigationKeys.navigatorKey;
-
+  final AuthenticationService _authentacationService = AuthenticationService.instance;
   late List<Page> _stack = [];
+
+  @override
+  final GlobalKey<NavigatorState> navigatorKey = CustomNavigationKey.navigatorKey;
 
   List<Page> get _appStack {
     return [
       MaterialPage(
-        key: const ValueKey('Home'),
+        key: const ValueKey('home'),
         child: DefaultLayout(
           routeName: pathName ?? RouteData.home.name,
         ),
@@ -42,9 +37,9 @@ class MovieRouterDelegate extends RouterDelegate<RoutePath>
 
   /// Auth route
   List<Page> get _authStack => [
-        const MaterialPage(
-          key: ValueKey('Login'),
-          child: Scaffold(),
+        MaterialPage(
+          key: const ValueKey('auth'),
+          child: DefaultLayout(routeName: RouteData.login.name),
         ),
       ];
 
@@ -91,24 +86,33 @@ class MovieRouterDelegate extends RouterDelegate<RoutePath>
 
   @override
   Future<void> setNewRoutePath(RoutePath configuration) async {
-    if (configuration.isUnknown) {
-      pathName = null;
-      isError = true;
-      return;
-    }
+    bool isLoggedIn = await _authentacationService.isLoggedIn();
+    pathName = configuration.pathName;
 
     if (configuration.isOtherPage) {
       if (configuration.pathName != null) {
+        if (isLoggedIn == true) {
+          /// If logged in
+          if (configuration.pathName == RouteData.login.name) {
+            pathName = RouteData.home.name;
+            isError = false;
+          } else {
+            pathName = configuration.pathName != RouteData.login.name ? configuration.pathName : RouteData.home.name;
+            isError = false;
+          }
+        } else {
+          pathName = RouteData.login.name;
+
+          isError = false;
+        }
+      } else {
         pathName = configuration.pathName;
         isError = false;
-        return;
-      } else {
-        isError = true;
-        return;
       }
     } else {
-      pathName = null;
+      pathName = "/";
     }
+    notifyListeners();
   }
 
   void setPathName(String path, {bool loggedIn = true}) {
@@ -117,6 +121,4 @@ class MovieRouterDelegate extends RouterDelegate<RoutePath>
     setNewRoutePath(RoutePath.otherPage(pathName));
     notifyListeners();
   }
-
-
 }
