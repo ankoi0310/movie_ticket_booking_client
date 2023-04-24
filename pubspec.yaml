@@ -30,15 +30,19 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  flutter_web_plugins:
+    sdk: flutter
+
   intl: ^0.17.0
   http: ^0.13.5
   flutter_format_money_vietnam: ^0.0.2
-  shared_preferences: ^2.0.18
   flutter_svg: ^2.0.2
   awesome_notifications: ^0.7.4+1
   flutter_launcher_icons: ^0.12.0
   fluttertoast: ^8.2.1
   url_launcher: ^6.1.10
+  font_awesome_flutter: ^10.4.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -50,19 +54,20 @@ dependencies:
   flutter_inappwebview: ^5.7.2+3
   flutter_expandable_text: ^1.0.0
   dropdown_button2: ^2.1.0
-  intl: ^0.18.1
-  http: ^0.13.5
   firebase_storage: ^11.1.1
   firebase_core: ^2.10.0
-
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_web_plugins:
-    sdk: flutter
+  build_runner:
+  hive_generator: ^2.0.0
+
+  url_strategy: ^0.2.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

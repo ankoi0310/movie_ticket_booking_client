@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:movie_ticket_booking_flutter_nlu/config/constants.dart';
-import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
+import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 
 Drawer getSideBar(BuildContext context) {
   return Drawer(

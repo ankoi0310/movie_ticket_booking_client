@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_ticket_booking_flutter_nlu/config/responsive.dart';
+import 'package:movie_ticket_booking_flutter_nlu/config/responsive_config.dart';
 
 class SizeConfig {
   static late double width;
