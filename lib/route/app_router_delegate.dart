@@ -25,51 +25,58 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
   final GlobalKey<NavigatorState> navigatorKey = CustomNavigationKey.navigatorKey;
 
   List<Page> get _appStack {
-    return [
-      MaterialPage(
-        key: const ValueKey('home'),
-        child: DefaultLayout(
-          routeName: pathName ?? RouteData.home.name,
-        ),
-      )
-    ];
+    RouteData routeData = PublicRouteData.values.firstWhere((element) => element.name == pathName, orElse: () => PublicRouteData.home);
+    switch (routeData) {
+      case PublicRouteData.login:
+      case PublicRouteData.register:
+        return [
+          MaterialPage(
+            key: const ValueKey('home'),
+            child: FullWidthLayout(routeName: routeData.name),
+          )
+        ];
+      default:
+        return [
+          MaterialPage(
+            key: const ValueKey('home'),
+            child: DefaultLayout(routeName: routeData.name),
+          )
+        ];
+    }
   }
 
   /// Auth route
   List<Page> get _authStack => [
         MaterialPage(
           key: const ValueKey('auth'),
-          child: DefaultLayout(routeName: RouteData.login.name),
+          child: isLoggedIn == true ? DefaultLayout(routeName: pathName!) : FullWidthLayout(routeName: PublicRouteData.login.name),
         ),
       ];
 
-  /// UnKnown Stack
-  List<Page> get _unknownStack => [
-        const MaterialPage(
-          key: ValueKey('unknown'),
-          child: FullWidth(),
+  /// Error Stack
+  List<Page> get _errorStack => [
+        MaterialPage(
+          key: const ValueKey('unknown'),
+          child: FullWidthLayout(routeName: ErrorRouteData.notFound.name),
         )
       ];
 
   @override
   // TODO: implement currentConfiguration
   RoutePath? get currentConfiguration {
-    if (isError) return RoutePath.unknown();
+    if (isError) return RoutePath.notFound();
 
-    if (pathName == null) return RoutePath.home(RouteData.home.name);
+    if (pathName == null) return RoutePath.home(PublicRouteData.home.name);
 
     return RoutePath.otherPage(pathName);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (isLoggedIn == true) {
-      _stack = _appStack;
-    } else if (isLoggedIn == false) {
-      _stack = _authStack;
-    } else {
-      _stack = _unknownStack;
-    }
+    _stack = AuthRouteData.values.map((e) => e.name).contains(pathName) && isLoggedIn == true ? _authStack : _appStack;
+
+    _stack = isError ? _errorStack : _stack;
+
     return Navigator(
       key: navigatorKey,
       transitionDelegate: transitionDelegate,
@@ -86,25 +93,23 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
 
   @override
   Future<void> setNewRoutePath(RoutePath configuration) async {
-    bool isLoggedIn = await _authentacationService.isLoggedIn();
+    isLoggedIn = await _authentacationService.isLoggedIn();
     pathName = configuration.pathName;
 
     if (configuration.isOtherPage) {
       if (configuration.pathName != null) {
         if (isLoggedIn == true) {
           /// If logged in
-          if (configuration.pathName == RouteData.login.name) {
-            pathName = RouteData.home.name;
-            isError = false;
+          if (configuration.pathName == PublicRouteData.login.name) {
+            pathName = PublicRouteData.home.name;
           } else {
-            pathName = configuration.pathName != RouteData.login.name ? configuration.pathName : RouteData.home.name;
-            isError = false;
+            pathName = configuration.pathName != PublicRouteData.login.name ? configuration.pathName : PublicRouteData.home.name;
           }
         } else {
-          pathName = RouteData.login.name;
-
-          isError = false;
+          pathName = PublicRouteData.login.name;
         }
+        pathName = configuration.pathName;
+        isError = false;
       } else {
         pathName = configuration.pathName;
         isError = false;
@@ -115,9 +120,8 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
     notifyListeners();
   }
 
-  void setPathName(String path, {bool loggedIn = true}) {
+  void setPathName(String path) {
     pathName = path;
-    isLoggedIn = loggedIn;
     setNewRoutePath(RoutePath.otherPage(pathName));
     notifyListeners();
   }

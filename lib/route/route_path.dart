@@ -1,14 +1,14 @@
 class RoutePath {
   final String? pathName;
-  final bool isUnknown;
+  final bool isNotFound;
 
-  RoutePath.home(this.pathName) : isUnknown = false;
+  RoutePath.home(this.pathName) : isNotFound = false;
 
-  RoutePath.otherPage(this.pathName) : isUnknown = false;
+  RoutePath.otherPage(this.pathName) : isNotFound = false;
 
-  RoutePath.unknown()
+  RoutePath.notFound()
       : pathName = null,
-        isUnknown = true;
+        isNotFound = true;
 
   bool get isHomePage => pathName == null;
 
