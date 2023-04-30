@@ -1,20 +1,16 @@
 class RoutePath {
   final String? pathName;
-  final bool isUnknown;
-  final String? jsonObject;
+  final bool isNotFound;
 
+  RoutePath.home(this.pathName) : isNotFound = false;
 
-  RoutePath.home(this.pathName) : isUnknown = false, jsonObject = null;
+  RoutePath.otherPage(this.pathName) : isNotFound = false;
 
-  RoutePath.otherPage(this.pathName) : isUnknown = false, jsonObject = null;
-
-  RoutePath.unknown()
+  RoutePath.notFound()
       : pathName = null,
-        isUnknown = true,
-    jsonObject = null;
+        isNotFound = true;
 
   bool get isHomePage => pathName == null;
 
   bool get isOtherPage => pathName != null;
-
 }

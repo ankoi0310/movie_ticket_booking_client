@@ -3,10 +3,10 @@ import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 class AppRouteInformationParser extends RouteInformationParser<RoutePath> {
   @override
   Future<RoutePath> parseRouteInformation(RouteInformation routeInformation) async {
-    final uri = Uri.parse(routeInformation.location!);
-    // Handle '/'
+    final uri = routeInformation.uri;
+
     if (uri.pathSegments.isEmpty) {
-      return RoutePath.home('/');
+      return RoutePath.home('');
     }
 
     if (uri.pathSegments.length == 1) {
@@ -18,24 +18,23 @@ class AppRouteInformationParser extends RouteInformationParser<RoutePath> {
     }
 
     if (uri.pathSegments.length == 2) {
-      if (uri.pathSegments[0] != 'movie') return RoutePath.unknown();
+      if (uri.pathSegments[0] != 'movie') return RoutePath.notFound();
       final remaining = uri.pathSegments.elementAt(1);
       final slug = remaining;
 
-      if (slug == null) return RoutePath.unknown();
+      if (slug == null) return RoutePath.notFound();
       return RoutePath.otherPage("/movie/$slug");
     }
 
-    // Handle unknown routes
-    return RoutePath.unknown();
+    // Handle notFound routes
+    return RoutePath.notFound();
   }
 
   @override
   RouteInformation restoreRouteInformation(RoutePath configuration) {
-    if (configuration.isUnknown) return const RouteInformation(location: '/error');
-    if (configuration.isHomePage) return const RouteInformation(location: '/');
-    if (configuration.isOtherPage) return RouteInformation(location: '/${configuration.pathName}');
+    if (configuration.isHomePage) return RouteInformation(uri: Uri.parse(''));
+    if (configuration.isOtherPage) return RouteInformation(uri: Uri.parse('/${configuration.pathName!}'));
 
-    return const RouteInformation(location: null);
+    return RouteInformation(uri: Uri.parse('/not-found'));
   }
 }
