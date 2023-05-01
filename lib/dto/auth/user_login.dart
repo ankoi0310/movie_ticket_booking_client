@@ -35,7 +35,8 @@ class UserLoginResponse {
   @HiveField(2)
   String token;
 
-  UserLoginResponse({required this.id, required this.email, required this.token});
+  UserLoginResponse(
+      {required this.id, required this.email, required this.token});
 
   factory UserLoginResponse.fromJson(Map<String, dynamic> json) {
     return UserLoginResponse(

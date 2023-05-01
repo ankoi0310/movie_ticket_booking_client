@@ -6,7 +6,13 @@ class DurationFormat extends StatelessWidget {
   final Color color;
   final dynamic mainAlignment;
 
-  const DurationFormat({Key? key, required this.duration, required this.fontSize, required this.color, required this.mainAlignment}) : super(key: key);
+  const DurationFormat({
+    Key? key,
+    required this.duration,
+    required this.fontSize,
+    required this.color,
+    required this.mainAlignment,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

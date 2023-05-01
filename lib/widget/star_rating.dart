@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-
 class StarRating extends StatefulWidget {
-
   final double rating;
   final dynamic mainAlignment;
   final double fontSize;
@@ -16,8 +14,7 @@ class StarRating extends StatefulWidget {
 class _StarRatingState extends State<StarRating> {
   @override
   Widget build(BuildContext context) {
-
-    Widget star(bool fill){
+    Widget star(bool fill) {
       return Container(
         margin: const EdgeInsets.only(top: 3.0),
         child: Icon(
@@ -31,11 +28,9 @@ class _StarRatingState extends State<StarRating> {
     return Row(
       mainAxisAlignment: widget.mainAlignment,
       children: List.generate(5, (index) {
-        if(index < (widget.rating / 2).round()){
+        if (index < (widget.rating / 2).round()) {
           return star(true);
-        }
-        else
-        {
+        } else {
           return star(false);
         }
       }),

@@ -28,7 +28,11 @@ class CustomNavBarTile extends StatelessWidget {
             heightFactor: 1.5,
             child: Text(title.toUpperCase(),
                 style: TextStyle(
-                  color: (isHovering ? Theme.of(context).primaryColor : (scrollingProvider.totalScrollDelta <= 50 ? Colors.white : Colors.black)),
+                  color: (isHovering
+                      ? Theme.of(context).primaryColor
+                      : (scrollingProvider.totalScrollDelta <= 50
+                          ? Colors.white
+                          : Colors.black)),
                   fontSize: getProportionateScreenWidth(20),
                   fontWeight: FontWeight.bold,
                 )),

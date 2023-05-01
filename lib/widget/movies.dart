@@ -5,7 +5,8 @@ class Movies extends StatefulWidget {
   final List<Movie> movies;
   final Map<String, Uint8List> images;
 
-  const Movies({Key? key, required this.movies, required this.images}) : super(key: key);
+  const Movies({Key? key, required this.movies, required this.images})
+      : super(key: key);
 
   @override
   State<Movies> createState() => _MoviesState();
@@ -19,7 +20,11 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this, initialIndex: 0, animationDuration: const Duration(milliseconds: 500));
+    _tabController = TabController(
+        length: 2,
+        vsync: this,
+        initialIndex: 0,
+        animationDuration: const Duration(milliseconds: 500));
   }
 
   @override
@@ -46,12 +51,20 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
                 color: Theme.of(context).primaryColor,
               ),
               unselectedLabelStyle: TextStyle(
-                color: Theme.of(context).textTheme.bodyMedium!.color?.withOpacity(0.5),
+                color: Theme.of(context)
+                    .textTheme
+                    .bodyMedium!
+                    .color
+                    ?.withOpacity(0.5),
                 fontWeight: FontWeight.bold,
               ),
               labelColor: Colors.white,
               indicatorColor: Colors.white,
-              unselectedLabelColor: Theme.of(context).textTheme.bodyMedium!.color?.withOpacity(0.5),
+              unselectedLabelColor: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .color
+                  ?.withOpacity(0.5),
               tabs: [
                 Tab(
                   child: SizedBox(
@@ -101,7 +114,8 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
                             (index) => InkWell(
                               onTap: () {
                                 scrollingProvider.scrollToTop();
-                                AppRouterDelegate().setPathName("${RouteData.movie.name}/${widget.movies[index].slug}");
+                                AppRouterDelegate().setPathName(
+                                    "${PublicRouteData.movie.name}/${widget.movies[index].slug}");
                               },
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -114,7 +128,8 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
                                       borderRadius: BorderRadius.circular(10),
                                       image: DecorationImage(
                                         image: Image.memory(
-                                          widget.images[widget.movies[index].imageHorizontal]!,
+                                          widget.images[widget
+                                              .movies[index].imageHorizontal]!,
                                         ).image,
                                         fit: BoxFit.cover,
                                       ),
@@ -127,8 +142,12 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
                                     child: Text(
                                       widget.movies[index].name,
                                       style: TextStyle(
-                                        color: Theme.of(context).textTheme.bodyMedium!.color,
-                                        fontSize: getProportionateScreenWidth(28),
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .color,
+                                        fontSize:
+                                            getProportionateScreenWidth(28),
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -163,7 +182,8 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
                                     borderRadius: BorderRadius.circular(10),
                                     image: DecorationImage(
                                       image: Image.memory(
-                                        widget.images[widget.movies[index].imageHorizontal]!,
+                                        widget.images[widget
+                                            .movies[index].imageHorizontal]!,
                                       ).image,
                                       fit: BoxFit.cover,
                                     ),
@@ -175,7 +195,10 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
                                 Text(
                                   widget.movies[index].name,
                                   style: TextStyle(
-                                    color: Theme.of(context).textTheme.bodyMedium!.color,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .color,
                                     fontSize: getProportionateScreenWidth(28),
                                     fontWeight: FontWeight.bold,
                                   ),

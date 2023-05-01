@@ -4,8 +4,10 @@ class CustomTransitionDelegate extends TransitionDelegate<void> {
   @override
   Iterable<RouteTransitionRecord> resolve({
     required List<RouteTransitionRecord> newPageRouteHistory,
-    required Map<RouteTransitionRecord?, RouteTransitionRecord> locationToExitingPageRoute,
-    required Map<RouteTransitionRecord?, List<RouteTransitionRecord>> pageRouteToPagelessRoutes,
+    required Map<RouteTransitionRecord?, RouteTransitionRecord>
+        locationToExitingPageRoute,
+    required Map<RouteTransitionRecord?, List<RouteTransitionRecord>>
+        pageRouteToPagelessRoutes,
   }) {
     final List<RouteTransitionRecord> results = <RouteTransitionRecord>[];
 
@@ -16,10 +18,12 @@ class CustomTransitionDelegate extends TransitionDelegate<void> {
       results.add(pageRoute);
     }
 
-    for (final RouteTransitionRecord exitingPageRoute in locationToExitingPageRoute.values) {
+    for (final RouteTransitionRecord exitingPageRoute
+        in locationToExitingPageRoute.values) {
       if (exitingPageRoute.isWaitingForExitingDecision) {
         exitingPageRoute.markForRemove();
-        final List<RouteTransitionRecord>? pagelessRoutes = pageRouteToPagelessRoutes[exitingPageRoute];
+        final List<RouteTransitionRecord>? pagelessRoutes =
+            pageRouteToPagelessRoutes[exitingPageRoute];
         if (pagelessRoutes != null) {
           for (final RouteTransitionRecord pagelessRoute in pagelessRoutes) {
             pagelessRoute.markForRemove();

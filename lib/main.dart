@@ -2,7 +2,7 @@ import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 import 'package:movie_ticket_booking_flutter_nlu/movie_ticket_booking_application.dart';
 
 void main() async {
-  usePathUrlStrategy();
+  // usePathUrlStrategy();
   await Firebase.initializeApp(
       options: const FirebaseOptions(
           apiKey: "AIzaSyARE8AOvdVKdvaYECInb1wvMoVnM1Qf_7M",
@@ -18,7 +18,7 @@ void main() async {
     (_) => runApp(
       MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => ApiProvider(_)),
+          Provider(create: (_) => ApiProvider(_)),
           ChangeNotifierProvider(create: (_) => AuthenticationProvider()),
           ChangeNotifierProvider(create: (_) => SearchingProvider()),
           ChangeNotifierProvider(create: (_) => ScrollingProvider()),

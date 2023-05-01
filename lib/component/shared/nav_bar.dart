@@ -38,11 +38,15 @@ class _NavBarState extends State<NavBar> {
     return AppBar(
       automaticallyImplyLeading: false,
       elevation: scrollingProvider.totalScrollDelta > 50 ? 1 : 0,
-      backgroundColor: scrollingProvider.totalScrollDelta > 50 ? Colors.white : Colors.transparent,
+      backgroundColor: scrollingProvider.totalScrollDelta > 50
+          ? Colors.white
+          : Colors.transparent,
       scrolledUnderElevation: scrollingProvider.totalScrollDelta > 50 ? 1 : 0,
       title: Container(
         width: SizeConfig.screenWidth * 0.2,
-        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(50), vertical: getProportionateScreenWidth(25)),
+        padding: EdgeInsets.symmetric(
+            horizontal: getProportionateScreenWidth(50),
+            vertical: getProportionateScreenWidth(25)),
         child: Align(
           alignment: Alignment.centerLeft,
           child: Image.asset(
@@ -56,7 +60,9 @@ class _NavBarState extends State<NavBar> {
       actions: [
         Container(
           width: SizeConfig.screenWidth * 0.8,
-          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(50), vertical: getProportionateScreenWidth(15)),
+          padding: EdgeInsets.symmetric(
+              horizontal: getProportionateScreenWidth(50),
+              vertical: getProportionateScreenWidth(15)),
           child: Row(
             children: [
               Expanded(
@@ -71,8 +77,10 @@ class _NavBarState extends State<NavBar> {
                         child: HoverBuilder(
                           builder: (isHovering) => InkWell(
                             hoverColor: Colors.transparent,
-                            overlayColor: MaterialStateProperty.all(Colors.transparent),
-                            onTap: () => _appRouterDelegate.setPathName(menuItems[index].route.name),
+                            overlayColor:
+                                MaterialStateProperty.all(Colors.transparent),
+                            onTap: () => _appRouterDelegate
+                                .setPathName(menuItems[index].route.name),
                             child: Center(
                               heightFactor: 1.5,
                               child: Text(
@@ -80,7 +88,10 @@ class _NavBarState extends State<NavBar> {
                                 style: TextStyle(
                                   color: isHovering
                                       ? Theme.of(context).primaryColor
-                                      : (scrollingProvider.totalScrollDelta <= 50 ? Colors.white : Colors.black),
+                                      : (scrollingProvider.totalScrollDelta <=
+                                              50
+                                          ? Colors.white
+                                          : Colors.black),
                                   fontSize: getProportionateScreenWidth(20),
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -109,17 +120,22 @@ class _NavBarState extends State<NavBar> {
                           builder: (isHovering) => InkWell(
                             hoverColor: Colors.transparent,
                             focusColor: Colors.transparent,
-                            overlayColor: MaterialStateProperty.all(Colors.transparent),
+                            overlayColor:
+                                MaterialStateProperty.all(Colors.transparent),
                             onTap: () {
                               setState(() {
-                                searchingProvider.isSearching ? searchingProvider.stopSearching() : searchingProvider.startSearching();
+                                searchingProvider.isSearching
+                                    ? searchingProvider.stopSearching()
+                                    : searchingProvider.startSearching();
                               });
                             },
                             child: Icon(
                               Icons.search,
                               color: isHovering
                                   ? Theme.of(context).primaryColor
-                                  : (scrollingProvider.totalScrollDelta <= 50 ? Colors.white : Colors.black),
+                                  : (scrollingProvider.totalScrollDelta <= 50
+                                      ? Colors.white
+                                      : Colors.black),
                               size: getProportionateScreenWidth(32),
                             ),
                           ),
@@ -134,24 +150,35 @@ class _NavBarState extends State<NavBar> {
                               return HoverBuilder(
                                 builder: (isHovering) => InkWell(
                                   hoverColor: Colors.transparent,
-                                  overlayColor: MaterialStateProperty.all(Colors.transparent),
+                                  overlayColor: MaterialStateProperty.all(
+                                      Colors.transparent),
                                   onTap: () async {
                                     if (snapshot.data == true) {
                                       await _authenticationService.logout();
-                                      _appRouterDelegate.setPathName(PublicRouteData.home.name);
+                                      _appRouterDelegate.setPathName(
+                                          PublicRouteData.home.name);
                                     } else {
-                                      _appRouterDelegate.setPathName(PublicRouteData.login.name);
+                                      _appRouterDelegate.setPathName(
+                                          PublicRouteData.login.name);
                                     }
                                   },
                                   child: Center(
                                     heightFactor: 1.5,
                                     child: Text(
-                                      (snapshot.data == true ? "Đăng xuất" : "Đăng nhập").toUpperCase(),
+                                      (snapshot.data == true
+                                              ? "Đăng xuất"
+                                              : "Đăng nhập")
+                                          .toUpperCase(),
                                       style: TextStyle(
                                         color: (isHovering
                                             ? Theme.of(context).primaryColor
-                                            : (scrollingProvider.totalScrollDelta <= 50 ? Colors.white : Colors.black)),
-                                        fontSize: getProportionateScreenWidth(20),
+                                            : (scrollingProvider
+                                                        .totalScrollDelta <=
+                                                    50
+                                                ? Colors.white
+                                                : Colors.black)),
+                                        fontSize:
+                                            getProportionateScreenWidth(20),
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),

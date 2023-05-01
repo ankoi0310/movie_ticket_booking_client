@@ -1,44 +1,42 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
-import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
-import 'package:movie_ticket_booking_flutter_nlu/model/seat.dart';
-import 'package:movie_ticket_booking_flutter_nlu/model/show_time.dart';
-import 'package:movie_ticket_booking_flutter_nlu/provider/firebase_storage_provider.dart';
-import 'package:movie_ticket_booking_flutter_nlu/routing/movie_router_delegate.dart';
-import 'package:movie_ticket_booking_flutter_nlu/routing/route_handler.dart';
-import 'package:movie_ticket_booking_flutter_nlu/utilities/StringUtil.dart';
-import 'package:provider/provider.dart';
 
 class ShowtimeInfo extends StatefulWidget {
-  final ShowTime? showTime;
-  final List<Seat> seatsSelected;
-
-  const ShowtimeInfo(
-      {Key? key, required this.showTime, required this.seatsSelected})
-      : super(key: key);
+  const ShowtimeInfo({Key? key}) : super(key: key);
 
   @override
   State<ShowtimeInfo> createState() => _ShowtimeInfoState();
 }
 
 class _ShowtimeInfoState extends State<ShowtimeInfo> {
-
   @override
   Widget build(BuildContext context) {
-    final firebaseStorageProvider =
-        Provider.of<FirebaseStorageProvider>(context);
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Expanded(
-          flex: 12,
+          flex: 3,
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 80,
+            ),
+            child: Container(
+                height: 300,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/image/apes.jpeg"),
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                )),
+          ),
+        ),
+        Expanded(
+          flex: 7,
           child: Container(
             width: SizeConfig.screenWidth,
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               vertical: 10,
               horizontal: 20,
             ),
@@ -46,52 +44,13 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FutureBuilder(
-                    future: firebaseStorageProvider
-                        .getImages([widget.showTime!.movie!.imageHorizontal]),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Container(
-                          height: 200,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: DecorationImage(
-                                image: Image.memory(
-                                        firebaseStorageProvider.mapImage[widget
-                                            .showTime!.movie!.imageHorizontal]!)
-                                    .image,
-                                fit: BoxFit.fill,
-                              )),
-                        );
-                      } else {
-                        return Container(
-                            height: 200,
-                            decoration: const BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Colors.white,
-                                  width: 1,
-                                ),
-                              ),
-                            ),
-                            child: const Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                              ),
-                            ));
-                      }
-                    }),
-                const SizedBox(
-                  height: 20,
-                ),
                 Text(
-                  widget.showTime!.movie!.name.toUpperCase(),
+                  "The Planet of apes".toUpperCase(),
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: getProportionateScreenWidth(24),
+                    fontSize: getProportionateScreenWidth(30),
                     letterSpacing: 2,
                     color: Colors.white,
-                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 const SizedBox(
@@ -101,50 +60,19 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      "Rạp: ",
+                      "Ngày chiếu: ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: getProportionateScreenWidth(20),
                         letterSpacing: 2,
                         color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      "${widget.showTime!.room!.branch.name} | ${widget.showTime!.room!.name}",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: getProportionateScreenWidth(20),
-                        letterSpacing: 2,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Suất chiếu: ",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: getProportionateScreenWidth(20),
-                        letterSpacing: 2,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
                       ),
                     ),
                     SizedBox(
                       width: 2,
                     ),
                     Text(
-                      "${DateFormat('dd-MM-yyyy').format(widget.showTime!.startTime!)} | ${DateFormat('HH : mm').format(widget.showTime!.startTime!)}",
+                      "17/03/2023",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: getProportionateScreenWidth(20),
@@ -159,38 +87,26 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Ghế: ",
+                      "Thời gian: ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: getProportionateScreenWidth(20),
                         letterSpacing: 2,
                         color: Colors.white,
-                        fontWeight: FontWeight.w500,
                       ),
                     ),
                     SizedBox(
                       width: 2,
                     ),
-                    Flexible(
-                      child: Text(
-                        widget.seatsSelected
-                            .map((e) => e.code)
-                            .toList()
-                            .join(", "),
-                        textAlign: TextAlign.start,
-                        softWrap: true,
-                        maxLines: 10,
-                        overflow: TextOverflow.ellipsis,
-                        textWidthBasis: TextWidthBasis.longestLine,
-                        style: TextStyle(
-                          fontSize: getProportionateScreenWidth(18),
-                          letterSpacing: 2,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                        ),
+                    Text(
+                      "18:00 ~ 20:00",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: getProportionateScreenWidth(20),
+                        letterSpacing: 2,
+                        color: Colors.white,
                       ),
                     ),
                   ],
@@ -202,25 +118,24 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      "Hình thức: ",
+                      "Tại phòng: ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: getProportionateScreenWidth(20),
                         letterSpacing: 2,
                         color: Colors.white,
-                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       width: 2,
                     ),
                     Text(
-                      StringUtil.changeMovieFormat(widget.showTime!.movieFormat),
+                      "Phòng 4 lầu 2",
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: getProportionateScreenWidth(20),
                         letterSpacing: 2,
                         color: Colors.white,
-                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
@@ -228,69 +143,13 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                 const SizedBox(
                   height: 20,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // button back
-                    InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 20,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(
-                          "Quay lại",
-                          style: TextStyle(
-                            fontSize: getProportionateScreenWidth(20),
-                            letterSpacing: 2,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 2,
-                    ),
-                    // button confirm
-                    InkWell(
-                      onTap: () {
-                        String jsonObject = jsonEncode({
-                          "showTime": widget.showTime!.toJson(),
-                          "seatsSelected": widget.seatsSelected
-                              .map((e) => e.toJson())
-                              .toList(),
-                        });
-                        MovieRouterDelegate().setPathName(RouteData.checkout.name, json: jsonObject);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 20,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(
-                          "Tiếp tục",
-                          style: TextStyle(
-                            fontSize: getProportionateScreenWidth(20),
-                            letterSpacing: 2,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                Text(
+                  "Thuyết minh - 2D",
+                  style: TextStyle(
+                    fontSize: getProportionateScreenWidth(20),
+                    letterSpacing: 2,
+                    color: Colors.white,
+                  ),
                 ),
               ],
             ),
