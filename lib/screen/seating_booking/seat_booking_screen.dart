@@ -19,9 +19,9 @@ class _SeatBookingScreenState extends State<SeatBookingScreen> {
             title: "Đặt ghế ngồi",
             imageUrl: "assets/image/breadcrumb_movie_screen.png",
             description:
-            "Vui lòng đặt ghế ngồi tại Cinema StarLineX Entertainment",
+                "Vui lòng đặt ghế ngồi tại Cinema StarLineX Entertainment",
           ),
-        BodySeat(),
+          BodySeat(),
         ],
       ),
     );

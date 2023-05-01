@@ -16,38 +16,22 @@ final lightTheme = ThemeData.light().copyWith(
   ),
   iconTheme: const IconThemeData(color: kPrimaryIconColor),
   useMaterial3: true,
-  textSelectionTheme: const TextSelectionThemeData(
-    cursorColor: Colors.black,
-  ),
+  textSelectionTheme: const TextSelectionThemeData(cursorColor: Colors.black),
   inputDecorationTheme: const InputDecorationTheme(
-    border: OutlineInputBorder(
-      borderSide: BorderSide(
-        color: kBackgroundLightColor,
-        width: 2,
-      ),
-      borderRadius: BorderRadius.all(Radius.circular(10)),
+    contentPadding: EdgeInsets.symmetric(vertical: 10),
+    border: UnderlineInputBorder(
+      borderSide: BorderSide(color: kBackgroundLightColor, width: 2),
     ),
-    focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(
-        color: Colors.black,
-        width: 2,
-      ),
-      borderRadius: BorderRadius.all(Radius.circular(10)),
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2),
     ),
-    errorBorder: OutlineInputBorder(
-      borderSide: BorderSide(
-        color: Colors.red,
-        width: 2,
-      ),
-      borderRadius: BorderRadius.all(Radius.circular(10)),
+    errorBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: Colors.red, width: 2),
     ),
-    focusedErrorBorder: OutlineInputBorder(
-      borderSide: BorderSide(
-        color: Colors.red,
-        width: 2,
-      ),
-      borderRadius: BorderRadius.all(Radius.circular(10)),
+    focusedErrorBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: Colors.red, width: 2),
     ),
+    suffixIconColor: kBodyTextColorLight,
   ),
 );
 
@@ -72,40 +56,22 @@ final darkTheme = ThemeData.dark().copyWith(
   scaffoldBackgroundColor: kBackgroundDarkColor,
   iconTheme: const IconThemeData(color: kPrimaryIconColor),
   useMaterial3: true,
-  textSelectionTheme: const TextSelectionThemeData(
-    cursorColor: kTextDarkColor,
-  ),
+  textSelectionTheme: const TextSelectionThemeData(cursorColor: kTextDarkColor),
   inputDecorationTheme: const InputDecorationTheme(
-    filled: true,
-    fillColor: kSecondaryDarkColor,
-    border: OutlineInputBorder(
-      borderSide: BorderSide(
-        color: kSecondaryDarkColor,
-        width: 2,
-      ),
-      borderRadius: BorderRadius.all(Radius.circular(10)),
+    contentPadding: EdgeInsets.symmetric(vertical: 10),
+    border: UnderlineInputBorder(
+      borderSide: BorderSide(color: kBackgroundDarkColor, width: 2),
     ),
-    focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(
-        color: kTextDarkColor,
-        width: 2,
-      ),
-      borderRadius: BorderRadius.all(Radius.circular(10)),
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: kBackgroundDarkColor, width: 2),
     ),
-    errorBorder: OutlineInputBorder(
-      borderSide: BorderSide(
-        color: Colors.red,
-        width: 2,
-      ),
-      borderRadius: BorderRadius.all(Radius.circular(10)),
+    errorBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: Colors.red, width: 2),
     ),
-    focusedErrorBorder: OutlineInputBorder(
-      borderSide: BorderSide(
-        color: Colors.red,
-        width: 2,
-      ),
-      borderRadius: BorderRadius.all(Radius.circular(10)),
+    focusedErrorBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: Colors.red, width: 2),
     ),
+    suffixIconColor: kBodyTextColorDark,
   ),
   colorScheme: const ColorScheme.dark(
     background: kBackgroundDarkColor,

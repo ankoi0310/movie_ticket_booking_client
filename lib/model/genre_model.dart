@@ -31,13 +31,12 @@ class Genre extends General {
       id: json['id'],
       name: json['name'],
       movies: json['movies'] != null
-          ? (json['movies'] as List)
-              .map((e) => Movie.fromJson(e))
-              .toList()
+          ? (json['movies'] as List).map((e) => Movie.fromJson(e)).toList()
           : [],
       state: GeneralState.values.firstWhere((e) => e.value == json['state']),
       createdDate: DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['createdDate']),
-      modifiedDate: DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['modifiedDate']),
+      modifiedDate:
+          DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['modifiedDate']),
       deletedDate: json['deletedDate'] != null
           ? DateTime.parse(json['deletedDate'])
           : null,

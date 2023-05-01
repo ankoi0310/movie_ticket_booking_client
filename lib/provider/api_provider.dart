@@ -1,22 +1,8 @@
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
+import 'package:movie_ticket_booking_flutter_nlu/handler/http_response.dart';
 
-class ApiProvider extends ChangeNotifier {
-  late bool _success;
-  late String _httpStatus;
-  late int _httpStatusCode;
-  late DateTime _timestamp;
-  late String? _message;
-  dynamic _data;
-
-  bool get success => _success;
-  String get httpStatus => _httpStatus;
-  int get httpStatusCode => _httpStatusCode;
-  DateTime get timestamp => _timestamp;
-  String? get message => _message;
-  dynamic get data => _data;
-
+class ApiProvider {
   static final ApiProvider _instance = ApiProvider._();
 
   factory ApiProvider(BuildContext context) {
@@ -27,19 +13,7 @@ class ApiProvider extends ChangeNotifier {
 
   static ApiProvider get instance => _instance;
 
-  // asign value to properties
-  void _assignValue(jsonData) {
-    _success = jsonData['success'];
-    _httpStatus = jsonData['httpStatus'];
-    _httpStatusCode = jsonData['httpStatusCode'];
-    _timestamp = DateFormat('dd-MM-yyyy HH:mm:ss').parse(jsonData['timestamp']);
-    _message = jsonData['message'];
-    _data = jsonData['data'];
-
-    notifyListeners();
-  }
-
-  Future<void> post(
+  Future<HttpResponse> post(
     uri, {
     required headers,
     required body,
@@ -52,10 +26,10 @@ class ApiProvider extends ChangeNotifier {
 
     // decode response body with utf8
     final jsonData = jsonDecode(utf8.decode(response.bodyBytes));
-    _assignValue(jsonData);
+    return HttpResponse.fromJson(jsonData);
   }
 
-  Future<void> get(
+  Future<HttpResponse> get(
     uri, {
     required headers,
   }) async {
@@ -66,10 +40,10 @@ class ApiProvider extends ChangeNotifier {
 
     // decode response body with utf8
     final jsonData = jsonDecode(utf8.decode(response.bodyBytes));
-    _assignValue(jsonData);
+    return HttpResponse.fromJson(jsonData);
   }
 
-  Future<void> put(
+  Future<HttpResponse> put(
     uri, {
     required headers,
     required body,
@@ -82,10 +56,10 @@ class ApiProvider extends ChangeNotifier {
 
     // decode response body with utf8
     final jsonData = jsonDecode(utf8.decode(response.bodyBytes));
-    _assignValue(jsonData);
+    return HttpResponse.fromJson(jsonData);
   }
 
-  Future<void> delete(
+  Future<HttpResponse> delete(
     uri, {
     required headers,
   }) async {
@@ -96,6 +70,6 @@ class ApiProvider extends ChangeNotifier {
 
     // decode response body with utf8
     final jsonData = jsonDecode(utf8.decode(response.bodyBytes));
-    _assignValue(jsonData);
+    return HttpResponse.fromJson(jsonData);
   }
 }

@@ -65,7 +65,8 @@ class RouteHandler {
 
   static RouteHandler get instance => _instance;
 
-  final AuthenticationService _authentacationService = AuthenticationService.instance;
+  final AuthenticationService _authentacationService =
+      AuthenticationService.instance;
 
   /// Return [WidgetToRender, PathName]
   /// [WidgetToRender] - Render specific widget
@@ -80,14 +81,18 @@ class RouteHandler {
     if (uri.pathSegments.length == 1) {
       final pathName = uri.pathSegments.elementAt(0).toString();
 
-      List<RouteData> values = [...PublicRouteData.values, ...ErrorRouteData.values];
+      List<RouteData> values = [
+        ...PublicRouteData.values,
+        ...ErrorRouteData.values
+      ];
 
       bool isLoggedIn = await _authentacationService.isLoggedIn();
       if (isLoggedIn) {
         values.addAll(AuthRouteData.values);
       }
 
-      final routeData = values.firstWhere((element) => element.name == pathName, orElse: () => ErrorRouteData.notFound);
+      final routeData = values.firstWhere((element) => element.name == pathName,
+          orElse: () => ErrorRouteData.notFound);
 
       if (routeData != ErrorRouteData.notFound) {
         if (isLoggedIn) {
@@ -142,8 +147,11 @@ class RouteHandler {
       if (uri.pathSegments.isNotEmpty) {
         final pathName = uri.pathSegments.elementAt(0).toString();
         bool isLoggedIn = await _authentacationService.isLoggedIn();
-        final values = isLoggedIn ? [...PublicRouteData.values, ...AuthRouteData.values] : PublicRouteData.values;
-        routeData = values.firstWhere((element) => element.name == pathName, orElse: () => ErrorRouteData.notFound);
+        final values = isLoggedIn
+            ? [...PublicRouteData.values, ...AuthRouteData.values]
+            : PublicRouteData.values;
+        routeData = values.firstWhere((element) => element.name == pathName,
+            orElse: () => ErrorRouteData.notFound);
 
         if (routeData != ErrorRouteData.notFound) {
           switch (routeData) {

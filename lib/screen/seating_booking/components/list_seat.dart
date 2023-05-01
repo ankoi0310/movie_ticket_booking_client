@@ -69,8 +69,8 @@ class _ListSeatState extends State<ListSeat> {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(20, (indexRow) {
-                      return  Container(
-                        margin:  EdgeInsets.only(
+                      return Container(
+                        margin: EdgeInsets.only(
                           left: 5,
                           right: (indexRow == 3 || indexRow == 15) ? 30 : 5,
                           top: 5,
@@ -85,22 +85,24 @@ class _ListSeatState extends State<ListSeat> {
                           onTap: () {},
                           child: HoverBuilder(
                               builder: (isHovering) => Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: isHovering
-                                      ? Theme.of(context).primaryColor
-                                      : const Color.fromRGBO(42, 60, 109, 1),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "${listRowAlphabet[indexColumn]}${indexRow + 1}",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: getProportionateScreenWidth(18),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: isHovering
+                                          ? Theme.of(context).primaryColor
+                                          : const Color.fromRGBO(
+                                              42, 60, 109, 1),
                                     ),
-                                  ),
-                                ),
-                              )),
+                                    child: Center(
+                                      child: Text(
+                                        "${listRowAlphabet[indexColumn]}${indexRow + 1}",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize:
+                                              getProportionateScreenWidth(18),
+                                        ),
+                                      ),
+                                    ),
+                                  )),
                         ),
                       );
                     }),

@@ -12,6 +12,7 @@ export 'package:firebase_storage/firebase_storage.dart';
 export 'package:flutter/gestures.dart';
 export 'package:flutter/material.dart';
 export 'package:flutter_web_plugins/url_strategy.dart';
+export 'package:fluttertoast/fluttertoast.dart';
 export 'package:hive_flutter/adapters.dart';
 export 'package:intl/date_symbol_data_local.dart';
 export 'package:provider/provider.dart';
@@ -40,11 +41,11 @@ export 'dto/auth/user_register.dart';
 
 /*--------------- Layout ---------------*/
 export 'layout/default/default_layout.dart';
-export 'layout/full_width/full_width.dart';
-export 'provider/api/movie_provider.dart';
+export 'layout/full_width/full_width_layout.dart';
 /*---------------------------------------*/
 
 /*--------------- Provider ---------------*/
+export 'provider/api/movie_provider.dart';
 export 'provider/api_provider.dart';
 export 'provider/authentication_provider.dart';
 export 'provider/firebase_storage_provider.dart';

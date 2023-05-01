@@ -6,7 +6,12 @@ class Breadcrumb extends StatefulWidget {
   final String imageUrl;
   final String description;
 
-  const Breadcrumb({Key? key, required this.title, required this.imageUrl, required this.description}) : super(key: key);
+  const Breadcrumb(
+      {Key? key,
+      required this.title,
+      required this.imageUrl,
+      required this.description})
+      : super(key: key);
 
   @override
   State<Breadcrumb> createState() => _BreadcrumbState();
@@ -17,7 +22,7 @@ class _BreadcrumbState extends State<Breadcrumb> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
 
-    return  Container(
+    return Container(
       width: SizeConfig.screenWidth,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -96,15 +101,13 @@ class _BreadcrumbState extends State<Breadcrumb> {
                 Text(
                   widget.description,
                   style: TextStyle(
-                    color: Colors.white,
-                    fontSize: getProportionateScreenWidth(30),
-                    height: getProportionateScreenHeight(1.8)
-                  ),
+                      color: Colors.white,
+                      fontSize: getProportionateScreenWidth(30),
+                      height: getProportionateScreenHeight(1.8)),
                 ),
               ],
             ),
           ),
-
         ],
       ),
     );

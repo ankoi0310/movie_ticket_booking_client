@@ -16,23 +16,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final movieProvider = Provider.of<MovieProvider>(context, listen: false);
-    final firebaseProvider = Provider.of<FirebaseStorageProvider>(context, listen: false);
+    final firebaseProvider =
+        Provider.of<FirebaseStorageProvider>(context, listen: false);
     final loadingProvider =
-    Provider.of<LoadingProvider>(context, listen: false);
+        Provider.of<LoadingProvider>(context, listen: false);
 
     return FutureBuilder(
         future: movieProvider.getMoviesSearch(1),
         builder: (context, snapshotMovie) {
           if (snapshotMovie.hasData) {
             return FutureBuilder(
-                future: firebaseProvider.getImages(
-                    movieProvider.movies.map((e) => e.imageHorizontal).toList()
-                ),
+                future: firebaseProvider.getImages(movieProvider.movies
+                    .map((e) => e.imageHorizontal)
+                    .toList()),
                 builder: (context, snapshotFirebase) {
                   if (snapshotFirebase.hasData) {
                     Future.delayed(Duration.zero, () {
@@ -58,8 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     });
                     return Container();
                   }
-                }
-            );
+                });
           } else {
             return Container();
           }

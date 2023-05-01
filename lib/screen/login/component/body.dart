@@ -1,4 +1,5 @@
-import 'package:movie_ticket_booking_flutter_nlu/component/social_icon_tile.dart';
+import 'package:movie_ticket_booking_flutter_nlu/component/shared/custom_flutter_toast.dart';
+import 'package:movie_ticket_booking_flutter_nlu/component/shared/social_icon_tile.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/social_icon.dart';
 
@@ -19,10 +20,13 @@ class _BodyState extends State<Body> {
   bool _isObscure = true;
   String _email = '', _password = '';
 
+  late CustomFlutterToast toast;
+
   @override
   void initState() {
     super.initState();
-    emailFocusNode.requestFocus();
+    toast = CustomFlutterToast();
+    toast.init(AppRouterDelegate.instance.navigatorKey.currentContext!);
   }
 
   @override
@@ -36,7 +40,6 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
     final authProvider = Provider.of<AuthenticationProvider>(context);
 
     Future<void> login() async {
@@ -46,18 +49,16 @@ class _BodyState extends State<Body> {
           _isLoggingIn = true;
         });
 
-        await authProvider.login(_email, _password).then((success) async {
-          if (success) {
-            _appRouterDelegate.setPathName(RouteData.home.name);
+        await authProvider.login(_email, _password).then((response) async {
+          if (response.success) {
+            _appRouterDelegate.setPathName(PublicRouteData.home.name);
           } else {
             setState(() {
               _isLoggingIn = false;
             });
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Đăng nhập thất bại'),
-                backgroundColor: Colors.red,
-              ),
+            toast.showToast(
+              success: response.success,
+              message: response.message,
             );
           }
         });
@@ -97,10 +98,9 @@ class _BodyState extends State<Body> {
                 child: Container(
                   width: SizeConfig.screenWidth * 0.25,
                   padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(40),
-                  ),
+                      horizontal: getProportionateScreenWidth(40)),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.secondary,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
@@ -108,16 +108,15 @@ class _BodyState extends State<Body> {
                     children: [
                       SizedBox(height: getProportionateScreenHeight(30)),
                       Text(
-                        'Welcome Back',
+                        'Chào mừng bạn đến với Starlinex',
                         style: TextStyle(
-                          color: Colors.black,
-                          fontSize: getProportionateScreenWidth(35),
+                          fontSize: getProportionateScreenWidth(25),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: getProportionateScreenHeight(10)),
+                      SizedBox(height: getProportionateScreenHeight(15)),
                       Text(
-                        'Please login to your account',
+                        'Đăng nhập để tiếp tục',
                         style: TextStyle(
                           fontSize: getProportionateScreenWidth(15),
                           color: Colors.grey,
@@ -129,25 +128,17 @@ class _BodyState extends State<Body> {
                           Flexible(
                             child: TextFormField(
                               focusNode: emailFocusNode,
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
-                              cursorColor: Colors.black,
-                              cursorHeight: getProportionateScreenHeight(20),
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
                               decoration: const InputDecoration(
                                 labelText: 'Email',
-                                floatingLabelAlignment: FloatingLabelAlignment.start,
-                                alignLabelWithHint: true,
                                 labelStyle: TextStyle(color: Colors.grey),
-                                suffixIcon: Icon(
-                                  Icons.email,
-                                  color: Colors.grey,
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey),
-                                ),
+                                suffixIcon: Icon(Icons.email),
                               ),
                               validator: (value) {
                                 if (value!.isEmpty) return nullEmailError;
-                                if (!AppUtil.isValidEmail(value)) return invalidEmailError;
+                                if (!AppUtil.isValidEmail(value))
+                                  return invalidEmailError;
                                 return null;
                               },
                               onSaved: (value) {
@@ -167,16 +158,16 @@ class _BodyState extends State<Body> {
                             child: TextFormField(
                               focusNode: passwordFocusNode,
                               obscureText: _isObscure,
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
-                              cursorColor: Colors.black,
-                              cursorHeight: getProportionateScreenHeight(20),
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
                               decoration: InputDecoration(
                                 labelText: 'Mật khẩu',
                                 labelStyle: const TextStyle(color: Colors.grey),
                                 suffixIcon: IconButton(
                                   icon: Icon(
-                                    _isObscure ? Icons.visibility : Icons.visibility_off,
-                                    color: Colors.grey,
+                                    _isObscure
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
                                   ),
                                   highlightColor: Colors.transparent,
                                   hoverColor: Colors.transparent,
@@ -185,9 +176,6 @@ class _BodyState extends State<Body> {
                                       _isObscure = !_isObscure;
                                     });
                                   },
-                                ),
-                                enabledBorder: const UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey),
                                 ),
                               ),
                               validator: (value) {
@@ -199,9 +187,7 @@ class _BodyState extends State<Body> {
                               onSaved: (value) {
                                 _password = value!;
                               },
-                              onFieldSubmitted: (value) {
-                                login();
-                              },
+                              onFieldSubmitted: (value) async => await login(),
                             ),
                           ),
                         ],
@@ -210,7 +196,8 @@ class _BodyState extends State<Body> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
-                            padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(20)),
+                            padding: EdgeInsets.symmetric(
+                                vertical: getProportionateScreenHeight(20)),
                             child: Row(
                               children: [
                                 Checkbox(
@@ -225,7 +212,7 @@ class _BodyState extends State<Body> {
                                   side: const BorderSide(color: Colors.grey),
                                 ),
                                 const Text(
-                                  'Remember me',
+                                  'Ghi nhớ tài khoản',
                                   style: TextStyle(
                                     color: Colors.grey,
                                   ),
@@ -234,9 +221,10 @@ class _BodyState extends State<Body> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(20)),
+                            padding: EdgeInsets.symmetric(
+                                vertical: getProportionateScreenHeight(20)),
                             child: Text.rich(TextSpan(
-                              text: 'Forgot Password?',
+                              text: 'Quên mật khẩu?',
                               style: TextStyle(
                                 color: Colors.orangeAccent[700],
                               ),
@@ -265,21 +253,38 @@ class _BodyState extends State<Body> {
                             ),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Text(
-                              'Login',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: getProportionateScreenWidth(20),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    _isLoggingIn
+                                        ? 'Đang đăng nhập'
+                                        : 'Đăng nhập',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: getProportionateScreenWidth(18),
+                                    ),
+                                  ),
+                                  if (_isLoggingIn) ...[
+                                    SizedBox(
+                                        width: getProportionateScreenWidth(10)),
+                                    SizedBox(
+                                      height: getProportionateScreenWidth(20),
+                                      width: getProportionateScreenWidth(20),
+                                      child: const CircularProgressIndicator(
+                                        color: Colors.white,
+                                        strokeWidth: 3,
+                                      ),
+                                    ),
+                                  ]
+                                ],
+                              )),
                         ),
                       ),
                       SizedBox(height: getProportionateScreenHeight(30)),
                       Text(
-                        'Or connect using',
+                        'Hoặc đăng nhập bằng',
                         style: TextStyle(
                           color: Colors.grey,
                           fontSize: getProportionateScreenWidth(18),
@@ -289,7 +294,8 @@ class _BodyState extends State<Body> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: List.from(
-                          loginSocicalIcons.map((socialIcon) => SocialIconTile(socialIcon: socialIcon)),
+                          loginSocicalIcons.map((socialIcon) =>
+                              SocialIconTile(socialIcon: socialIcon)),
                         ),
                       ),
                       Padding(
@@ -299,19 +305,22 @@ class _BodyState extends State<Body> {
                         ),
                         child: Text.rich(
                           TextSpan(
-                            text: 'Don\'t have an account? ',
+                            text: 'Bạn chưa có tài khoản? ',
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: getProportionateScreenWidth(18),
                             ),
                             children: [
                               TextSpan(
-                                text: 'Register Now',
+                                text: 'Đăng ký ngay',
                                 style: TextStyle(
                                   color: Colors.orangeAccent[700],
                                   fontSize: getProportionateScreenWidth(18),
                                 ),
-                                recognizer: TapGestureRecognizer()..onTap = () => Navigator.pushNamed(context, RegisterScreen.routeName),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () =>
+                                      _appRouterDelegate.setPathName(
+                                          PublicRouteData.register.name),
                               ),
                             ],
                           ),
@@ -323,38 +332,6 @@ class _BodyState extends State<Body> {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  TextFormField buildTextFormField({
-    required TextEditingController controller,
-    required FocusNode focusNode,
-    required String? Function(String?) validator,
-    required void Function(String?) onFieldSubmitted,
-    required bool obscureText,
-    required String labelText,
-    required IconData suffixIcon,
-  }) {
-    return TextFormField(
-      controller: controller,
-      focusNode: focusNode,
-      validator: validator,
-      onFieldSubmitted: onFieldSubmitted,
-      style: const TextStyle(color: Colors.black),
-      cursorColor: Colors.black,
-      cursorHeight: getProportionateScreenHeight(25),
-      decoration: InputDecoration(
-        labelText: labelText,
-        labelStyle: const TextStyle(color: Colors.grey),
-        suffixIcon: Icon(
-          suffixIcon,
-          size: getProportionateScreenWidth(17),
-          color: Colors.grey,
-        ),
-        enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey),
         ),
       ),
     );

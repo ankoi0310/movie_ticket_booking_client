@@ -29,8 +29,7 @@ class _TrailerVideoState extends State<TrailerVideo> {
           mute: false,
           disableDragSeek: true,
           loop: false,
-          enableCaption: false
-      ),
+          enableCaption: false),
     );
     _controller.play();
     super.initState();

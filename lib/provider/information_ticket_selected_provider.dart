@@ -25,5 +25,4 @@ class InformationTicketSelectedProvider extends ChangeNotifier {
     _selectedDate = date;
     notifyListeners();
   }
-
 }

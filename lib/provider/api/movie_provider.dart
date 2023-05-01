@@ -15,7 +15,8 @@ class MovieProvider extends ChangeNotifier {
 
   Future<Movie> getMovie(int id) async {
     try {
-      final response = await http.get(Uri.parse('http://localhost:8081/api/v1/movie/$id'));
+      final response =
+          await http.get(Uri.parse('http://localhost:8081/api/v1/movie/$id'));
 
       Map jsonResponse = jsonDecode(response.body);
 
@@ -31,7 +32,8 @@ class MovieProvider extends ChangeNotifier {
 
   Future<Movie> getMovieBySlug(String slug) async {
     try {
-      final response = await http.get(Uri.parse('http://localhost:8081/api/v1/movie/slug/$slug'));
+      final response = await http
+          .get(Uri.parse('http://localhost:8081/api/v1/movie/slug/$slug'));
 
       Map jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
 
@@ -50,7 +52,8 @@ class MovieProvider extends ChangeNotifier {
 
   Future<List<Movie>> getMoviesSearch(int id) async {
     try {
-      final response = await http.post(Uri.parse('http://localhost:8081/api/v1/movie/search'),
+      final response = await http.post(
+          Uri.parse('http://localhost:8081/api/v1/movie/search'),
           headers: {
             'Content-Type': 'application/json; charset=UTF-8',
           },

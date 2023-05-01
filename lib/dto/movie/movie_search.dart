@@ -4,7 +4,6 @@ class MovieSearch {
   late String? movieFormat;
   late String? movieState;
 
-
   MovieSearch({
     this.name,
     this.duration,
@@ -12,5 +11,9 @@ class MovieSearch {
     this.movieState,
   });
 
-  MovieSearch.empty(): name = null, duration = null, movieFormat = null, movieState = null;
+  MovieSearch.empty()
+      : name = null,
+        duration = null,
+        movieFormat = null,
+        movieState = null;
 }

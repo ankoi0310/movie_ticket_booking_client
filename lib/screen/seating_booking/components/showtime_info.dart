@@ -22,15 +22,14 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
               horizontal: 80,
             ),
             child: Container(
-              height: 300,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/image/apes.jpeg"),
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: BorderRadius.circular(10),
-              )
-            ),
+                height: 300,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/image/apes.jpeg"),
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                )),
           ),
         ),
         Expanded(
@@ -40,7 +39,6 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
             padding: EdgeInsets.symmetric(
               vertical: 10,
               horizontal: 20,
-
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -41,7 +41,6 @@ class _CarouselState extends State<Carousel> {
 
   @override
   Widget build(BuildContext context) {
-
     List<Container> buildPageCarousel(BuildContext context,
         {required List<Movie> movies}) {
       return List.generate(
@@ -56,7 +55,8 @@ class _CarouselState extends State<Carousel> {
                       height: 695,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: Image.memory(widget.images[movies[index].imageHorizontal]!)
+                          image: Image.memory(
+                                  widget.images[movies[index].imageHorizontal]!)
                               .image,
                           fit: BoxFit.cover,
                         ),
@@ -223,8 +223,7 @@ class _CarouselState extends State<Carousel> {
                 onPageChanged: (index) {
                   currentPage = index;
                 },
-                children:
-                buildPageCarousel(context, movies: widget.movies),
+                children: buildPageCarousel(context, movies: widget.movies),
               ),
             ),
             Positioned(
@@ -239,7 +238,7 @@ class _CarouselState extends State<Carousel> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(
                     0,
-                        (index) => InkWell(
+                    (index) => InkWell(
                       onTap: () {
                         setState(() {
                           currentPage = index;
