@@ -1,9 +1,9 @@
 class UserRegister {
-  String name;
-  String email;
-  String password;
-  String phone;
-  DateTime birthday;
+  String? name;
+  String? email;
+  String? password;
+  String? phone;
+  DateTime? birthday;
 
   UserRegister({
     required this.name,
@@ -12,6 +12,14 @@ class UserRegister {
     required this.phone,
     required this.birthday,
   });
+
+  UserRegister.empty() {
+    name = null;
+    email = null;
+    password = null;
+    phone = null;
+    birthday = null;
+  }
 
   factory UserRegister.fromJson(Map<String, dynamic> json) {
     return UserRegister(
@@ -29,7 +37,7 @@ class UserRegister {
       'email': email,
       'password': password,
       'phone': phone,
-      'birthday': birthday.toIso8601String(),
+      'birthday': birthday != null ? birthday!.toIso8601String() : null,
     };
   }
 }
