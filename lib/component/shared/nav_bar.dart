@@ -1,4 +1,5 @@
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/menu_item.dart';
 import 'package:movie_ticket_booking_flutter_nlu/widget/hover_builder.dart';
 
 class NavBar extends StatefulWidget implements PreferredSizeWidget {
@@ -13,16 +14,13 @@ class NavBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _NavBarState extends State<NavBar> {
+  final _appRouterDelegate = AppRouterDelegate.instance;
+  final _authenticationService = AuthenticationService.instance;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-  }
-
-  @override
-  void setState(VoidCallback fn) {
-    // TODO: implement setState
-    super.setState(fn);
   }
 
   @override
@@ -36,6 +34,7 @@ class _NavBarState extends State<NavBar> {
     SizeConfig().init(context);
     final searchingProvider = Provider.of<SearchingProvider>(context);
     final scrollingProvider = Provider.of<ScrollingProvider>(context);
+
     return AppBar(
       automaticallyImplyLeading: false,
       elevation: scrollingProvider.totalScrollDelta > 50 ? 1 : 0,
@@ -65,30 +64,31 @@ class _NavBarState extends State<NavBar> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    buildButtonNavBar(
-                      context,
-                      title: "Trang chủ",
-                      routeName: RouteData.home.name,
-                    ),
-                    buildButtonNavBar(
-                      context,
-                      title: "Phim",
-                      routeName: RouteData.movie.name,
-                    ),
-                    buildButtonNavBar(
-                      context,
-                      title: "Diễn viên",
-                      routeName: RouteData.movie.name,
-                    ),
-                    buildButtonNavBar(
-                      context,
-                      title: "Rạp/Giá vé",
-                      routeName: RouteData.ticket.name,
-                    ),
-                    buildButtonNavBar(
-                      context,
-                      title: "Liên hệ",
-                      routeName: RouteData.seat.name,
+                    ...List.generate(
+                      menuItems.length,
+                      (index) => Expanded(
+                        flex: 5,
+                        child: HoverBuilder(
+                          builder: (isHovering) => InkWell(
+                            hoverColor: Colors.transparent,
+                            overlayColor: MaterialStateProperty.all(Colors.transparent),
+                            onTap: () => _appRouterDelegate.setPathName(menuItems[index].route.name),
+                            child: Center(
+                              heightFactor: 1.5,
+                              child: Text(
+                                menuItems[index].title.toUpperCase(),
+                                style: TextStyle(
+                                  color: isHovering
+                                      ? Theme.of(context).primaryColor
+                                      : (scrollingProvider.totalScrollDelta <= 50 ? Colors.white : Colors.black),
+                                  fontSize: getProportionateScreenWidth(20),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                     const Expanded(flex: 5, child: SizedBox(width: 100)),
                   ],
@@ -126,10 +126,39 @@ class _NavBarState extends State<NavBar> {
                         ),
                       ),
                       SizedBox(width: getProportionateScreenWidth(20)),
-                      buildButtonNavBar(
-                        context,
-                        title: "Đăng nhập",
-                        routeName: RouteData.login.name,
+                      Expanded(
+                        flex: 5,
+                        child: FutureBuilder(
+                            future: _authenticationService.isLoggedIn(),
+                            builder: (context, snapshot) {
+                              return HoverBuilder(
+                                builder: (isHovering) => InkWell(
+                                  hoverColor: Colors.transparent,
+                                  overlayColor: MaterialStateProperty.all(Colors.transparent),
+                                  onTap: () async {
+                                    if (snapshot.data == true) {
+                                      await _authenticationService.logout();
+                                      _appRouterDelegate.setPathName(PublicRouteData.home.name);
+                                    } else {
+                                      _appRouterDelegate.setPathName(PublicRouteData.login.name);
+                                    }
+                                  },
+                                  child: Center(
+                                    heightFactor: 1.5,
+                                    child: Text(
+                                      (snapshot.data == true ? "Đăng xuất" : "Đăng nhập").toUpperCase(),
+                                      style: TextStyle(
+                                        color: (isHovering
+                                            ? Theme.of(context).primaryColor
+                                            : (scrollingProvider.totalScrollDelta <= 50 ? Colors.white : Colors.black)),
+                                        fontSize: getProportionateScreenWidth(20),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
                       ),
                     ],
                   ))
@@ -137,44 +166,6 @@ class _NavBarState extends State<NavBar> {
           ),
         ),
       ],
-    );
-  }
-
-  Expanded buildButtonNavBar(
-    BuildContext context, {
-    required String title,
-    required routeName,
-  }) {
-    final scrollingProvider = Provider.of<ScrollingProvider>(context);
-    return Expanded(
-      flex: 5,
-      child: HoverBuilder(
-        builder: (isHovering) => InkWell(
-          hoverColor: Colors.transparent,
-          overlayColor: MaterialStateProperty.all(Colors.transparent),
-          onTap: () {
-            final uri = Uri.base;
-            if (uri.pathSegments.isNotEmpty) {
-              if (uri.pathSegments[0] != routeName) {
-                scrollingProvider.scrollToTop();
-                AppRouterDelegate().setPathName(routeName);
-              }
-            } else {
-              scrollingProvider.scrollToTop();
-              AppRouterDelegate().setPathName(routeName);
-            }
-          },
-          child: Center(
-            heightFactor: 1.5,
-            child: Text(title.toUpperCase(),
-                style: TextStyle(
-                  color: (isHovering ? Theme.of(context).primaryColor : (scrollingProvider.totalScrollDelta <= 50 ? Colors.white : Colors.black)),
-                  fontSize: getProportionateScreenWidth(20),
-                  fontWeight: FontWeight.bold,
-                )),
-          ),
-        ),
-      ),
     );
   }
 }
