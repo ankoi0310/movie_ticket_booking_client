@@ -15,8 +15,6 @@ class CustomNavBarTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scrollingProvider = Provider.of<ScrollingProvider>(context);
-
     return Expanded(
       flex: 5,
       child: HoverBuilder(
@@ -28,11 +26,7 @@ class CustomNavBarTile extends StatelessWidget {
             heightFactor: 1.5,
             child: Text(title.toUpperCase(),
                 style: TextStyle(
-                  color: (isHovering
-                      ? Theme.of(context).primaryColor
-                      : (scrollingProvider.totalScrollDelta <= 50
-                          ? Colors.white
-                          : Colors.black)),
+                  color: (isHovering ? Theme.of(context).primaryColor : Colors.black),
                   fontSize: getProportionateScreenWidth(20),
                   fontWeight: FontWeight.bold,
                 )),

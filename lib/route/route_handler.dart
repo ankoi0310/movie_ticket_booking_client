@@ -1,4 +1,5 @@
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
+import 'package:movie_ticket_booking_flutter_nlu/screen/checkout/check_out_screen.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/error/not_found_screen.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/seating_booking/seat_booking_screen.dart';
 
@@ -11,12 +12,13 @@ class RouteHandler {
 
   static RouteHandler get instance => _instance;
 
-  final AuthenticationService _authentacationService = AuthenticationService.instance;
+  final AuthenticationService _authentacationService =
+      AuthenticationService.instance;
 
   /// Return [WidgetToRender, PathName]
   /// [WidgetToRender] - Render specific widget
   /// [PathName] - Redirect to [PathName] if invalid path is entered
-  Future<Widget> getRouteWidget(String? routeName) async {
+  Future<Widget> getRouteWidget(String? routeName, {String? jsonObject}) async {
     if (routeName == null) return const NotFoundScreen();
 
     final uri = Uri.parse(routeName);
@@ -33,8 +35,9 @@ class RouteHandler {
         RouteData.values.addAll(AuthRouteData.values);
       }
 
-      final routeData =
-          RouteData.values.firstWhere((element) => element.name == pathName, orElse: () => RouteData.notFound);
+      final routeData = RouteData.values.firstWhere(
+          (element) => element.name == pathName,
+          orElse: () => RouteData.notFound);
 
       if (routeData != RouteData.notFound) {
         if (isLoggedIn) {
@@ -50,7 +53,9 @@ class RouteHandler {
           case PublicRouteData.ticket:
             return const TicketBookingScreen();
           case PublicRouteData.seat:
-            return const SeatBookingScreen();
+            return SeatBookingScreen(jsonObject: jsonObject);
+          case PublicRouteData.checkout:
+            return CheckoutScreen(jsonObject: jsonObject);
           // case RouteData.contact:
           //   return const ContactScreen();
           case PublicRouteData.login:
@@ -86,8 +91,9 @@ class RouteHandler {
 
       if (uri.pathSegments.isNotEmpty) {
         final pathName = uri.pathSegments.elementAt(0).toString();
-        final routeData =
-            RouteData.values.firstWhere((element) => element.name == pathName, orElse: () => RouteData.notFound);
+        final routeData = RouteData.values.firstWhere(
+            (element) => element.name == pathName,
+            orElse: () => RouteData.notFound);
 
         if (routeData != RouteData.notFound) {
           switch (routeData) {

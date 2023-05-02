@@ -35,17 +35,15 @@ class _NavBarState extends State<NavBar> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final searchingProvider = Provider.of<SearchingProvider>(context);
-    final scrollingProvider = Provider.of<ScrollingProvider>(context);
 
     return AppBar(
       automaticallyImplyLeading: false,
-      elevation: scrollingProvider.totalScrollDelta > 50 ? 1 : 0,
-      backgroundColor: scrollingProvider.totalScrollDelta > 50 ? Colors.white : Colors.transparent,
-      scrolledUnderElevation: scrollingProvider.totalScrollDelta > 50 ? 1 : 0,
+      elevation: 1,
+      backgroundColor: Colors.white,
+      scrolledUnderElevation: 1,
       title: Container(
         width: SizeConfig.screenWidth * 0.2,
-        padding: EdgeInsets.symmetric(
-            horizontal: getProportionateScreenWidth(50), vertical: getProportionateScreenWidth(25)),
+        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(50), vertical: getProportionateScreenWidth(25)),
         child: Align(
           alignment: Alignment.centerLeft,
           child: Image.asset(
@@ -59,8 +57,7 @@ class _NavBarState extends State<NavBar> {
       actions: [
         Container(
           width: SizeConfig.screenWidth * 0.8,
-          padding: EdgeInsets.symmetric(
-              horizontal: getProportionateScreenWidth(50), vertical: getProportionateScreenWidth(15)),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(50), vertical: getProportionateScreenWidth(15)),
           child: Row(
             children: [
               Expanded(
@@ -82,9 +79,7 @@ class _NavBarState extends State<NavBar> {
                               child: Text(
                                 menuItems[index].title.toUpperCase(),
                                 style: TextStyle(
-                                  color: isHovering
-                                      ? Theme.of(context).primaryColor
-                                      : (scrollingProvider.totalScrollDelta <= 50 ? Colors.white : Colors.black),
+                                  color: isHovering ? Theme.of(context).primaryColor : Colors.black,
                                   fontSize: getProportionateScreenWidth(20),
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -116,16 +111,12 @@ class _NavBarState extends State<NavBar> {
                             overlayColor: MaterialStateProperty.all(Colors.transparent),
                             onTap: () {
                               setState(() {
-                                searchingProvider.isSearching
-                                    ? searchingProvider.stopSearching()
-                                    : searchingProvider.startSearching();
+                                searchingProvider.isSearching ? searchingProvider.stopSearching() : searchingProvider.startSearching();
                               });
                             },
                             child: Icon(
                               Icons.search,
-                              color: isHovering
-                                  ? Theme.of(context).primaryColor
-                                  : (scrollingProvider.totalScrollDelta <= 50 ? Colors.white : Colors.black),
+                              color: isHovering ? Theme.of(context).primaryColor : Colors.black,
                               size: getProportionateScreenWidth(32),
                             ),
                           ),
@@ -161,11 +152,7 @@ class _NavBarState extends State<NavBar> {
                                       child: Text(
                                         (isLoggedIn == true ? "Đăng xuất" : "Đăng nhập").toUpperCase(),
                                         style: TextStyle(
-                                          color: (isHovering
-                                              ? Theme.of(context).primaryColor
-                                              : (scrollingProvider.totalScrollDelta <= 50
-                                                  ? Colors.white
-                                                  : Colors.black)),
+                                          color: (isHovering ? Theme.of(context).primaryColor : Colors.black),
                                           fontSize: getProportionateScreenWidth(20),
                                           fontWeight: FontWeight.bold,
                                         ),

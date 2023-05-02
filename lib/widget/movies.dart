@@ -1,5 +1,5 @@
+import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
-import 'package:movie_ticket_booking_flutter_nlu/model/movie_model.dart';
 
 class Movies extends StatefulWidget {
   final List<Movie> movies;
@@ -35,7 +35,7 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final scrollingProvider = Provider.of<ScrollingProvider>(context);
+    final appRouterDelegate = AppRouterDelegate.instance;
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -111,25 +111,28 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
                         children: [
                           ...List.generate(
                             widget.movies.length,
-                            (index) => InkWell(
+                                (index) => InkWell(
                               onTap: () {
-                                scrollingProvider.scrollToTop();
-                                AppRouterDelegate().setPathName(
+                                appRouterDelegate.setPathName(
                                     "${PublicRouteData.movie.name}/${widget.movies[index].slug}");
                               },
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                MainAxisAlignment.start,
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
                                 children: [
                                   Container(
                                     width: SizeConfig.screenWidth * 0.31,
                                     height: 200,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
+                                      borderRadius:
+                                      BorderRadius.circular(10),
                                       image: DecorationImage(
                                         image: Image.memory(
-                                          widget.images[widget
-                                              .movies[index].imageHorizontal]!,
+                                          widget.images[
+                                          widget.movies[index]
+                                              .imageHorizontal]!,
                                         ).image,
                                         fit: BoxFit.cover,
                                       ),
@@ -147,7 +150,8 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
                                             .bodyMedium!
                                             .color,
                                         fontSize:
-                                            getProportionateScreenWidth(28),
+                                        getProportionateScreenWidth(
+                                            28),
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -171,20 +175,24 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
                         children: [
                           ...List.generate(
                             widget.movies.length,
-                            (index) => Column(
+                                (index) => Column(
                               mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
                               children: [
                                 Container(
                                   width: SizeConfig.screenWidth * 0.31,
                                   height: 200,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius:
+                                    BorderRadius.circular(10),
                                     image: DecorationImage(
                                       image: Image.memory(
-                                        widget.images[widget
-                                            .movies[index].imageHorizontal]!,
-                                      ).image,
+                                        widget.images[
+                                        widget.movies[index]
+                                            .imageHorizontal]!,
+                                      )
+                                          .image,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -199,7 +207,8 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
                                         .textTheme
                                         .bodyMedium!
                                         .color,
-                                    fontSize: getProportionateScreenWidth(28),
+                                    fontSize:
+                                    getProportionateScreenWidth(28),
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),

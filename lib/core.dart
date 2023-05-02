@@ -52,7 +52,6 @@ export 'provider/firebase_storage_provider.dart';
 export 'provider/hive/hive_provider.dart';
 export 'provider/information_ticket_selected_provider.dart';
 export 'provider/loading_provider.dart';
-export 'provider/scrolling_provider.dart';
 export 'provider/searching_provider.dart';
 /*---------------------------------------*/
 

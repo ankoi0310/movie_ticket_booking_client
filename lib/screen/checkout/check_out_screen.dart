@@ -5,8 +5,6 @@ import 'package:movie_ticket_booking_flutter_nlu/model/invoice.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/seat.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/show_time.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/api/checkout_provider.dart';
-import 'package:movie_ticket_booking_flutter_nlu/routing/movie_router_delegate.dart';
-import 'package:movie_ticket_booking_flutter_nlu/routing/route_handler.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/checkout/components/form_checkout.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/checkout/components/info_checkout.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/movie/components/breadcrumb.dart';
