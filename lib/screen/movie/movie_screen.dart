@@ -3,7 +3,6 @@ import 'package:movie_ticket_booking_flutter_nlu/screen/movie/components/breadcr
 import 'package:movie_ticket_booking_flutter_nlu/widget/movies.dart';
 
 class MovieScreen extends StatefulWidget {
-
   const MovieScreen({Key? key}) : super(key: key);
 
   @override
@@ -13,7 +12,7 @@ class MovieScreen extends StatefulWidget {
 class _MovieScreenState extends State<MovieScreen> {
   @override
   Widget build(BuildContext context) {
-    return  SingleChildScrollView(
+    return SingleChildScrollView(
       child: Column(
         children: [
           const Breadcrumb(

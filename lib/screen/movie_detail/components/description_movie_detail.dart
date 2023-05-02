@@ -6,10 +6,11 @@ import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/scrolling_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/routing/movie_router_delegate.dart';
 import 'package:movie_ticket_booking_flutter_nlu/routing/route_handler.dart';
+import 'package:movie_ticket_booking_flutter_nlu/core.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/movie_model.dart';
 import 'package:movie_ticket_booking_flutter_nlu/widget/duration_format.dart';
 import 'package:movie_ticket_booking_flutter_nlu/widget/genres_format.dart';
 import 'package:movie_ticket_booking_flutter_nlu/widget/star_rating.dart';
-import 'package:provider/provider.dart';
 
 class DescriptionMovieDetail extends StatefulWidget {
   final Movie? movie;
@@ -17,7 +18,10 @@ class DescriptionMovieDetail extends StatefulWidget {
   final void Function(bool) onTapTrailerVideo;
 
   const DescriptionMovieDetail(
-      {Key? key, required this.movie, required this.onTapTrailerVideo, required this.image})
+      {Key? key,
+      required this.movie,
+      required this.onTapTrailerVideo,
+      required this.image})
       : super(key: key);
 
   @override
@@ -51,9 +55,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         image: DecorationImage(
-                          image: Image.memory(
-                            widget.image!
-                          ).image,
+                          image: Image.memory(widget.image!).image,
                           fit: BoxFit.cover,
                         ),
                         boxShadow: [

@@ -26,7 +26,6 @@ class FirebaseStorageProvider extends ChangeNotifier {
         }
       }
       return _image;
-
     } catch (e) {
       print(e);
     }

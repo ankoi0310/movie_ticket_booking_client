@@ -8,6 +8,8 @@ import 'package:movie_ticket_booking_flutter_nlu/routing/movie_router_delegate.d
 import 'package:movie_ticket_booking_flutter_nlu/routing/route_handler.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/firebase_storage_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:movie_ticket_booking_flutter_nlu/core.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/movie_model.dart';
 
 class Movies extends StatefulWidget {
   final List<Movie> movies;
