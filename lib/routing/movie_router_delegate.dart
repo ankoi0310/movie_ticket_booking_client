@@ -13,7 +13,9 @@ class MovieRouterDelegate extends RouterDelegate<RoutePath>
 
   bool? isLoggedIn = true;
   String? pathName;
+  String? jsonObject;
   bool isError = false;
+
 
   factory MovieRouterDelegate() {
     return _instance;
@@ -35,6 +37,7 @@ class MovieRouterDelegate extends RouterDelegate<RoutePath>
         key: const ValueKey('Home'),
         child: DefaultLayout(
           routeName: pathName ?? RouteData.home.name,
+          jsonObject: jsonObject,
         ),
       )
     ];
@@ -109,11 +112,13 @@ class MovieRouterDelegate extends RouterDelegate<RoutePath>
     } else {
       pathName = null;
     }
+    notifyListeners();
   }
 
-  void setPathName(String path, {bool loggedIn = true}) {
+  void setPathName(String path, {bool loggedIn = true, String? json}) {
     pathName = path;
     isLoggedIn = loggedIn;
+    jsonObject = json;
     setNewRoutePath(RoutePath.otherPage(pathName));
     notifyListeners();
   }

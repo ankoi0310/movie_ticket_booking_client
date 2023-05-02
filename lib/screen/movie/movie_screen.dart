@@ -16,7 +16,7 @@ class _MovieScreenState extends State<MovieScreen> {
     return  SingleChildScrollView(
       child: Column(
         children: [
-          Breadcrumb(
+          const Breadcrumb(
             title: "Phim",
             imageUrl: "assets/image/breadcrumb_movie_screen.png",
             description:

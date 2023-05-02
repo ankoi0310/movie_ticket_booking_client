@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
 import 'package:movie_ticket_booking_flutter_nlu/dto/movie/movie_search.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/api/movie_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/firebase_storage_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/loading_provider.dart';
@@ -26,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Provider.of<LoadingProvider>(context, listen: false);
 
     return FutureBuilder(
-        future: movieProvider.getMoviesSearch(1),
+        future: movieProvider.getMoviesSearch(MovieSearch(movieState: MovieState.nowShowing)),
         builder: (context, snapshotMovie) {
           if (snapshotMovie.hasData) {
             return FutureBuilder(

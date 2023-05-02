@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
-import 'package:movie_ticket_booking_flutter_nlu/model/movie_model.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/firebase_storage_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/loading_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/widget/duration_format.dart';

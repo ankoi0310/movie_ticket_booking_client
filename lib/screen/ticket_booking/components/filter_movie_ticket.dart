@@ -2,6 +2,11 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
+import 'package:movie_ticket_booking_flutter_nlu/dto/movie/movie_search.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/branch.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
+import 'package:movie_ticket_booking_flutter_nlu/provider/api/branch_provider.dart';
+import 'package:movie_ticket_booking_flutter_nlu/provider/api/movie_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/information_ticket_selected_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -15,11 +20,11 @@ class FilterMovieTicket extends StatefulWidget {
 class _FilterMovieTicketState extends State<FilterMovieTicket> {
   final _datePickerController = TextEditingController();
 
-  int _selectedCinema = 0;
-  int _selectedMovie = 0;
+  Branch? _selectedBranch;
+  Movie? _selectedMovie;
   DateTime? selectedDate;
 
-  DropdownMenuItem buildItem(String text, int value) {
+  DropdownMenuItem<Object> buildItem(String text, Object? value) {
     return DropdownMenuItem(
       value: value,
       child: Text(
@@ -32,32 +37,12 @@ class _FilterMovieTicketState extends State<FilterMovieTicket> {
     );
   }
 
-  List<DropdownMenuItem> buildItemsBranch() {
-    return [
-      buildItem("Vui lòng chọn rạp", 0),
-      buildItem("Galaxy Nguyễn Du", 1),
-      buildItem("Galaxy Nguyễn Trãi", 2),
-      buildItem("Galaxy Trung Chánh", 3),
-      buildItem("Galaxy Trần Duy Hưng", 4),
-      buildItem("Galaxy Nguyễn Chí Thanh", 5),
-    ];
-  }
-
-  List<DropdownMenuItem> buildItemsMovie() {
-    return [
-      buildItem("Vui lòng chọn phim", 0),
-      buildItem("Joker", 1),
-      buildItem("Avengers: Endgame", 2),
-      buildItem("Planet of the apes", 3),
-      buildItem("The Lion King", 4),
-      buildItem("The Dark Knight", 5),
-    ];
-  }
-
   @override
   Widget build(BuildContext context) {
     final informationProvider =
         Provider.of<InformationTicketSelectedProvider>(context);
+    final movieProvider = Provider.of<MovieProvider>(context, listen: false);
+    final branchProvider = Provider.of<BranchProvider>(context, listen: false);
 
     return Container(
       width: SizeConfig.screenWidth,
@@ -68,111 +53,142 @@ class _FilterMovieTicketState extends State<FilterMovieTicket> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          DropdownButton2(
-            isExpanded: true,
-            value: _selectedCinema,
-            onChanged: (value) {
-              setState(() {
-                _selectedCinema = value as int;
-              });
-            },
-            buttonStyleData: ButtonStyleData(
-              padding: EdgeInsets.symmetric(
-                horizontal: getProportionateScreenWidth(20),
-              ),
-              width: getProportionateScreenWidth(400),
-              height: getProportionateScreenHeight(80),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: Colors.black,
-                  width: 1,
-                ),
-              ),
-            ),
-            iconStyleData: IconStyleData(
-              icon: Icon(Icons.keyboard_arrow_up_rounded),
-              iconSize: getProportionateScreenWidth(28),
-              iconEnabledColor: Colors.black,
-              iconDisabledColor: Colors.grey,
-              openMenuIcon: Icon(Icons.keyboard_arrow_down_rounded),
-            ),
-            dropdownStyleData: DropdownStyleData(
-              elevation: 1,
-              maxHeight: getProportionateScreenHeight(300),
-              width: getProportionateScreenWidth(400),
-              scrollbarTheme: ScrollbarThemeData(
-                radius: const Radius.circular(10),
-                thickness: MaterialStateProperty.all(5),
-                thumbColor: MaterialStateProperty.all(Colors.grey),
-                trackColor: MaterialStateProperty.all(Colors.grey),
-                thumbVisibility: MaterialStateProperty.all(true),
-              ),
-            ),
-            menuItemStyleData: MenuItemStyleData(
-              height: getProportionateScreenHeight(75),
-              padding: EdgeInsets.symmetric(
-                horizontal: getProportionateScreenWidth(20),
-              ),
-            ),
-            underline: Container(),
-            items: buildItemsMovie(),
-          ),
-          DropdownButton2(
-            isExpanded: true,
-            value: _selectedMovie,
-            onChanged: (value) {
-              setState(() {
-                _selectedMovie = value as int;
-                informationProvider.setSelectedMovie(_selectedMovie);
-              });
-            },
-            buttonStyleData: ButtonStyleData(
-              padding: EdgeInsets.symmetric(
-                horizontal: getProportionateScreenWidth(20),
-              ),
-              width: getProportionateScreenWidth(400),
-              height: getProportionateScreenHeight(80),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: Colors.black,
-                  width: 1,
-                ),
-              ),
-            ),
-            iconStyleData: IconStyleData(
-              icon: Icon(Icons.keyboard_arrow_up_rounded),
-              iconSize: getProportionateScreenWidth(28),
-              iconEnabledColor: Colors.black,
-              iconDisabledColor: Colors.grey,
-              openMenuIcon: Icon(Icons.keyboard_arrow_down_rounded),
-            ),
-            dropdownStyleData: DropdownStyleData(
-              elevation: 1,
-              maxHeight: getProportionateScreenHeight(300),
-              width: getProportionateScreenWidth(400),
-              scrollbarTheme: ScrollbarThemeData(
-                radius: const Radius.circular(10),
-                thickness: MaterialStateProperty.all(5),
-                thumbColor: MaterialStateProperty.all(Colors.grey),
-                trackColor: MaterialStateProperty.all(Colors.grey),
-                thumbVisibility: MaterialStateProperty.all(true),
-              ),
-            ),
-            menuItemStyleData: MenuItemStyleData(
-              height: getProportionateScreenHeight(75),
-              padding: EdgeInsets.symmetric(
-                horizontal: getProportionateScreenWidth(20),
-              ),
-            ),
-            underline: Container(),
-            items: buildItemsBranch(),
-          ),
+          FutureBuilder(
+              future: movieProvider.getMoviesSearch(
+                  MovieSearch(movieState: MovieState.nowShowing)),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<DropdownMenuItem> items = [];
+                  items.add(buildItem("Tất cả phim", null));
+                  movieProvider.movies.forEach((movie) {
+                    items.add(
+                        buildItem(movie.name, movie)
+                    );
+                  });
+                  return DropdownButton2(
+                    isExpanded: true,
+                    value: _selectedMovie ,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedMovie = value;
+                        informationProvider.setSelectedMovie(_selectedMovie);
+                      });
+                    },
+                    buttonStyleData: ButtonStyleData(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: getProportionateScreenWidth(20),
+                      ),
+                      width: getProportionateScreenWidth(400),
+                      height: getProportionateScreenHeight(80),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                    iconStyleData: IconStyleData(
+                      icon: const Icon(Icons.keyboard_arrow_up_rounded),
+                      iconSize: getProportionateScreenWidth(28),
+                      iconEnabledColor: Colors.black,
+                      iconDisabledColor: Colors.grey,
+                      openMenuIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+                    ),
+                    dropdownStyleData: DropdownStyleData(
+                      elevation: 1,
+                      maxHeight: getProportionateScreenHeight(300),
+                      width: getProportionateScreenWidth(400),
+                      scrollbarTheme: ScrollbarThemeData(
+                        radius: const Radius.circular(10),
+                        thickness: MaterialStateProperty.all(5),
+                        thumbColor: MaterialStateProperty.all(Colors.grey),
+                        trackColor: MaterialStateProperty.all(Colors.grey),
+                        thumbVisibility: MaterialStateProperty.all(true),
+                      ),
+                    ),
+                    menuItemStyleData: MenuItemStyleData(
+                      height: getProportionateScreenHeight(75),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: getProportionateScreenWidth(20),
+                      ),
+                    ),
+                    underline: Container(),
+                    items: items,
+                  );
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              }),
+          FutureBuilder(
+              future: branchProvider.getBranches(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<DropdownMenuItem> items = [];
+                  items.add(buildItem("Tất cả rạp", null));
+                  for (var branch in branchProvider.branches) {
+                    items.add(buildItem(branch.name, branch));
+                  }
+
+                  return DropdownButton2(
+                    isExpanded: true,
+                    value: _selectedBranch,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedBranch = value as Branch?;
+                        informationProvider.setSelectedBranch(_selectedBranch);
+                      });
+                    },
+                    buttonStyleData: ButtonStyleData(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: getProportionateScreenWidth(20),
+                      ),
+                      width: getProportionateScreenWidth(400),
+                      height: getProportionateScreenHeight(80),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                    iconStyleData: IconStyleData(
+                      icon: const Icon(Icons.keyboard_arrow_up_rounded),
+                      iconSize: getProportionateScreenWidth(28),
+                      iconEnabledColor: Colors.black,
+                      iconDisabledColor: Colors.grey,
+                      openMenuIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+                    ),
+                    dropdownStyleData: DropdownStyleData(
+                      elevation: 1,
+                      maxHeight: getProportionateScreenHeight(300),
+                      width: getProportionateScreenWidth(400),
+                      scrollbarTheme: ScrollbarThemeData(
+                        radius: const Radius.circular(10),
+                        thickness: MaterialStateProperty.all(5),
+                        thumbColor: MaterialStateProperty.all(Colors.grey),
+                        trackColor: MaterialStateProperty.all(Colors.grey),
+                        thumbVisibility: MaterialStateProperty.all(true),
+                      ),
+                    ),
+                    menuItemStyleData: MenuItemStyleData(
+                      height: getProportionateScreenHeight(75),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: getProportionateScreenWidth(20),
+                      ),
+                    ),
+                    underline: Container(),
+                    items: items,
+                  );
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              }),
           // text field chose date
-          Container(
+          SizedBox(
             width: getProportionateScreenWidth(400),
             height: getProportionateScreenHeight(80),
             child: TextField(
@@ -212,7 +228,7 @@ class _FilterMovieTicketState extends State<FilterMovieTicket> {
                     selectedDate = value;
                   });
                   _datePickerController.text =
-                      DateFormat("dd/MM/yyyy").format(value ?? DateTime.now());
+                      DateFormat('dd-MM-yyyy HH:mm:ss').format(value ?? DateTime.now());
                 });
               },
             ),

@@ -1,19 +1,18 @@
 import 'package:intl/intl.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/general.dart';
-import 'package:movie_ticket_booking_flutter_nlu/model/movie_model.dart';
 
-class Genre extends General {
+class Branch extends General {
   String name;
-  List<Movie> movies;
+  String address;
 
-  Genre({
+  Branch({
     required int id,
     required this.name,
+    required this.address,
     required GeneralState state,
     required DateTime createdDate,
     required DateTime modifiedDate,
     required DateTime? deletedDate,
-    required this.movies,
   }) : super(
             id: id,
             state: state,
@@ -21,23 +20,28 @@ class Genre extends General {
             modifiedDate: modifiedDate,
             deletedDate: deletedDate);
 
-  Genre.empty()
+  @override
+  bool operator ==(other) {
+    return (other is Branch) && other.id == id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
+
+  Branch.empty()
       : name = '',
-        movies = [],
+        address = '',
         super.empty();
 
-  factory Genre.fromJson(Map<String, dynamic> json) {
-    return Genre(
+  factory Branch.fromJson(Map<String, dynamic> json) {
+    return Branch(
       id: json['id'],
       name: json['name'],
-      movies: json['movies'] != null
-          ? (json['movies'] as List)
-              .map((e) => Movie.fromJson(e))
-              .toList()
-          : [],
-      state: GeneralState.values.firstWhere((e) => e.value == json['state']),
+      address: json['address'],
+      state: GeneralState.fromValue(json['state']),
       createdDate: DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['createdDate']),
-      modifiedDate: DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['modifiedDate']),
+      modifiedDate:
+      DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['modifiedDate']),
       deletedDate: json['deletedDate'] != null
           ? DateTime.parse(json['deletedDate'])
           : null,
@@ -48,11 +52,13 @@ class Genre extends General {
     return {
       'id': id,
       'name': name,
-      'movies': movies.map((e) => e.toJson()).toList(),
+      'address': address,
       'state': state.value,
-      'createdDate': createdDate.toString(),
-      'modifiedDate': modifiedDate.toString(),
-      'deletedDate': deletedDate.toString(),
+      'createdDate': DateFormat('dd-MM-yyyy HH:mm:ss').format(createdDate),
+      'modifiedDate': DateFormat('dd-MM-yyyy HH:mm:ss').format(modifiedDate),
+      'deletedDate': deletedDate != null
+          ? DateFormat('dd-MM-yyyy HH:mm:ss').format(deletedDate!)
+          : null,
     };
   }
 }

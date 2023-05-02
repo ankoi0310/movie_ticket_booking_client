@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/general.dart';
-import 'package:movie_ticket_booking_flutter_nlu/model/genre_model.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/genre.dart';
 
 enum MovieState {
   upcoming('UPCOMING'),
@@ -82,6 +82,14 @@ class Movie extends General {
             modifiedDate: modifiedDate,
             deletedDate: deletedDate);
 
+  @override
+  bool operator ==(other) {
+    return (other is Movie) && other.id == id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
+
   Movie.empty()
       : name = '',
         storyLine = '',
@@ -155,13 +163,15 @@ class Movie extends General {
       'actors': actors,
       'director': director,
       'producer': producer,
-      'releaseDate': releaseDate,
+      'releaseDate': DateFormat('dd-MM-yyyy').format(releaseDate),
       'movieState': movieState.value,
       'movieFormats': movieFormats.map((e) => e.value).toList(),
       'state': state.value,
-      'createdDate': createdDate.toString(),
-      'modifiedDate': modifiedDate.toString(),
-      'deletedDate': deletedDate.toString(),
+      'createdDate': DateFormat('dd-MM-yyyy HH:mm:ss').format(createdDate),
+      'modifiedDate': DateFormat('dd-MM-yyyy HH:mm:ss').format(modifiedDate),
+      'deletedDate': deletedDate != null
+          ? DateFormat('dd-MM-yyyy HH:mm:ss').format(deletedDate!)
+          : null,
     };
   }
 }
