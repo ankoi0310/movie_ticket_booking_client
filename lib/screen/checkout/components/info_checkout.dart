@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
@@ -7,29 +5,25 @@ import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/seat.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/show_time.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/firebase_storage_provider.dart';
-import 'package:movie_ticket_booking_flutter_nlu/routing/movie_router_delegate.dart';
-import 'package:movie_ticket_booking_flutter_nlu/routing/route_handler.dart';
 import 'package:movie_ticket_booking_flutter_nlu/utilities/StringUtil.dart';
 import 'package:provider/provider.dart';
 
-class ShowtimeInfo extends StatefulWidget {
+class InfoCheckout extends StatefulWidget {
   final ShowTime? showTime;
-  final List<Seat> seatsSelected;
-
-  const ShowtimeInfo(
-      {Key? key, required this.showTime, required this.seatsSelected})
-      : super(key: key);
+  final List<Seat> listSeatSelected;
+  const InfoCheckout({Key? key, required this.showTime, required this.listSeatSelected}) : super(key: key);
 
   @override
-  State<ShowtimeInfo> createState() => _ShowtimeInfoState();
+  State<InfoCheckout> createState() => _InfoCheckoutState();
 }
 
-class _ShowtimeInfoState extends State<ShowtimeInfo> {
-
+class _InfoCheckoutState extends State<InfoCheckout> {
   @override
   Widget build(BuildContext context) {
     final firebaseStorageProvider =
-        Provider.of<FirebaseStorageProvider>(context);
+    Provider.of<FirebaseStorageProvider>(context);
+
+
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -57,8 +51,8 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                               borderRadius: BorderRadius.circular(10),
                               image: DecorationImage(
                                 image: Image.memory(
-                                        firebaseStorageProvider.mapImage[widget
-                                            .showTime!.movie!.imageHorizontal]!)
+                                    firebaseStorageProvider.mapImage[widget
+                                        .showTime!.movie!.imageHorizontal]!)
                                     .image,
                                 fit: BoxFit.fill,
                               )),
@@ -69,14 +63,14 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                             decoration: const BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
-                                  color: Colors.white,
+                                  color: Colors.black,
                                   width: 1,
                                 ),
                               ),
                             ),
                             child: const Center(
                               child: CircularProgressIndicator(
-                                color: Colors.white,
+                                color: Colors.black,
                               ),
                             ));
                       }
@@ -90,8 +84,8 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                   style: TextStyle(
                     fontSize: getProportionateScreenWidth(24),
                     letterSpacing: 2,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(
@@ -106,8 +100,8 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                       style: TextStyle(
                         fontSize: getProportionateScreenWidth(20),
                         letterSpacing: 2,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(
@@ -119,7 +113,7 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                       style: TextStyle(
                         fontSize: getProportionateScreenWidth(20),
                         letterSpacing: 2,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                   ],
@@ -136,20 +130,20 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                       style: TextStyle(
                         fontSize: getProportionateScreenWidth(20),
                         letterSpacing: 2,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(
                       width: 2,
                     ),
                     Text(
-                      "${DateFormat('dd-MM-yyyy').format(widget.showTime!.startTime!)} | ${DateFormat('HH : mm').format(widget.showTime!.startTime!)}",
+                      "${DateFormat('dd-MM-yyyy').format(widget.showTime!.startTime!)} | ${DateFormat('HH:mm').format(widget.showTime!.startTime!)}",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: getProportionateScreenWidth(20),
                         letterSpacing: 2,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                   ],
@@ -167,8 +161,8 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                       style: TextStyle(
                         fontSize: getProportionateScreenWidth(20),
                         letterSpacing: 2,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(
@@ -176,7 +170,7 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                     ),
                     Flexible(
                       child: Text(
-                        widget.seatsSelected
+                        widget.listSeatSelected
                             .map((e) => e.code)
                             .toList()
                             .join(", "),
@@ -188,7 +182,7 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                         style: TextStyle(
                           fontSize: getProportionateScreenWidth(18),
                           letterSpacing: 2,
-                          color: Colors.white,
+                          color: Colors.black,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -207,8 +201,8 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                       style: TextStyle(
                         fontSize: getProportionateScreenWidth(20),
                         letterSpacing: 2,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(
@@ -219,8 +213,7 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                       style: TextStyle(
                         fontSize: getProportionateScreenWidth(20),
                         letterSpacing: 2,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
                       ),
                     ),
                   ],
@@ -229,65 +222,28 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                   height: 20,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    // button back
-                    InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 20,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(
-                          "Quay lại",
-                          style: TextStyle(
-                            fontSize: getProportionateScreenWidth(20),
-                            letterSpacing: 2,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                    Text(
+                      "Tổng giá: ",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: getProportionateScreenWidth(20),
+                        letterSpacing: 2,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(
                       width: 2,
                     ),
-                    // button confirm
-                    InkWell(
-                      onTap: () {
-                        String jsonObject = jsonEncode({
-                          "showTime": widget.showTime!.toJson(),
-                          "seatsSelected": widget.seatsSelected
-                              .map((e) => e.toJson())
-                              .toList(),
-                        });
-                        MovieRouterDelegate().setPathName(RouteData.checkout.name, json: jsonObject);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 20,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(
-                          "Tiếp tục",
-                          style: TextStyle(
-                            fontSize: getProportionateScreenWidth(20),
-                            letterSpacing: 2,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                    Text(
+                      "${widget.showTime!.price * widget.listSeatSelected.length} VND",
+                      style: TextStyle(
+                        fontSize: getProportionateScreenWidth(26),
+                        letterSpacing: 2,
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],

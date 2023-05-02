@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 import 'package:movie_ticket_booking_flutter_nlu/layout/full_width.dart';
+import 'package:movie_ticket_booking_flutter_nlu/screen/checkout/check_out_screen.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/seating_booking/seat_booking_screen.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/ticket_booking/ticket_booking_screen.dart';
 
@@ -13,6 +14,7 @@ enum RouteData {
   ticket,
   seat,
   contact,
+  checkout,
 }
 
 class RouteHandler {
@@ -25,7 +27,7 @@ class RouteHandler {
   /// Return [WidgetToRender, PathName]
   /// [WidgetToRender] - Render specific widget
   /// [PathName] - Redirect to [PathName] if invalid path is entered
-  Widget getRouteWidget(String? routeName) {
+  Widget getRouteWidget(String? routeName, String? jsonObject) {
     RouteData routeData;
 
     if (routeName != null) {
@@ -46,8 +48,14 @@ class RouteHandler {
                 return const MovieScreen();
               case RouteData.ticket:
                 return const TicketBookingScreen();
+              case RouteData.checkout:
+                return CheckoutScreen(
+                  jsonObject: jsonObject,
+                );
               case RouteData.seat:
-                return const SeatBookingScreen();
+                return SeatBookingScreen(
+                  jsonObject: jsonObject,
+                );
               // case RouteData.contact:
               //   return const ContactScreen();
               case RouteData.notFound:

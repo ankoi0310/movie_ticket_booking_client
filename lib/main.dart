@@ -2,7 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
+import 'package:movie_ticket_booking_flutter_nlu/provider/api/branch_provider.dart';
+import 'package:movie_ticket_booking_flutter_nlu/provider/api/checkout_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/api/movie_provider.dart';
+import 'package:movie_ticket_booking_flutter_nlu/provider/api/show_time_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/firebase_storage_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/loading_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/scrolling_provider.dart';
@@ -13,7 +16,7 @@ import 'package:provider/provider.dart';
 import 'config/theme.dart';
 
 void main() async {
-  // usePathUrlStrategy();
+  usePathUrlStrategy();
   await Firebase.initializeApp(
       options: const FirebaseOptions(
           apiKey: "AIzaSyARE8AOvdVKdvaYECInb1wvMoVnM1Qf_7M",
@@ -32,7 +35,10 @@ void main() async {
         ChangeNotifierProvider(create: (_) => InformationTicketSelectedProvider()),
         ChangeNotifierProvider(create: (_) => FirebaseStorageProvider()),
         ChangeNotifierProvider(create: (_) => LoadingProvider()),
-        ChangeNotifierProvider(create: (_) => MovieProvider())
+        ChangeNotifierProvider(create: (_) => MovieProvider()),
+        ChangeNotifierProvider(create: (_) => ShowTimeProvider()),
+        ChangeNotifierProvider(create: (_) => BranchProvider()),
+        ChangeNotifierProvider(create: (_) => CheckoutProvider()),
       ],
       child: const MyApp(),
     ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_ticket_booking_flutter_nlu/model/genre_model.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/genre.dart';
 
 class GenresFormat extends StatefulWidget {
   final List<Genre> genres;

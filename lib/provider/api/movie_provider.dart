@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_ticket_booking_flutter_nlu/model/movie_model.dart';
+import 'package:movie_ticket_booking_flutter_nlu/dto/movie/movie_search.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
 
 class MovieProvider extends ChangeNotifier {
   Movie? _movie;
@@ -49,14 +50,14 @@ class MovieProvider extends ChangeNotifier {
     }
   }
 
-  Future<List<Movie>> getMoviesSearch(int id) async {
+  Future<List<Movie>> getMoviesSearch(MovieSearch search) async {
     try {
       final response = await http.post(
           Uri.parse('http://localhost:8081/api/v1/movie/search'),
           headers:{
             'Content-Type': 'application/json; charset=UTF-8',
           },
-          body: jsonEncode({})
+          body: jsonEncode(search.toJson())
       );
 
 

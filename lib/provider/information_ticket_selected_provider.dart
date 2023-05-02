@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/branch.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
 
 class InformationTicketSelectedProvider extends ChangeNotifier {
-  int _selectedCinema = 0;
-  int _selectedMovie = 0;
+  Branch? _selectBranch;
+  Movie? _selectedMovie;
   DateTime? _selectedDate;
 
-  int get selectedCinema => selectedCinema;
+  Branch? get selectedBranch => _selectBranch;
 
-  int get selectedMovie => selectedMovie;
+  Movie? get selectedMovie => _selectedMovie;
 
-  DateTime? get selectedDate => selectedDate;
+  DateTime? get selectedDate => _selectedDate;
 
-  void setSelectedCinema(int index) {
-    _selectedCinema = index;
+  void setSelectedBranch(Branch? selectedCinema) {
+    _selectBranch = selectedCinema;
     notifyListeners();
   }
 
-  void setSelectedMovie(int index) {
-    _selectedMovie = index;
+  void setSelectedMovie(Movie? selectedMovie) {
+    _selectedMovie = selectedMovie;
     notifyListeners();
   }
 
-  void setSelectedDate(DateTime date) {
-    _selectedDate = date;
+  void setSelectedDate(DateTime? selectedDate) {
+    _selectedDate = selectedDate;
     notifyListeners();
   }
 

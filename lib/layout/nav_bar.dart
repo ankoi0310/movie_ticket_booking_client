@@ -42,13 +42,10 @@ class _NavBarState extends State<NavBar> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final searchingProvider = Provider.of<SearchingProvider>(context);
-    final scrollingProvider = Provider.of<ScrollingProvider>(context);
     return AppBar(
-      automaticallyImplyLeading: false,
-      elevation: scrollingProvider.totalScrollDelta > 50 ? 1 : 0,
-      backgroundColor:
-          scrollingProvider.totalScrollDelta > 50 ? Colors.white : Colors.transparent,
-      scrolledUnderElevation: scrollingProvider.totalScrollDelta > 50 ? 1 : 0,
+      elevation: 0,
+      backgroundColor: Colors.white.withOpacity(0.9),
+      scrolledUnderElevation: 0,
       title: Container(
         width: SizeConfig.screenWidth * 0.2,
         padding: EdgeInsets.symmetric(
@@ -134,9 +131,7 @@ class _NavBarState extends State<NavBar> {
                               Icons.search,
                               color: isHovering
                                   ? Theme.of(context).primaryColor
-                                  : (scrollingProvider.totalScrollDelta <= 50
-                                      ? Colors.white
-                                      : Colors.black),
+                                  : Colors.black,
                               size: getProportionateScreenWidth(32),
                             ),
                           ),
@@ -162,7 +157,6 @@ class _NavBarState extends State<NavBar> {
     required String title,
     required routeName,
   }) {
-    final scrollingProvider = Provider.of<ScrollingProvider>(context);
     return Expanded(
       flex: 5,
       child: HoverBuilder(
@@ -171,13 +165,11 @@ class _NavBarState extends State<NavBar> {
           overlayColor: MaterialStateProperty.all(Colors.transparent),
           onTap: () {
             final uri = Uri.base;
-            if(uri.pathSegments.length != 0) {
-              if(uri.pathSegments[0] != routeName) {
-                scrollingProvider.scrollToTop();
+            if (uri.pathSegments.length != 0) {
+              if (uri.pathSegments[0] != routeName) {
                 MovieRouterDelegate().setPathName(routeName);
               }
             } else {
-              scrollingProvider.scrollToTop();
               MovieRouterDelegate().setPathName(routeName);
             }
           },
@@ -187,9 +179,7 @@ class _NavBarState extends State<NavBar> {
                 style: TextStyle(
                   color: (isHovering
                       ? Theme.of(context).primaryColor
-                      : (scrollingProvider.totalScrollDelta <= 50
-                          ? Colors.white
-                          : Colors.black)),
+                      : Colors.black),
                   fontSize: getProportionateScreenWidth(20),
                   fontWeight: FontWeight.bold,
                 )),

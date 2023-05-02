@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
-import 'package:movie_ticket_booking_flutter_nlu/model/movie_model.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/scrolling_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/routing/movie_router_delegate.dart';
 import 'package:movie_ticket_booking_flutter_nlu/routing/route_handler.dart';
