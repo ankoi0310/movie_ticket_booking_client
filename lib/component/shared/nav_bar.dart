@@ -17,6 +17,8 @@ class _NavBarState extends State<NavBar> {
   final _appRouterDelegate = AppRouterDelegate.instance;
   final _authenticationService = AuthenticationService.instance;
 
+  bool? isLoggedIn;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -38,15 +40,12 @@ class _NavBarState extends State<NavBar> {
     return AppBar(
       automaticallyImplyLeading: false,
       elevation: scrollingProvider.totalScrollDelta > 50 ? 1 : 0,
-      backgroundColor: scrollingProvider.totalScrollDelta > 50
-          ? Colors.white
-          : Colors.transparent,
+      backgroundColor: scrollingProvider.totalScrollDelta > 50 ? Colors.white : Colors.transparent,
       scrolledUnderElevation: scrollingProvider.totalScrollDelta > 50 ? 1 : 0,
       title: Container(
         width: SizeConfig.screenWidth * 0.2,
         padding: EdgeInsets.symmetric(
-            horizontal: getProportionateScreenWidth(50),
-            vertical: getProportionateScreenWidth(25)),
+            horizontal: getProportionateScreenWidth(50), vertical: getProportionateScreenWidth(25)),
         child: Align(
           alignment: Alignment.centerLeft,
           child: Image.asset(
@@ -61,8 +60,7 @@ class _NavBarState extends State<NavBar> {
         Container(
           width: SizeConfig.screenWidth * 0.8,
           padding: EdgeInsets.symmetric(
-              horizontal: getProportionateScreenWidth(50),
-              vertical: getProportionateScreenWidth(15)),
+              horizontal: getProportionateScreenWidth(50), vertical: getProportionateScreenWidth(15)),
           child: Row(
             children: [
               Expanded(
@@ -77,10 +75,8 @@ class _NavBarState extends State<NavBar> {
                         child: HoverBuilder(
                           builder: (isHovering) => InkWell(
                             hoverColor: Colors.transparent,
-                            overlayColor:
-                                MaterialStateProperty.all(Colors.transparent),
-                            onTap: () => _appRouterDelegate
-                                .setPathName(menuItems[index].route.name),
+                            overlayColor: MaterialStateProperty.all(Colors.transparent),
+                            onTap: () => _appRouterDelegate.setPathName(menuItems[index].route.name),
                             child: Center(
                               heightFactor: 1.5,
                               child: Text(
@@ -88,10 +84,7 @@ class _NavBarState extends State<NavBar> {
                                 style: TextStyle(
                                   color: isHovering
                                       ? Theme.of(context).primaryColor
-                                      : (scrollingProvider.totalScrollDelta <=
-                                              50
-                                          ? Colors.white
-                                          : Colors.black),
+                                      : (scrollingProvider.totalScrollDelta <= 50 ? Colors.white : Colors.black),
                                   fontSize: getProportionateScreenWidth(20),
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -120,8 +113,7 @@ class _NavBarState extends State<NavBar> {
                           builder: (isHovering) => InkWell(
                             hoverColor: Colors.transparent,
                             focusColor: Colors.transparent,
-                            overlayColor:
-                                MaterialStateProperty.all(Colors.transparent),
+                            overlayColor: MaterialStateProperty.all(Colors.transparent),
                             onTap: () {
                               setState(() {
                                 searchingProvider.isSearching
@@ -133,9 +125,7 @@ class _NavBarState extends State<NavBar> {
                               Icons.search,
                               color: isHovering
                                   ? Theme.of(context).primaryColor
-                                  : (scrollingProvider.totalScrollDelta <= 50
-                                      ? Colors.white
-                                      : Colors.black),
+                                  : (scrollingProvider.totalScrollDelta <= 50 ? Colors.white : Colors.black),
                               size: getProportionateScreenWidth(32),
                             ),
                           ),
@@ -147,44 +137,47 @@ class _NavBarState extends State<NavBar> {
                         child: FutureBuilder(
                             future: _authenticationService.isLoggedIn(),
                             builder: (context, snapshot) {
-                              return HoverBuilder(
-                                builder: (isHovering) => InkWell(
-                                  hoverColor: Colors.transparent,
-                                  overlayColor: MaterialStateProperty.all(
-                                      Colors.transparent),
-                                  onTap: () async {
-                                    if (snapshot.data == true) {
-                                      await _authenticationService.logout();
-                                      _appRouterDelegate.setPathName(
-                                          PublicRouteData.home.name);
-                                    } else {
-                                      _appRouterDelegate.setPathName(
-                                          PublicRouteData.login.name);
-                                    }
-                                  },
-                                  child: Center(
-                                    heightFactor: 1.5,
-                                    child: Text(
-                                      (snapshot.data == true
-                                              ? "Đăng xuất"
-                                              : "Đăng nhập")
-                                          .toUpperCase(),
-                                      style: TextStyle(
-                                        color: (isHovering
-                                            ? Theme.of(context).primaryColor
-                                            : (scrollingProvider
-                                                        .totalScrollDelta <=
-                                                    50
-                                                ? Colors.white
-                                                : Colors.black)),
-                                        fontSize:
-                                            getProportionateScreenWidth(20),
-                                        fontWeight: FontWeight.bold,
+                              if (snapshot.connectionState == ConnectionState.done) {
+                                isLoggedIn = snapshot.hasData && snapshot.data == true;
+
+                                return HoverBuilder(
+                                  builder: (isHovering) => InkWell(
+                                    hoverColor: Colors.transparent,
+                                    overlayColor: MaterialStateProperty.all(Colors.transparent),
+                                    onTap: () async {
+                                      if (isLoggedIn == true) {
+                                        await _authenticationService.logout();
+
+                                        setState(() {
+                                          isLoggedIn = false;
+                                        });
+                                        await _appRouterDelegate.setPathName(PublicRouteData.home.name);
+                                      } else {
+                                        await _appRouterDelegate.setPathName(PublicRouteData.login.name);
+                                      }
+                                    },
+                                    child: Center(
+                                      heightFactor: 1.5,
+                                      child: Text(
+                                        (isLoggedIn == true ? "Đăng xuất" : "Đăng nhập").toUpperCase(),
+                                        style: TextStyle(
+                                          color: (isHovering
+                                              ? Theme.of(context).primaryColor
+                                              : (scrollingProvider.totalScrollDelta <= 50
+                                                  ? Colors.white
+                                                  : Colors.black)),
+                                          fontSize: getProportionateScreenWidth(20),
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              );
+                                );
+                              } else {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
                             }),
                       ),
                     ],

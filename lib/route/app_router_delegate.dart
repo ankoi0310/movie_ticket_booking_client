@@ -10,6 +10,13 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
 
   factory AppRouterDelegate({bool? isLoggedIn}) {
     _instance.isLoggedIn = isLoggedIn;
+
+    RouteData.values.addAll(PublicRouteData.values);
+
+    if (isLoggedIn == true) {
+      RouteData.values.addAll(AuthRouteData.values);
+    }
+
     return _instance;
   }
 
@@ -19,18 +26,15 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
 
   TransitionDelegate transitionDelegate = CustomTransitionDelegate();
 
-  final AuthenticationService _authentacationService =
-      AuthenticationService.instance;
+  final AuthenticationService _authentacationService = AuthenticationService.instance;
   late List<Page> _stack = [];
 
   @override
-  final GlobalKey<NavigatorState> navigatorKey =
-      CustomNavigationKey.navigatorKey;
+  final GlobalKey<NavigatorState> navigatorKey = CustomNavigationKey.navigatorKey;
 
   List<Page> get _appStack {
-    RouteData routeData = PublicRouteData.values.firstWhere(
-        (element) => element.name == pathName,
-        orElse: () => PublicRouteData.home);
+    RouteData routeData =
+        PublicRouteData.values.firstWhere((element) => element.name == pathName, orElse: () => PublicRouteData.home);
     switch (routeData) {
       case PublicRouteData.login:
       case PublicRouteData.register:
@@ -63,15 +67,15 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
   /// Error Stack
   List<Page> get _errorStack => [
         MaterialPage(
-          key: const ValueKey('unknown'),
-          child: FullWidthLayout(routeName: ErrorRouteData.notFound.name),
+          key: const ValueKey('error'),
+          child: FullWidthLayout(routeName: pathName!),
         )
       ];
 
   @override
   // TODO: implement currentConfiguration
   RoutePath? get currentConfiguration {
-    if (isError) return RoutePath.notFound();
+    if (isError) return RoutePath.notFound(pathName);
 
     if (pathName == null) return RoutePath.home(PublicRouteData.home.name);
 
@@ -80,10 +84,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
 
   @override
   Widget build(BuildContext context) {
-    _stack = AuthRouteData.values.map((e) => e.name).contains(pathName) &&
-            isLoggedIn == true
-        ? _authStack
-        : _appStack;
+    _stack = AuthRouteData.values.map((e) => e.name).contains(pathName) && isLoggedIn == true ? _authStack : _appStack;
 
     _stack = isError ? _errorStack : _stack;
 
@@ -105,10 +106,18 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
   Future<void> setNewRoutePath(RoutePath configuration) async {
     isLoggedIn = await _authentacationService.isLoggedIn();
 
-    if (configuration.isOtherPage) {
+    if (isLoggedIn == true) {
+      RouteData.values.addAll(AuthRouteData.values);
+    } else {
+      RouteData.values.removeWhere((element) => AuthRouteData.values.contains(element));
+    }
+
+    if (configuration.isNotFound) {
+      pathName = configuration.pathName;
+      isError = true;
+    } else if (configuration.isOtherPage) {
       if (configuration.pathName != null) {
-        if (isLoggedIn == true &&
-            configuration.pathName == PublicRouteData.login.name) {
+        if (isLoggedIn == true && configuration.pathName == PublicRouteData.login.name) {
           pathName = PublicRouteData.home.name;
         } else {
           pathName = configuration.pathName;
@@ -116,16 +125,76 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
       } else {
         pathName = configuration.pathName;
       }
+      isError = false;
     } else {
-      pathName = "/";
+      pathName = '/';
+      isError = false;
     }
-    isError = false;
     notifyListeners();
   }
 
-  void setPathName(String path) {
+  Future<void> setPathName(String? path) async {
     pathName = path;
-    setNewRoutePath(RoutePath.otherPage(pathName));
+
+    if (pathName == null) {
+      await setNewRoutePath(RoutePath.home(PublicRouteData.home.name));
+    }
+
+    if (!RouteData.values.map((e) => e.name).contains(pathName)) {
+      isError = true;
+      await setNewRoutePath(RoutePath.notFound(pathName));
+    } else {
+      await setNewRoutePath(RoutePath.otherPage(pathName));
+    }
+
     notifyListeners();
   }
+}
+
+class RouteData {
+  static const notFound = RouteData._('not-found');
+  static const internalServerError = RouteData._('internal-server-error');
+
+  final String name;
+
+  static Set<RouteData> values = {
+    notFound,
+    internalServerError,
+  };
+
+  const RouteData._(this.name);
+}
+
+class PublicRouteData extends RouteData {
+  static const home = PublicRouteData._('home');
+  static const login = PublicRouteData._('login');
+  static const register = PublicRouteData._('register');
+  static const movie = PublicRouteData._('movie');
+  static const ticket = PublicRouteData._('ticket');
+  static const seat = PublicRouteData._('seat');
+  static const checkout = PublicRouteData._('checkout');
+  static const contact = PublicRouteData._('contact');
+
+  static Set<PublicRouteData> values = {
+    home,
+    login,
+    register,
+    movie,
+    ticket,
+    seat,
+    checkout,
+    contact,
+  };
+
+  const PublicRouteData._(String name) : super._(name);
+}
+
+class AuthRouteData extends RouteData {
+  static const profile = AuthRouteData._('profile');
+
+  static Set<AuthRouteData> values = {
+    profile,
+  };
+
+  const AuthRouteData._(String name) : super._(name);
 }

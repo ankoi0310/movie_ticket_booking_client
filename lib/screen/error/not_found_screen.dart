@@ -1,13 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:rive/rive.dart';
 
-class NotFoundScreen extends StatelessWidget {
+class NotFoundScreen extends StatefulWidget {
   const NotFoundScreen({Key? key}) : super(key: key);
 
   @override
+  State<NotFoundScreen> createState() => _NotFoundScreenState();
+}
+
+class _NotFoundScreenState extends State<NotFoundScreen> {
+  late RiveAnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text('Not Found'),
+        child: RiveAnimation.asset(
+          'assets/rive/404.riv',
+          fit: BoxFit.cover,
+          controllers: [_controller],
+        ),
       ),
     );
   }
