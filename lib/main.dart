@@ -1,5 +1,8 @@
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 import 'package:movie_ticket_booking_flutter_nlu/movie_ticket_booking_application.dart';
+import 'package:movie_ticket_booking_flutter_nlu/provider/api/branch_provider.dart';
+import 'package:movie_ticket_booking_flutter_nlu/provider/api/checkout_provider.dart';
+import 'package:movie_ticket_booking_flutter_nlu/provider/api/show_time_provider.dart';
 
 void main() async {
   // usePathUrlStrategy();
@@ -21,11 +24,13 @@ void main() async {
           Provider(create: (_) => ApiProvider(_)),
           ChangeNotifierProvider(create: (_) => AuthenticationProvider()),
           ChangeNotifierProvider(create: (_) => SearchingProvider()),
-          ChangeNotifierProvider(create: (_) => ScrollingProvider()),
           ChangeNotifierProvider(create: (_) => InformationTicketSelectedProvider()),
           ChangeNotifierProvider(create: (_) => FirebaseStorageProvider()),
           ChangeNotifierProvider(create: (_) => LoadingProvider()),
-          ChangeNotifierProvider(create: (_) => MovieProvider())
+          ChangeNotifierProvider(create: (_) => MovieProvider()),
+          ChangeNotifierProvider(create: (_) => ShowTimeProvider()),
+          ChangeNotifierProvider(create: (_) => BranchProvider()),
+          ChangeNotifierProvider(create: (_) => CheckoutProvider()),
         ],
         child: MovieTicketBookingApplication(isLoggedIn: isLoggedIn),
       ),

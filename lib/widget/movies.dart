@@ -1,15 +1,5 @@
-import 'dart:typed_data';
-
-import 'package:flutter/material.dart';
-import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
-import 'package:movie_ticket_booking_flutter_nlu/provider/scrolling_provider.dart';
-import 'package:movie_ticket_booking_flutter_nlu/routing/movie_router_delegate.dart';
-import 'package:movie_ticket_booking_flutter_nlu/routing/route_handler.dart';
-import 'package:movie_ticket_booking_flutter_nlu/provider/firebase_storage_provider.dart';
-import 'package:provider/provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
-import 'package:movie_ticket_booking_flutter_nlu/model/movie_model.dart';
 
 class Movies extends StatefulWidget {
   final List<Movie> movies;
@@ -45,7 +35,7 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final scrollingProvider = Provider.of<ScrollingProvider>(context);
+    final appRouterDelegate = AppRouterDelegate.instance;
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -123,9 +113,8 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
                             widget.movies.length,
                                 (index) => InkWell(
                               onTap: () {
-                                scrollingProvider.scrollToTop();
-                                MovieRouterDelegate().setPathName(
-                                    "${RouteData.movie.name}/${widget.movies[index].slug}");
+                                appRouterDelegate.setPathName(
+                                    "${PublicRouteData.movie.name}/${widget.movies[index].slug}");
                               },
                               child: Column(
                                 mainAxisAlignment:

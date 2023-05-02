@@ -6,6 +6,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
 
   bool? isLoggedIn;
   String? pathName;
+  String? jsonObject;
   bool isError = false;
 
   factory AppRouterDelegate({bool? isLoggedIn}) {
@@ -26,15 +27,18 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
 
   TransitionDelegate transitionDelegate = CustomTransitionDelegate();
 
-  final AuthenticationService _authentacationService = AuthenticationService.instance;
+  final AuthenticationService _authentacationService =
+      AuthenticationService.instance;
   late List<Page> _stack = [];
 
   @override
-  final GlobalKey<NavigatorState> navigatorKey = CustomNavigationKey.navigatorKey;
+  final GlobalKey<NavigatorState> navigatorKey =
+      CustomNavigationKey.navigatorKey;
 
   List<Page> get _appStack {
-    RouteData routeData =
-        PublicRouteData.values.firstWhere((element) => element.name == pathName, orElse: () => PublicRouteData.home);
+    RouteData routeData = PublicRouteData.values.firstWhere(
+        (element) => element.name == pathName,
+        orElse: () => PublicRouteData.home);
     switch (routeData) {
       case PublicRouteData.login:
       case PublicRouteData.register:
@@ -48,7 +52,10 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
         return [
           MaterialPage(
             key: const ValueKey('home'),
-            child: DefaultLayout(routeName: routeData.name),
+            child: DefaultLayout(
+              routeName: routeData.name,
+              jsonObject: jsonObject,
+            ),
           )
         ];
     }
@@ -59,7 +66,10 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
         MaterialPage(
           key: const ValueKey('auth'),
           child: isLoggedIn == true
-              ? DefaultLayout(routeName: pathName!)
+              ? DefaultLayout(
+                  routeName: pathName!,
+                  jsonObject: jsonObject,
+                )
               : FullWidthLayout(routeName: PublicRouteData.login.name),
         ),
       ];
@@ -84,7 +94,10 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
 
   @override
   Widget build(BuildContext context) {
-    _stack = AuthRouteData.values.map((e) => e.name).contains(pathName) && isLoggedIn == true ? _authStack : _appStack;
+    _stack = AuthRouteData.values.map((e) => e.name).contains(pathName) &&
+            isLoggedIn == true
+        ? _authStack
+        : _appStack;
 
     _stack = isError ? _errorStack : _stack;
 
@@ -109,7 +122,8 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
     if (isLoggedIn == true) {
       RouteData.values.addAll(AuthRouteData.values);
     } else {
-      RouteData.values.removeWhere((element) => AuthRouteData.values.contains(element));
+      RouteData.values
+          .removeWhere((element) => AuthRouteData.values.contains(element));
     }
 
     if (configuration.isNotFound) {
@@ -117,7 +131,8 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
       isError = true;
     } else if (configuration.isOtherPage) {
       if (configuration.pathName != null) {
-        if (isLoggedIn == true && configuration.pathName == PublicRouteData.login.name) {
+        if (isLoggedIn == true &&
+            configuration.pathName == PublicRouteData.login.name) {
           pathName = PublicRouteData.home.name;
         } else {
           pathName = configuration.pathName;
@@ -133,8 +148,9 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
     notifyListeners();
   }
 
-  Future<void> setPathName(String? path) async {
+  Future<void> setPathName(String? path, {String? json}) async {
     pathName = path;
+    jsonObject = json;
 
     if (pathName == null) {
       await setNewRoutePath(RoutePath.home(PublicRouteData.home.name));

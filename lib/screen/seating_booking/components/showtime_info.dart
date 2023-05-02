@@ -3,14 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
-import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
+import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/seat.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/show_time.dart';
-import 'package:movie_ticket_booking_flutter_nlu/provider/firebase_storage_provider.dart';
-import 'package:movie_ticket_booking_flutter_nlu/routing/movie_router_delegate.dart';
-import 'package:movie_ticket_booking_flutter_nlu/routing/route_handler.dart';
 import 'package:movie_ticket_booking_flutter_nlu/utilities/StringUtil.dart';
-import 'package:provider/provider.dart';
 
 class ShowtimeInfo extends StatefulWidget {
   final ShowTime? showTime;
@@ -25,11 +21,11 @@ class ShowtimeInfo extends StatefulWidget {
 }
 
 class _ShowtimeInfoState extends State<ShowtimeInfo> {
-
   @override
   Widget build(BuildContext context) {
     final firebaseStorageProvider =
         Provider.of<FirebaseStorageProvider>(context);
+    final AppRouterDelegate routerDelegate = AppRouterDelegate.instance;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -215,7 +211,8 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                       width: 2,
                     ),
                     Text(
-                      StringUtil.changeMovieFormat(widget.showTime!.movieFormat),
+                      StringUtil.changeMovieFormat(
+                          widget.showTime!.movieFormat),
                       style: TextStyle(
                         fontSize: getProportionateScreenWidth(20),
                         letterSpacing: 2,
@@ -268,7 +265,9 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                               .map((e) => e.toJson())
                               .toList(),
                         });
-                        MovieRouterDelegate().setPathName(RouteData.checkout.name, json: jsonObject);
+                        print('jsonObject: $jsonObject');
+                        routerDelegate.setPathName(PublicRouteData.checkout.name,
+                            json: jsonObject);
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
