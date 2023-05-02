@@ -114,8 +114,7 @@ class _BodyState extends State<Body> {
                 key: _formKey,
                 child: Container(
                   width: SizeConfig.screenWidth * 0.25,
-                  padding: EdgeInsets.symmetric(
-                      horizontal: getProportionateScreenWidth(40)),
+                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(40)),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.secondary,
                     borderRadius: BorderRadius.circular(10),
@@ -137,8 +136,7 @@ class _BodyState extends State<Body> {
                           Flexible(
                             child: TextFormField(
                               focusNode: nameFocusNode,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
                               decoration: const InputDecoration(
                                 labelText: 'Họ và tên',
                                 labelStyle: TextStyle(color: Colors.grey),
@@ -164,8 +162,7 @@ class _BodyState extends State<Body> {
                           Flexible(
                             child: TextFormField(
                               focusNode: emailFocusNode,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
                               decoration: const InputDecoration(
                                 labelText: 'Email',
                                 labelStyle: TextStyle(color: Colors.grey),
@@ -173,8 +170,7 @@ class _BodyState extends State<Body> {
                               ),
                               validator: (value) {
                                 if (value!.isEmpty) return nullEmailError;
-                                if (!AppUtil.isValidEmail(value))
-                                  return invalidEmailError;
+                                if (!AppUtil.isValidEmail(value)) return invalidEmailError;
                                 return null;
                               },
                               onSaved: (value) {
@@ -194,17 +190,13 @@ class _BodyState extends State<Body> {
                             child: TextFormField(
                               focusNode: passwordFocusNode,
                               obscureText: _isObscure,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
                               decoration: InputDecoration(
                                   labelText: 'Mật khẩu',
-                                  labelStyle:
-                                      const TextStyle(color: Colors.grey),
+                                  labelStyle: const TextStyle(color: Colors.grey),
                                   suffixIcon: IconButton(
                                     icon: Icon(
-                                      _isObscure
-                                          ? Icons.visibility
-                                          : Icons.visibility_off,
+                                      _isObscure ? Icons.visibility : Icons.visibility_off,
                                     ),
                                     highlightColor: Colors.transparent,
                                     hoverColor: Colors.transparent,
@@ -216,8 +208,7 @@ class _BodyState extends State<Body> {
                                   )),
                               validator: (value) {
                                 if (value!.isEmpty) return nullPasswordError;
-                                if (AppUtil.isShortPassword(value))
-                                  return shortPasswordError;
+                                if (AppUtil.isShortPassword(value)) return shortPasswordError;
                                 return null;
                               },
                               onSaved: (value) {
@@ -237,17 +228,13 @@ class _BodyState extends State<Body> {
                             child: TextFormField(
                               focusNode: confirmPasswordFocusNode,
                               obscureText: _isObscure,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
                               decoration: InputDecoration(
                                   labelText: 'Nhập lại mật khẩu',
-                                  labelStyle:
-                                      const TextStyle(color: Colors.grey),
+                                  labelStyle: const TextStyle(color: Colors.grey),
                                   suffixIcon: IconButton(
                                     icon: Icon(
-                                      _isObscure
-                                          ? Icons.visibility
-                                          : Icons.visibility_off,
+                                      _isObscure ? Icons.visibility : Icons.visibility_off,
                                     ),
                                     highlightColor: Colors.transparent,
                                     hoverColor: Colors.transparent,
@@ -258,10 +245,8 @@ class _BodyState extends State<Body> {
                                     },
                                   )),
                               validator: (value) {
-                                if (value!.isEmpty)
-                                  return nullRetypePasswordError;
-                                if (value != userRegister.password)
-                                  return notMatchPasswordError;
+                                if (value!.isEmpty) return nullRetypePasswordError;
+                                if (value != userRegister.password) return notMatchPasswordError;
                                 return null;
                               },
                               onFieldSubmitted: (value) {
@@ -277,16 +262,14 @@ class _BodyState extends State<Body> {
                           Flexible(
                             child: TextFormField(
                               focusNode: phoneFocusNode,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
                               decoration: const InputDecoration(
                                   labelText: 'Số điện thoại',
                                   labelStyle: TextStyle(color: Colors.grey),
                                   suffixIcon: Icon(Icons.phone)),
                               validator: (value) {
                                 if (value!.isEmpty) return nullPhoneError;
-                                if (!AppUtil.isValidPhone(value))
-                                  return invalidPhoneError;
+                                if (!AppUtil.isValidPhone(value)) return invalidPhoneError;
                                 return null;
                               },
                               onSaved: (value) {
@@ -305,8 +288,7 @@ class _BodyState extends State<Body> {
                           Flexible(
                             child: TextFormField(
                               focusNode: birthDayFocusNode,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
                               decoration: const InputDecoration(
                                   labelText: 'Ngày sinh',
                                   labelStyle: TextStyle(color: Colors.grey),
@@ -323,11 +305,9 @@ class _BodyState extends State<Body> {
                                 }
                               },
                               onSaved: (value) {
-                                userRegister.birthday =
-                                    DateFormat('dd/MM/yyyy').parse(value!);
+                                userRegister.birthday = DateFormat('dd/MM/yyyy').parse(value!);
                               },
-                              onFieldSubmitted: (value) async =>
-                                  await register(),
+                              onFieldSubmitted: (value) async => await register(),
                             ),
                           ),
                         ],
@@ -336,8 +316,7 @@ class _BodyState extends State<Body> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: getProportionateScreenHeight(20)),
+                            padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(20)),
                             child: Row(
                               children: [
                                 Checkbox(
@@ -356,8 +335,7 @@ class _BodyState extends State<Body> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: getProportionateScreenHeight(20)),
+                            padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(20)),
                             child: Text.rich(TextSpan(
                               text: 'Forgot Password?',
                               style: TextStyle(
@@ -393,9 +371,7 @@ class _BodyState extends State<Body> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  _isRegistering
-                                      ? 'Đang đăng ký...'
-                                      : 'Đăng ký',
+                                  _isRegistering ? 'Đang đăng ký...' : 'Đăng ký',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: getProportionateScreenWidth(20),
@@ -403,8 +379,7 @@ class _BodyState extends State<Body> {
                                   ),
                                 ),
                                 if (_isRegistering) ...[
-                                  SizedBox(
-                                      width: getProportionateScreenWidth(10)),
+                                  SizedBox(width: getProportionateScreenWidth(10)),
                                   SizedBox(
                                     height: getProportionateScreenHeight(20),
                                     width: getProportionateScreenWidth(20),
@@ -422,15 +397,13 @@ class _BodyState extends State<Body> {
                       SizedBox(height: getProportionateScreenHeight(30)),
                       Text(
                         'Hoặc đăng ký bằng',
-                        style: TextStyle(
-                            fontSize: getProportionateScreenWidth(18)),
+                        style: TextStyle(fontSize: getProportionateScreenWidth(18)),
                       ),
                       SizedBox(height: getProportionateScreenHeight(20)),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: List.from(
-                          loginSocicalIcons.map((socialIcon) =>
-                              SocialIconTile(socialIcon: socialIcon)),
+                          loginSocicalIcons.map((socialIcon) => SocialIconTile(socialIcon: socialIcon)),
                         ),
                       ),
                       Padding(
@@ -441,8 +414,7 @@ class _BodyState extends State<Body> {
                         child: Text.rich(
                           TextSpan(
                             text: 'Bạn đã có tài khoản? ',
-                            style: TextStyle(
-                                fontSize: getProportionateScreenWidth(18)),
+                            style: TextStyle(fontSize: getProportionateScreenWidth(18)),
                             children: [
                               TextSpan(
                                 text: 'Đăng nhập',
@@ -451,8 +423,7 @@ class _BodyState extends State<Body> {
                                   fontSize: getProportionateScreenWidth(18),
                                 ),
                                 recognizer: TapGestureRecognizer()
-                                  ..onTap = () => _appRouterDelegate
-                                      .setPathName(PublicRouteData.login.name),
+                                  ..onTap = () => _appRouterDelegate.setPathName(PublicRouteData.login.name),
                               ),
                             ],
                           ),

@@ -6,11 +6,9 @@ class RoutePath {
 
   RoutePath.otherPage(this.pathName) : isNotFound = false;
 
-  RoutePath.notFound()
-      : pathName = null,
-        isNotFound = true;
+  RoutePath.notFound(this.pathName) : isNotFound = true;
 
-  bool get isHomePage => pathName == null;
+  bool get isHomePage => pathName == '';
 
   bool get isOtherPage => pathName != null;
 }
