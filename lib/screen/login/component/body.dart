@@ -1,7 +1,6 @@
-import 'package:movie_ticket_booking_flutter_nlu/component/shared/custom_flutter_toast.dart';
-import 'package:movie_ticket_booking_flutter_nlu/component/shared/social_icon_tile.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/social_icon.dart';
+import 'package:movie_ticket_booking_flutter_nlu/widget/hover_builder.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -50,12 +49,13 @@ class _BodyState extends State<Body> {
         });
 
         await authProvider.login(_email, _password).then((response) async {
+          setState(() {
+            _isLoggingIn = false;
+          });
+
           if (response.success) {
             _appRouterDelegate.setPathName(PublicRouteData.home.name);
           } else {
-            setState(() {
-              _isLoggingIn = false;
-            });
             toast.showToast(
               success: response.success,
               message: response.message,
@@ -70,28 +70,22 @@ class _BodyState extends State<Body> {
       height: SizeConfig.screenHeight,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
           colors: [
-            // Color(0xFF8A2387),
-            // Color(0xFFE94057),
-            // Color(0xFFF27121),
-            kPrimaryColor,
-            kSecondaryDarkColor,
-            // kBackgroundLightColor,
+            accentColor,
+            primaryColor,
+            accentColor,
           ],
         ),
       ),
       child: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.only(
-            top: getProportionateScreenHeight(30),
-            bottom: getProportionateScreenHeight(60),
-          ),
+          padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(15)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset('image/logo.png'),
+              Image.asset('image/logo.png', width: 150),
               SizedBox(height: getProportionateScreenHeight(30)),
               Form(
                 key: _formKey,
@@ -99,17 +93,17 @@ class _BodyState extends State<Body> {
                   width: SizeConfig.screenWidth * 0.25,
                   padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(40)),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondary,
+                    color: Theme.of(context).colorScheme.background,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(height: getProportionateScreenHeight(30)),
-                      Text(
+                      const Text(
                         'Chào mừng bạn đến với Starlinex',
                         style: TextStyle(
-                          fontSize: getProportionateScreenWidth(25),
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -117,8 +111,8 @@ class _BodyState extends State<Body> {
                       Text(
                         'Đăng nhập để tiếp tục',
                         style: TextStyle(
-                          fontSize: getProportionateScreenWidth(15),
-                          color: Colors.grey,
+                          fontSize: 15,
+                          color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.7),
                         ),
                       ),
                       SizedBox(height: getProportionateScreenHeight(20)),
@@ -128,10 +122,13 @@ class _BodyState extends State<Body> {
                             child: TextFormField(
                               focusNode: emailFocusNode,
                               autovalidateMode: AutovalidateMode.onUserInteraction,
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 labelText: 'Email',
-                                labelStyle: TextStyle(color: Colors.grey),
-                                suffixIcon: Icon(Icons.email),
+                                labelStyle: const TextStyle(color: Colors.grey),
+                                suffixIcon: Icon(
+                                  Icons.email,
+                                  color: Theme.of(context).colorScheme.secondary,
+                                ),
                               ),
                               validator: (value) {
                                 if (value!.isEmpty) return nullEmailError;
@@ -162,6 +159,7 @@ class _BodyState extends State<Body> {
                                 suffixIcon: IconButton(
                                   icon: Icon(
                                     _isObscure ? Icons.visibility : Icons.visibility_off,
+                                    color: Theme.of(context).colorScheme.secondary,
                                   ),
                                   highlightColor: Colors.transparent,
                                   hoverColor: Colors.transparent,
@@ -191,99 +189,108 @@ class _BodyState extends State<Body> {
                         children: [
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(20)),
-                            child: Row(
-                              children: [
-                                Checkbox(
-                                  value: remember,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      remember = value!;
-                                    });
-                                  },
-                                  checkColor: Colors.white,
-                                  activeColor: kPrimaryColor,
-                                  side: const BorderSide(color: Colors.grey),
-                                ),
-                                const Text(
-                                  'Ghi nhớ tài khoản',
-                                  style: TextStyle(
-                                    color: Colors.grey,
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  remember = !remember;
+                                });
+                              },
+                              child: Row(
+                                children: [
+                                  Checkbox(
+                                    value: remember,
+                                    onChanged: (value) {},
+                                    checkColor: Colors.white,
+                                    activeColor: primaryColor,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    side: const BorderSide(color: Colors.grey),
                                   ),
-                                ),
-                              ],
+                                  const Text('Ghi nhớ tài khoản'),
+                                ],
+                              ),
                             ),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(20)),
-                            child: Text.rich(TextSpan(
-                              text: 'Quên mật khẩu?',
-                              style: TextStyle(
-                                color: Colors.orangeAccent[700],
-                              ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  // Navigator.pushNamed(context, ForgotPasswordScreen.routeName);
-                                },
-                            )),
+                            child: HoverBuilder(
+                              builder: (isHovering) {
+                                return Text.rich(
+                                  TextSpan(
+                                    text: 'Quên mật khẩu?',
+                                    style: TextStyle(
+                                      color: isHovering ? Theme.of(context).colorScheme.primary : Colors.grey,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        // Navigator.pushNamed(context, ForgotPasswordScreen.routeName);
+                                      },
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         ],
                       ),
-                      GestureDetector(
-                        onTap: () async => await login(),
-                        child: Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            gradient: const LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              colors: [
-                                Color(0xFF8A2387),
-                                Color(0xFFE94057),
-                                Color(0xFFF27121),
-                              ],
-                            ),
+                      TextButton(
+                        onPressed: () async => await login(),
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                            vertical: getProportionateScreenHeight(20),
+                            horizontal: getProportionateScreenWidth(10),
                           ),
-                          child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    _isLoggingIn ? 'Đang đăng nhập' : 'Đăng nhập',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: getProportionateScreenWidth(18),
-                                    ),
-                                  ),
-                                  if (_isLoggingIn) ...[
-                                    SizedBox(width: getProportionateScreenWidth(10)),
-                                    SizedBox(
-                                      height: getProportionateScreenWidth(20),
-                                      width: getProportionateScreenWidth(20),
-                                      child: const CircularProgressIndicator(
-                                        color: Colors.white,
-                                        strokeWidth: 3,
-                                      ),
-                                    ),
-                                  ]
-                                ],
-                              )),
+                          backgroundColor: primaryColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              _isLoggingIn ? 'Đang đăng nhập' : 'Đăng nhập',
+                              style: const TextStyle(fontSize: 18, color: Colors.white),
+                            ),
+                            if (_isLoggingIn) ...[
+                              SizedBox(width: getProportionateScreenWidth(10)),
+                              SizedBox(
+                                height: getProportionateScreenWidth(20),
+                                width: getProportionateScreenWidth(20),
+                                child: const CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 3,
+                                ),
+                              ),
+                            ]
+                          ],
                         ),
                       ),
                       SizedBox(height: getProportionateScreenHeight(30)),
-                      Text(
-                        'Hoặc đăng nhập bằng',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: getProportionateScreenWidth(18),
-                        ),
+                      const Row(
+                        children: [
+                          Expanded(
+                            child: Divider(height: 10),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text(
+                              'Hoặc đăng nhập bằng',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Divider(height: 10),
+                          ),
+                        ],
                       ),
                       SizedBox(height: getProportionateScreenHeight(20)),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: List.from(
-                          loginSocicalIcons.map((socialIcon) => SocialIconTile(socialIcon: socialIcon)),
+                          socialIcons.map((socialIcon) => SocialIconTile(socialIcon: socialIcon)),
                         ),
                       ),
                       Padding(
@@ -294,19 +301,18 @@ class _BodyState extends State<Body> {
                         child: Text.rich(
                           TextSpan(
                             text: 'Bạn chưa có tài khoản? ',
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.grey,
-                              fontSize: getProportionateScreenWidth(18),
+                              fontSize: 14,
                             ),
                             children: [
                               TextSpan(
                                 text: 'Đăng ký ngay',
                                 style: TextStyle(
-                                  color: Colors.orangeAccent[700],
-                                  fontSize: getProportionateScreenWidth(18),
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontSize: 14,
                                 ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () => _appRouterDelegate.setPathName(PublicRouteData.register.name),
+                                recognizer: TapGestureRecognizer()..onTap = () => _appRouterDelegate.setPathName(PublicRouteData.register.name),
                               ),
                             ],
                           ),
