@@ -10,7 +10,7 @@ class ShowTime extends General {
   DateTime? startTime;
   DateTime? endTime;
   Movie? movie;
-  double price;
+  int price;
   MovieFormat movieFormat;
   List<Invoice> invoices;
 
@@ -48,28 +48,17 @@ class ShowTime extends General {
   factory ShowTime.fromJson(Map<String, dynamic> json) {
     return ShowTime(
       id: json['id'] as int,
-      room: json['room'] == null
-          ? null
-          : Room.fromJson(json['room'] as Map<String, dynamic>),
-      startTime: json['startTime'] != null
-          ? DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['startTime'])
-          : null,
-      endTime: json['endTime'] != null
-          ? DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['endTime'])
-          : null,
-      movie: json['movie'] == null
-          ? null
-          : Movie.fromJson(json['movie'] as Map<String, dynamic>),
-      price: json['price'] as double,
+      room: json['room'] == null ? null : Room.fromJson(json['room'] as Map<String, dynamic>),
+      startTime: json['startTime'] != null ? DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['startTime']) : null,
+      endTime: json['endTime'] != null ? DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['endTime']) : null,
+      movie: json['movie'] == null ? null : Movie.fromJson(json['movie'] as Map<String, dynamic>),
+      price: json['price'] as int,
       movieFormat: MovieFormat.fromValue(json['movieFormat']),
       invoices: (json['invoices'] as List).map((e) => Invoice.fromJson(e)).toList(),
       state: GeneralState.fromValue(json['state']),
       createdDate: DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['createdDate']),
-      modifiedDate:
-          DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['modifiedDate']),
-      deletedDate: json['deletedDate'] != null
-          ? DateTime.parse(json['deletedDate'])
-          : null,
+      modifiedDate: DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['modifiedDate']),
+      deletedDate: json['deletedDate'] != null ? DateTime.parse(json['deletedDate']) : null,
     );
   }
 
@@ -86,9 +75,7 @@ class ShowTime extends General {
       'state': state.value,
       'createdDate': DateFormat('dd-MM-yyyy HH:mm:ss').format(createdDate),
       'modifiedDate': DateFormat('dd-MM-yyyy HH:mm:ss').format(modifiedDate),
-      'deletedDate': deletedDate != null
-          ? DateFormat('dd-MM-yyyy HH:mm:ss').format(deletedDate!)
-          : null,
+      'deletedDate': deletedDate != null ? DateFormat('dd-MM-yyyy HH:mm:ss').format(deletedDate!) : null,
     };
   }
 }

@@ -5,12 +5,13 @@ import 'package:movie_ticket_booking_flutter_nlu/widget/duration_format.dart';
 import 'package:movie_ticket_booking_flutter_nlu/widget/genres_format.dart';
 
 class DefaultLayout extends StatefulWidget {
-  final String routeName;
+  final String? routeName;
   final String? jsonObject;
+  final Map<String, String> queryParameters;
 
   // final void Function(String)? onTapChangeScreen;
 
-  DefaultLayout({Key? key, required this.routeName, required this.jsonObject}) : super(key: key);
+  const DefaultLayout({Key? key, required this.routeName, required this.jsonObject, required this.queryParameters}) : super(key: key);
 
   @override
   State<DefaultLayout> createState() => _DefaultLayoutState();
@@ -56,7 +57,11 @@ class _DefaultLayoutState extends State<DefaultLayout> {
               child: Stack(
                 children: [
                   FutureBuilder(
-                    future: _routeHandler.getRouteWidget(widget.routeName, jsonObject: widget.jsonObject),
+                    future: _routeHandler.getRouteWidget(
+                      widget.routeName,
+                      jsonObject: widget.jsonObject,
+                      queryParameters: widget.queryParameters,
+                    ),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return snapshot.data as Widget;

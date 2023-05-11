@@ -1,12 +1,12 @@
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 
-class AppRouterDelegate extends RouterDelegate<RoutePath>
-    with ChangeNotifier, PopNavigatorRouterDelegateMixin<RoutePath> {
+class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, PopNavigatorRouterDelegateMixin<RoutePath> {
   static final AppRouterDelegate _instance = AppRouterDelegate._();
 
   bool? isLoggedIn;
-  String? pathName;
+  String? pathName = "";
   String? jsonObject;
+  Map<String, String> queryParameters = {};
   bool isError = false;
 
   factory AppRouterDelegate({bool? isLoggedIn}) {
@@ -27,18 +27,14 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
 
   TransitionDelegate transitionDelegate = CustomTransitionDelegate();
 
-  final AuthenticationService _authentacationService =
-      AuthenticationService.instance;
+  final AuthenticationService _authentacationService = AuthenticationService.instance;
   late List<Page> _stack = [];
 
   @override
-  final GlobalKey<NavigatorState> navigatorKey =
-      CustomNavigationKey.navigatorKey;
+  final GlobalKey<NavigatorState> navigatorKey = CustomNavigationKey.navigatorKey;
 
   List<Page> get _appStack {
-    RouteData routeData = PublicRouteData.values.firstWhere(
-        (element) => element.name == pathName,
-        orElse: () => PublicRouteData.home);
+    RouteData routeData = PublicRouteData.values.firstWhere((element) => pathName!.contains(element.name), orElse: () => PublicRouteData.home);
     switch (routeData) {
       case PublicRouteData.login:
       case PublicRouteData.register:
@@ -53,8 +49,9 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
           MaterialPage(
             key: const ValueKey('home'),
             child: DefaultLayout(
-              routeName: routeData.name,
+              routeName: pathName,
               jsonObject: jsonObject,
+              queryParameters: queryParameters,
             ),
           )
         ];
@@ -69,6 +66,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
               ? DefaultLayout(
                   routeName: pathName!,
                   jsonObject: jsonObject,
+                  queryParameters: queryParameters,
                 )
               : FullWidthLayout(routeName: PublicRouteData.login.name),
         ),
@@ -89,15 +87,12 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
 
     if (pathName == null) return RoutePath.home(PublicRouteData.home.name);
 
-    return RoutePath.otherPage(pathName);
+    return RoutePath.otherPage(pathName, queryParameters: queryParameters);
   }
 
   @override
   Widget build(BuildContext context) {
-    _stack = AuthRouteData.values.map((e) => e.name).contains(pathName) &&
-            isLoggedIn == true
-        ? _authStack
-        : _appStack;
+    _stack = AuthRouteData.values.map((e) => e.name).contains(pathName) && isLoggedIn == true ? _authStack : _appStack;
 
     _stack = isError ? _errorStack : _stack;
 
@@ -122,8 +117,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
     if (isLoggedIn == true) {
       RouteData.values.addAll(AuthRouteData.values);
     } else {
-      RouteData.values
-          .removeWhere((element) => AuthRouteData.values.contains(element));
+      RouteData.values.removeWhere((element) => AuthRouteData.values.contains(element));
     }
 
     if (configuration.isNotFound) {
@@ -131,8 +125,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
       isError = true;
     } else if (configuration.isOtherPage) {
       if (configuration.pathName != null) {
-        if (isLoggedIn == true &&
-            configuration.pathName == PublicRouteData.login.name) {
+        if (isLoggedIn == true && configuration.pathName == PublicRouteData.login.name) {
           pathName = PublicRouteData.home.name;
         } else {
           pathName = configuration.pathName;
@@ -141,6 +134,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
         pathName = configuration.pathName;
       }
       isError = false;
+      queryParameters = configuration.queryParameters;
     } else {
       pathName = '/';
       isError = false;
@@ -148,10 +142,10 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
     notifyListeners();
   }
 
-  Future<void> setPathName(String? path, {String? json}) async {
+  Future<void> setPathName(String? path, {String? json, Map<String, String>? params}) async {
     pathName = path;
     jsonObject = json;
-
+    queryParameters = params ?? {};
     if (pathName == null) {
       await setNewRoutePath(RoutePath.home(PublicRouteData.home.name));
     }
@@ -160,7 +154,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
       isError = true;
       await setNewRoutePath(RoutePath.notFound(pathName));
     } else {
-      await setNewRoutePath(RoutePath.otherPage(pathName));
+      await setNewRoutePath(RoutePath.otherPage(pathName, queryParameters: queryParameters));
     }
 
     notifyListeners();
@@ -189,6 +183,7 @@ class PublicRouteData extends RouteData {
   static const ticket = PublicRouteData._('ticket');
   static const seat = PublicRouteData._('seat');
   static const checkout = PublicRouteData._('checkout');
+  static const payment = PublicRouteData._('payment');
   static const contact = PublicRouteData._('contact');
 
   static Set<PublicRouteData> values = {
@@ -200,6 +195,7 @@ class PublicRouteData extends RouteData {
     seat,
     checkout,
     contact,
+    payment,
   };
 
   const PublicRouteData._(String name) : super._(name);

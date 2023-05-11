@@ -1,4 +1,5 @@
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
+import 'package:movie_ticket_booking_flutter_nlu/dto/payment/payment_response.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/checkout/check_out_screen.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/error/not_found_screen.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/seating_booking/seat_booking_screen.dart';
@@ -12,14 +13,13 @@ class RouteHandler {
 
   static RouteHandler get instance => _instance;
 
-  final AuthenticationService _authentacationService =
-      AuthenticationService.instance;
+  final AuthenticationService _authentacationService = AuthenticationService.instance;
 
   /// Return [WidgetToRender, PathName]
   /// [WidgetToRender] - Render specific widget
   /// [PathName] - Redirect to [PathName] if invalid path is entered
-  Future<Widget> getRouteWidget(String? routeName, {String? jsonObject}) async {
-    if (routeName == null) return const NotFoundScreen();
+  Future<Widget> getRouteWidget(String? routeName, {String? jsonObject, Map<String, String>? queryParameters}) async {
+    if (routeName == null) return const HomeScreen();
 
     final uri = Uri.parse(routeName);
 
@@ -35,9 +35,7 @@ class RouteHandler {
         RouteData.values.addAll(AuthRouteData.values);
       }
 
-      final routeData = RouteData.values.firstWhere(
-          (element) => element.name == pathName,
-          orElse: () => RouteData.notFound);
+      final routeData = RouteData.values.firstWhere((element) => element.name == pathName, orElse: () => RouteData.notFound);
 
       if (routeData != RouteData.notFound) {
         if (isLoggedIn) {
@@ -51,7 +49,7 @@ class RouteHandler {
           case PublicRouteData.movie:
             return const MovieScreen();
           case PublicRouteData.ticket:
-            return const TicketBookingScreen();
+            return const TicketBookingScreen(slug: null);
           case PublicRouteData.seat:
             return SeatBookingScreen(jsonObject: jsonObject);
           case PublicRouteData.checkout:
@@ -70,12 +68,19 @@ class RouteHandler {
         return const NotFoundScreen();
       }
     }
-
     if (uri.pathSegments.length == 2) {
       if (uri.pathSegments[0] == "movie") {
         String? slug = uri.pathSegments[1];
         if (slug.isEmpty) return const NotFoundScreen();
         return MovieDetailScreen(slug: slug);
+      }
+      if (uri.pathSegments[0] == "payment" && uri.pathSegments[1] == "return") {
+        return PaymentResponseScreen(paymentResponse: PaymentResponse.fromJson(queryParameters!));
+      }
+      if (uri.pathSegments[0] == "ticket") {
+        String? slug = uri.pathSegments[1];
+        if (slug.isEmpty) return const NotFoundScreen();
+        return TicketBookingScreen(slug: slug);
       }
       return const NotFoundScreen();
     }
@@ -91,9 +96,7 @@ class RouteHandler {
 
       if (uri.pathSegments.isNotEmpty) {
         final pathName = uri.pathSegments.elementAt(0).toString();
-        final routeData = RouteData.values.firstWhere(
-            (element) => element.name == pathName,
-            orElse: () => RouteData.notFound);
+        final routeData = RouteData.values.firstWhere((element) => element.name == pathName, orElse: () => RouteData.notFound);
 
         if (routeData != RouteData.notFound) {
           switch (routeData) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/invoice_combo.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/seat.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/show_time.dart';
@@ -11,7 +12,8 @@ import 'package:provider/provider.dart';
 class InfoCheckout extends StatefulWidget {
   final ShowTime? showTime;
   final List<Seat> listSeatSelected;
-  const InfoCheckout({Key? key, required this.showTime, required this.listSeatSelected}) : super(key: key);
+  final Set<InvoiceCombo> comboInvoices;
+  const InfoCheckout({Key? key, required this.showTime, required this.listSeatSelected, required this.comboInvoices}) : super(key: key);
 
   @override
   State<InfoCheckout> createState() => _InfoCheckoutState();
@@ -23,7 +25,14 @@ class _InfoCheckoutState extends State<InfoCheckout> {
     final firebaseStorageProvider =
     Provider.of<FirebaseStorageProvider>(context);
 
-
+    int totalPrice() {
+      int totalPrice = 0;
+      totalPrice += widget.showTime!.price * widget.listSeatSelected.length;
+      widget.comboInvoices.forEach((element) {
+        totalPrice += element.combo!.price * element.quantity;
+      });
+      return totalPrice;
+    }
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -82,8 +91,8 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                   widget.showTime!.movie!.name.toUpperCase(),
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: getProportionateScreenWidth(24),
-                    letterSpacing: 2,
+                    fontSize: getProportionateScreenWidth(26),
+                    letterSpacing: 1.25,
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
@@ -98,8 +107,8 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                       "Rạp: ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(20),
-                        letterSpacing: 2,
+                        fontSize: getProportionateScreenWidth(22),
+                        letterSpacing: 1.25,
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
@@ -111,8 +120,8 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                       "${widget.showTime!.room!.branch.name} | ${widget.showTime!.room!.name}",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(20),
-                        letterSpacing: 2,
+                        fontSize: getProportionateScreenWidth(22),
+                        letterSpacing: 1.25,
                         color: Colors.black,
                       ),
                     ),
@@ -128,8 +137,8 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                       "Suất chiếu: ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(20),
-                        letterSpacing: 2,
+                        fontSize: getProportionateScreenWidth(22),
+                        letterSpacing: 1.25,
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
@@ -141,8 +150,8 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                       "${DateFormat('dd-MM-yyyy').format(widget.showTime!.startTime!)} | ${DateFormat('HH:mm').format(widget.showTime!.startTime!)}",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(20),
-                        letterSpacing: 2,
+                        fontSize: getProportionateScreenWidth(22),
+                        letterSpacing: 1.25,
                         color: Colors.black,
                       ),
                     ),
@@ -159,8 +168,8 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                       "Ghế: ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(20),
-                        letterSpacing: 2,
+                        fontSize: getProportionateScreenWidth(22),
+                        letterSpacing: 1.25,
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
@@ -180,11 +189,59 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                         overflow: TextOverflow.ellipsis,
                         textWidthBasis: TextWidthBasis.longestLine,
                         style: TextStyle(
-                          fontSize: getProportionateScreenWidth(18),
-                          letterSpacing: 2,
+                          fontSize: getProportionateScreenWidth(22),
+                          letterSpacing: 1.25,
                           color: Colors.black,
                           fontWeight: FontWeight.w500,
                         ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Combo khuyến mãi: ",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: getProportionateScreenWidth(22),
+                        letterSpacing: 1.25,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 2,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ...widget.comboInvoices.map((e) => e.quantity != 0? Container(
+                            margin: const EdgeInsets.only(top: 5),
+                            child: Text(
+                              "${e.combo!.name} x ${e.quantity}",
+                              textAlign: TextAlign.start,
+                              softWrap: true,
+                              maxLines: 10,
+                              overflow: TextOverflow.ellipsis,
+                              textWidthBasis: TextWidthBasis.longestLine,
+                              style: TextStyle(
+                                fontSize: getProportionateScreenWidth(22),
+                                letterSpacing: 1.25,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ):Container()),
+                        ],
                       ),
                     ),
                   ],
@@ -199,8 +256,8 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                       "Hình thức: ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(20),
-                        letterSpacing: 2,
+                        fontSize: getProportionateScreenWidth(22),
+                        letterSpacing: 1.25,
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
@@ -211,8 +268,8 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                     Text(
                       StringUtil.changeMovieFormat(widget.showTime!.movieFormat),
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(20),
-                        letterSpacing: 2,
+                        fontSize: getProportionateScreenWidth(22),
+                        letterSpacing: 1.25,
                         color: Colors.black,
                       ),
                     ),
@@ -228,8 +285,8 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                       "Tổng giá: ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(20),
-                        letterSpacing: 2,
+                        fontSize: getProportionateScreenWidth(22),
+                        letterSpacing: 1.25,
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
@@ -238,10 +295,10 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                       width: 2,
                     ),
                     Text(
-                      "${widget.showTime!.price * widget.listSeatSelected.length} VND",
+                      NumberFormat.currency(locale: 'vi').format(totalPrice()),
                       style: TextStyle(
                         fontSize: getProportionateScreenWidth(26),
-                        letterSpacing: 2,
+                        letterSpacing: 1.25,
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold,
                       ),

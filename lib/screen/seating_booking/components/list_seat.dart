@@ -1,31 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/invoice.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/room.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/show_time.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/seat.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/ticket.dart';
 import 'package:movie_ticket_booking_flutter_nlu/widget/hover_builder.dart';
 
 import '../../../config/size_config.dart';
 
 class ListSeat extends StatefulWidget {
-  final Room? room;
-  final void Function(List<Seat>) setSeats;
+  final ShowTime? showtime;
+  final List<Seat> listSeatSelected;
+  final void Function(Seat) setSeat;
 
-  ListSeat({Key? key, required this.room, required this.setSeats})
-      : super(key: key);
+  ListSeat({Key? key, required this.showtime, required this.listSeatSelected, required this.setSeat}) : super(key: key);
 
   @override
   State<ListSeat> createState() => _ListSeatState();
 }
 
 class _ListSeatState extends State<ListSeat> {
-  List<Seat> seatsSelected = [];
   List<String> listRowAlphabet = [];
+  late final Room room;
+  Set<Ticket> tickets = {};
 
   final scrollController = ScrollController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    room = widget.showtime!.room!;
+
+    widget.showtime!.invoices.where(
+            (invoice) => invoice.paymentStatus == PaymentStatus.success)
+        .toList().forEach((invoice) {
+      invoice.tickets.forEach((ticket) {
+        tickets.add(ticket);
+      });
+    });
+  }
 
   // @override
   void initListRowAlphabet() {
     listRowAlphabet = [];
-    for (int i = 0; i < widget.room!.row; i++) {
+    for (int i = 0; i < widget.showtime!.room!.row; i++) {
       listRowAlphabet.add(String.fromCharCode(65 + i));
     }
   }
@@ -41,16 +60,12 @@ class _ListSeatState extends State<ListSeat> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: List.generate(
-              widget.room!.row,
+              room.row,
               (indexRow) => Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: List.generate(widget.room!.col, (indexCol) {
-                      Seat seat = widget.room!.seats
-                          .where((element) =>
-                              element.row == indexRow &&
-                              element.col == indexCol + 1)
-                          .first;
+                    children: List.generate(room.col, (indexCol) {
+                      Seat seat = room.seats.where((element) => element.row - 1 == indexRow && element.col == indexCol + 1).first;
                       if (seat.isSeat) {
                         return Container(
                           margin: const EdgeInsets.only(
@@ -65,37 +80,46 @@ class _ListSeatState extends State<ListSeat> {
                             borderRadius: BorderRadius.circular(5),
                           ),
                           child: Builder(builder: (context) {
-                            return InkWell(
-                              onTap: () {
-                                setState(() {
-                                  seatsSelected.contains(seat)
-                                      ? seatsSelected.remove(seat)
-                                      : seatsSelected.add(seat);
-                                  widget.setSeats(seatsSelected);
-                                });
-                              },
-                              child: HoverBuilder(builder: (isHovering) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: isHovering ||
-                                            seatsSelected.contains(seat)
-                                        ? Colors.green
-                                        : const Color.fromRGBO(42, 60, 109, 1),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      seat.code,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize:
-                                            getProportionateScreenWidth(15),
+                            return tickets.map((e) => e.seat).contains(seat)
+                                ? Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        seat.code,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: getProportionateScreenWidth(15),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              }),
-                            );
+                                  )
+                                : InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        widget.setSeat(seat);
+                                      });
+                                    },
+                                    child: HoverBuilder(builder: (isHovering) {
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(5),
+                                          color: isHovering || widget.listSeatSelected.contains(seat) ? Colors.green : const Color.fromRGBO(42, 60, 109, 1),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            seat.code,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: getProportionateScreenWidth(15),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                                  );
                           }),
                         );
                       } else {

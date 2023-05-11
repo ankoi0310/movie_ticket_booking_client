@@ -8,20 +8,22 @@ import '../../../model/show_time.dart';
 
 class BodySeat extends StatefulWidget {
   final ShowTime? showTime;
+  final List<Seat> listSeatSelected;
 
-  const BodySeat({Key? key, required this.showTime}) : super(key: key);
+  const BodySeat({Key? key, required this.showTime, required this.listSeatSelected}) : super(key: key);
 
   @override
   State<BodySeat> createState() => _BodySeatState();
 }
 
 class _BodySeatState extends State<BodySeat> {
-  final List<Seat> seatsSelected = [];
-
-  setSeats(List<Seat> seats) {
+  setSeat(Seat seat) {
     setState(() {
-      seatsSelected.clear();
-      seatsSelected.addAll(seats);
+      if (widget.listSeatSelected.contains(seat)) {
+        widget.listSeatSelected.remove(seat);
+      } else {
+        widget.listSeatSelected.add(seat);
+      }
     });
   }
 
@@ -111,8 +113,9 @@ class _BodySeatState extends State<BodySeat> {
                     height: 500,
                     child: Center(
                       child: ListSeat(
-                        room: widget.showTime!.room,
-                          setSeats: setSeats,
+                        showtime: widget.showTime,
+                        listSeatSelected: widget.listSeatSelected,
+                        setSeat: setSeat,
                       ),
                     ),
                   ),
@@ -242,8 +245,8 @@ class _BodySeatState extends State<BodySeat> {
             Expanded(
               flex: 3,
               child: ShowtimeInfo(
-                  showTime: widget.showTime,
-                seatsSelected: seatsSelected,
+                showTime: widget.showTime,
+                seatsSelected: widget.listSeatSelected,
               ),
             )
           ],

@@ -22,7 +22,7 @@ class Seat extends General {
   int col;
   int rowIndex;
   int row;
-  SeatType type;
+  SeatType seatType;
   Room? room;
 
   Seat({
@@ -33,7 +33,7 @@ class Seat extends General {
     required this.col,
     required this.rowIndex,
     required this.row,
-    required this.type,
+    required this.seatType,
     required this.room,
     required GeneralState state,
     required DateTime createdDate,
@@ -65,7 +65,7 @@ class Seat extends General {
         col = 0,
         rowIndex = 0,
         row = 0,
-        type = SeatType.normal,
+        seatType = SeatType.normal,
         room = Room.empty(),
         super.empty();
 
@@ -78,7 +78,7 @@ class Seat extends General {
       col: json['col'],
       rowIndex: json['rowIndex'],
       row: json['row'],
-      type: SeatType.fromValue(json['type']),
+      seatType: SeatType.fromValue(json['seatType']),
       room: json['room'] == null ? null : Room.fromJson(json['room']),
       state: GeneralState.fromValue(json['state']),
       createdDate: DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['createdDate']),
@@ -99,7 +99,7 @@ class Seat extends General {
       'col': col,
       'rowIndex': rowIndex,
       'row': row,
-      'type': type.value,
+      'seatType': seatType.value,
       'room': room == null ? null : room!.toJson(),
       'state': state.value,
       'createdDate': DateFormat('dd-MM-yyyy HH:mm:ss').format(createdDate),
@@ -126,7 +126,7 @@ class Seat extends General {
       col: col,
       rowIndex: rowIndex,
       row: row,
-      type: type,
+      seatType: type,
       room: null,
       state: GeneralState.active,
       createdDate: DateTime.now(),
