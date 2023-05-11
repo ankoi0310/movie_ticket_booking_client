@@ -1,3 +1,5 @@
+import 'package:movie_ticket_booking_flutter_nlu/model/combo.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/combo_item.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
 
 class StringUtil {
@@ -14,5 +16,14 @@ class StringUtil {
       default:
         return "2D";
     }
+  }
+
+ static changeToDescriptionCombo(Combo combo) {
+    String description = "";
+    for (ComboItem comboItem in combo.comboItems) {
+      description += "${comboItem.product!.name} x ${comboItem.quantity}, ";
+    }
+    description = description.substring(0, description.length - 2);
+    return description;
   }
 }

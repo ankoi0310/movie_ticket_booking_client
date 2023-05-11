@@ -5,7 +5,7 @@ import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
 class InformationTicketSelectedProvider extends ChangeNotifier {
   Branch? _selectBranch;
   Movie? _selectedMovie;
-  DateTime? _selectedDate;
+  DateTime _selectedDate = DateTime.now();
 
   Branch? get selectedBranch => _selectBranch;
 
@@ -24,7 +24,7 @@ class InformationTicketSelectedProvider extends ChangeNotifier {
   }
 
   void setSelectedDate(DateTime? selectedDate) {
-    _selectedDate = selectedDate;
+    _selectedDate = selectedDate!;
     notifyListeners();
   }
 }
