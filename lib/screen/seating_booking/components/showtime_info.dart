@@ -265,7 +265,6 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                               .map((e) => e.toJson())
                               .toList(),
                         });
-                        print('jsonObject: $jsonObject');
                         routerDelegate.setPathName(PublicRouteData.checkout.name,
                             json: jsonObject);
                       },

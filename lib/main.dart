@@ -2,6 +2,7 @@ import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 import 'package:movie_ticket_booking_flutter_nlu/movie_ticket_booking_application.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/api/branch_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/api/checkout_provider.dart';
+import 'package:movie_ticket_booking_flutter_nlu/provider/api/combo_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/api/show_time_provider.dart';
 
 void main() async {
@@ -31,6 +32,7 @@ void main() async {
           ChangeNotifierProvider(create: (_) => ShowTimeProvider()),
           ChangeNotifierProvider(create: (_) => BranchProvider()),
           ChangeNotifierProvider(create: (_) => CheckoutProvider()),
+          ChangeNotifierProvider(create: (_) => ComboProvider()),
         ],
         child: MovieTicketBookingApplication(isLoggedIn: isLoggedIn),
       ),

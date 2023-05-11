@@ -140,10 +140,14 @@ class _ListShowTimeMovieState extends State<ListShowTimeMovie> {
                                                 (showtime) => HoverBuilder(builder: (isHovering) {
                                                   return InkWell(
                                                     onTap: () {
-                                                      appRouterDelegate.setPathName(PublicRouteData.seat.name, json: jsonEncode(showtime.toJson()));
+                                                      appRouterDelegate.setPathName(PublicRouteData.seat.name,
+                                                          json: jsonEncode({
+                                                            'showtime': showtime.toJson(),
+                                                            'listSeatSelected': [],
+                                                          }));
                                                     },
                                                     child: Container(
-                                                        margin: EdgeInsets.only(right: getProportionateScreenWidth(10)),
+                                                        margin: EdgeInsets.only(right: getProportionateScreenWidth(20)),
                                                         padding: EdgeInsets.symmetric(
                                                           horizontal: getProportionateScreenWidth(20),
                                                           vertical: getProportionateScreenWidth(10),
