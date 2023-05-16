@@ -1,5 +1,6 @@
+import 'package:flutter_social_button/flutter_social_button.dart';
+import 'package:movie_ticket_booking_flutter_nlu/component/custom_flutter_toast.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
-import 'package:movie_ticket_booking_flutter_nlu/model/social_icon.dart';
 import 'package:movie_ticket_booking_flutter_nlu/widget/hover_builder.dart';
 
 class Body extends StatefulWidget {
@@ -21,11 +22,73 @@ class _BodyState extends State<Body> {
 
   late CustomFlutterToast toast;
 
+  Map<String, dynamic>? _userData;
+  AccessToken? _accessToken;
+  bool _checking = true;
+
   @override
   void initState() {
     super.initState();
     toast = CustomFlutterToast();
     toast.init(AppRouterDelegate.instance.navigatorKey.currentContext!);
+    _checkIfIsLogged();
+  }
+
+  Future<void> _checkIfIsLogged() async {
+    final accessToken = await FacebookAuth.instance.accessToken;
+    setState(() {
+      _checking = false;
+    });
+    if (accessToken != null) {
+      print("is Logged:::: ${prettyPrint(accessToken.toJson())}");
+      // now you can call to  FacebookAuth.instance.getUserData();
+      final userData = await FacebookAuth.instance.getUserData();
+      // final userData = await FacebookAuth.instance.getUserData(fields: "email,birthday,friends,gender,link");
+      _accessToken = accessToken;
+      setState(() {
+        _userData = userData;
+      });
+    }
+  }
+
+  String prettyPrint(Map json) {
+    JsonEncoder encoder = const JsonEncoder.withIndent('  ');
+    String pretty = encoder.convert(json);
+    return pretty;
+  }
+
+  void _printCredentials() {
+    print(
+      prettyPrint(_accessToken!.toJson()),
+    );
+  }
+
+  Future<void> _login() async {
+    final LoginResult result = await FacebookAuth.i.login(); // by default we request the email and the public profile
+
+    // loginBehavior is only supported for Android devices, for ios it will be ignored
+    // final result = await FacebookAuth.instance.login(
+    //   permissions: ['email', 'public_profile', 'user_birthday', 'user_friends', 'user_gender', 'user_link'],
+    //   loginBehavior: LoginBehavior
+    //       .DIALOG_ONLY, // (only android) show an authentication dialog instead of redirecting to facebook app
+    // );
+
+    if (result.status == LoginStatus.success) {
+      _accessToken = result.accessToken;
+      _printCredentials();
+      // get the user data
+      // by default we get the userId, email,name and picture
+      final userData = await FacebookAuth.instance.getUserData();
+      // final userData = await FacebookAuth.instance.getUserData(fields: "email,birthday,friends,gender,link");
+      _userData = userData;
+    } else {
+      print(result.status);
+      print(result.message);
+    }
+
+    setState(() {
+      _checking = false;
+    });
   }
 
   @override
@@ -289,9 +352,13 @@ class _BodyState extends State<Body> {
                       SizedBox(height: getProportionateScreenHeight(20)),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: List.from(
-                          socialIcons.map((socialIcon) => SocialIconTile(socialIcon: socialIcon)),
-                        ),
+                        children: [
+                          FlutterSocialButton(
+                            onTap: _login,
+                            mini: true,
+                            buttonType: ButtonType.facebook, // Button type for different type buttons
+                          ),
+                        ],
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(

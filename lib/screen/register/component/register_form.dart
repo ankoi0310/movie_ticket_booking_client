@@ -1,4 +1,6 @@
 import 'package:intl/intl.dart';
+import 'package:movie_ticket_booking_flutter_nlu/component/custom_flutter_toast.dart';
+import 'package:movie_ticket_booking_flutter_nlu/component/social_icon_tile.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/social_icon.dart';
 import 'package:movie_ticket_booking_flutter_nlu/widget/hover_builder.dart';

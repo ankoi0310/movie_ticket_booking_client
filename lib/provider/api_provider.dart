@@ -31,7 +31,7 @@ class ApiProvider {
 
   Future<HttpResponse> get(
     uri, {
-    required headers,
+    headers,
   }) async {
     final response = await http.get(
       uri,
@@ -45,7 +45,7 @@ class ApiProvider {
 
   Future<HttpResponse> put(
     uri, {
-    required headers,
+    headers,
     required body,
   }) async {
     final response = await http.put(
@@ -61,7 +61,7 @@ class ApiProvider {
 
   Future<HttpResponse> delete(
     uri, {
-    required headers,
+    headers,
   }) async {
     final response = await http.delete(
       uri,

@@ -1,4 +1,3 @@
-
 import 'package:intl/intl.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/branch.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/general.dart';
@@ -44,7 +43,6 @@ class Room extends General {
   RoomType type;
   List<Seat> seats = [];
 
-
   Room({
     required int id,
     required this.name,
@@ -59,12 +57,7 @@ class Room extends General {
     required DateTime createdDate,
     required DateTime modifiedDate,
     required DateTime? deletedDate,
-  }) : super(
-            id: id,
-            state: state,
-            createdDate: createdDate,
-            modifiedDate: modifiedDate,
-            deletedDate: deletedDate);
+  }) : super(id: id, state: state, createdDate: createdDate, modifiedDate: modifiedDate, deletedDate: deletedDate);
 
   Room.empty()
       : name = '',
@@ -90,11 +83,8 @@ class Room extends General {
       type: RoomType.fromValue(json['type']),
       state: GeneralState.fromValue(json['state']),
       createdDate: DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['createdDate']),
-      modifiedDate:
-      DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['modifiedDate']),
-      deletedDate: json['deletedDate'] != null
-          ? DateTime.parse(json['deletedDate'])
-          : null,
+      modifiedDate: DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['modifiedDate']),
+      deletedDate: json['deletedDate'] != null ? DateTime.parse(json['deletedDate']) : null,
     );
   }
 
@@ -112,9 +102,7 @@ class Room extends General {
       'state': state.value,
       'createdDate': DateFormat('dd-MM-yyyy HH:mm:ss').format(createdDate),
       'modifiedDate': DateFormat('dd-MM-yyyy HH:mm:ss').format(modifiedDate),
-      'deletedDate': deletedDate != null
-          ? DateFormat('dd-MM-yyyy HH:mm:ss').format(deletedDate!)
-          : null,
+      'deletedDate': deletedDate != null ? DateFormat('dd-MM-yyyy HH:mm:ss').format(deletedDate!) : null,
     };
   }
 }

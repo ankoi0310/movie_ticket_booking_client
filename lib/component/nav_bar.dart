@@ -17,23 +17,14 @@ class _NavBarState extends State<NavBar> {
   final _appRouterDelegate = AppRouterDelegate.instance;
   final _authenticationService = AuthenticationService.instance;
 
+  late bool isMobile;
+
   bool? isLoggedIn;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    isMobile = Responsive.isMobile(context);
     final searchingProvider = Provider.of<SearchingProvider>(context);
 
     return AppBar(
@@ -43,7 +34,10 @@ class _NavBarState extends State<NavBar> {
       scrolledUnderElevation: 1,
       title: Container(
         width: SizeConfig.screenWidth * 0.2,
-        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(50), vertical: getProportionateScreenWidth(25)),
+        padding: EdgeInsets.symmetric(
+          horizontal: getProportionateScreenWidth(50),
+          vertical: getProportionateScreenWidth(25),
+        ),
         child: Align(
           alignment: Alignment.centerLeft,
           child: Image.asset(
@@ -57,7 +51,10 @@ class _NavBarState extends State<NavBar> {
       actions: [
         Container(
           width: SizeConfig.screenWidth * 0.8,
-          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(50), vertical: getProportionateScreenWidth(15)),
+          padding: EdgeInsets.symmetric(
+            horizontal: getProportionateScreenWidth(50),
+            vertical: getProportionateScreenWidth(15),
+          ),
           child: Row(
             children: [
               Expanded(
@@ -77,7 +74,7 @@ class _NavBarState extends State<NavBar> {
                             child: Center(
                               heightFactor: 1.5,
                               child: Text(
-                                menuItems[index].title.toUpperCase(),
+                                menuItems[index].label.toUpperCase(),
                                 style: TextStyle(
                                   color: isHovering ? Theme.of(context).primaryColor : Colors.black,
                                   fontSize: getProportionateScreenWidth(20),

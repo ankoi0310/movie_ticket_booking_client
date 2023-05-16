@@ -1,8 +1,4 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/seat.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/show_time.dart';
@@ -12,9 +8,7 @@ class ShowtimeInfo extends StatefulWidget {
   final ShowTime? showTime;
   final List<Seat> seatsSelected;
 
-  const ShowtimeInfo(
-      {Key? key, required this.showTime, required this.seatsSelected})
-      : super(key: key);
+  const ShowtimeInfo({Key? key, required this.showTime, required this.seatsSelected}) : super(key: key);
 
   @override
   State<ShowtimeInfo> createState() => _ShowtimeInfoState();
@@ -23,8 +17,7 @@ class ShowtimeInfo extends StatefulWidget {
 class _ShowtimeInfoState extends State<ShowtimeInfo> {
   @override
   Widget build(BuildContext context) {
-    final firebaseStorageProvider =
-        Provider.of<FirebaseStorageProvider>(context);
+    final firebaseStorageProvider = Provider.of<FirebaseStorageProvider>(context);
     final AppRouterDelegate routerDelegate = AppRouterDelegate.instance;
 
     return Row(
@@ -43,8 +36,7 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 FutureBuilder(
-                    future: firebaseStorageProvider
-                        .getImages([widget.showTime!.movie!.imageHorizontal]),
+                    future: firebaseStorageProvider.getImages([widget.showTime!.movie!.imageHorizontal]),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return Container(
@@ -52,10 +44,7 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               image: DecorationImage(
-                                image: Image.memory(
-                                        firebaseStorageProvider.mapImage[widget
-                                            .showTime!.movie!.imageHorizontal]!)
-                                    .image,
+                                image: Image.memory(firebaseStorageProvider.mapImage[widget.showTime!.movie!.imageHorizontal]!).image,
                                 fit: BoxFit.fill,
                               )),
                         );
@@ -172,10 +161,7 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                     ),
                     Flexible(
                       child: Text(
-                        widget.seatsSelected
-                            .map((e) => e.code)
-                            .toList()
-                            .join(", "),
+                        widget.seatsSelected.map((e) => e.code).toList().join(", "),
                         textAlign: TextAlign.start,
                         softWrap: true,
                         maxLines: 10,
@@ -211,8 +197,7 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                       width: 2,
                     ),
                     Text(
-                      StringUtil.changeMovieFormat(
-                          widget.showTime!.movieFormat),
+                      StringUtil.changeMovieFormat(widget.showTime!.movieFormat),
                       style: TextStyle(
                         fontSize: getProportionateScreenWidth(20),
                         letterSpacing: 2,
@@ -261,12 +246,9 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                       onTap: () {
                         String jsonObject = jsonEncode({
                           "showTime": widget.showTime!.toJson(),
-                          "seatsSelected": widget.seatsSelected
-                              .map((e) => e.toJson())
-                              .toList(),
+                          "seatsSelected": widget.seatsSelected.map((e) => e.toJson()).toList(),
                         });
-                        routerDelegate.setPathName(PublicRouteData.checkout.name,
-                            json: jsonObject);
+                        routerDelegate.setPathName(PublicRouteData.checkout.name, json: jsonObject);
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(

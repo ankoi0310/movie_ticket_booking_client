@@ -1,1 +1,1 @@
-const defaultImageUrl = 'https://image.tmdb.org/t/p/w500/';
+const defaultImageUrl = 'https://robohash.org/';

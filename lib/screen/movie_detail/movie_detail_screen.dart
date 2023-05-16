@@ -1,13 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
-import 'package:movie_ticket_booking_flutter_nlu/provider/api/movie_provider.dart';
-import 'package:movie_ticket_booking_flutter_nlu/provider/firebase_storage_provider.dart';
-import 'package:movie_ticket_booking_flutter_nlu/provider/loading_provider.dart';
+import 'package:movie_ticket_booking_flutter_nlu/core.dart';
+import 'package:movie_ticket_booking_flutter_nlu/handler/http_response.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/movie/components/breadcrumb.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/movie_detail/components/description_movie_detail.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/movie_detail/components/trailer_video.dart';
-import 'package:provider/provider.dart';
 
 class MovieDetailScreen extends StatefulWidget {
   final String slug;
@@ -30,8 +26,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
     // TODO: implement initState
     super.initState();
     movieProvider = Provider.of<MovieProvider>(context, listen: false);
-    firebaseProvider =
-        Provider.of<FirebaseStorageProvider>(context, listen: false);
+    firebaseProvider = Provider.of<FirebaseStorageProvider>(context, listen: false);
     loadingProvider = Provider.of<LoadingProvider>(context, listen: false);
   }
 
@@ -49,11 +44,10 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
       future: !isCallApi ? movieProvider.getMovieBySlug(widget.slug) : null,
       builder: (context, snapshotMovie) {
         if (snapshotMovie.hasData) {
+          HttpResponse response = snapshotMovie.data as HttpResponse;
+          Movie movie = Movie.fromJson(response.data);
           return FutureBuilder(
-            future: firebaseProvider.getImages([
-              movieProvider.movie!.imageVertical,
-              movieProvider.movie!.imageHorizontal
-            ]),
+            future: firebaseProvider.getImages([movie.imageVertical, movie.imageHorizontal]),
             builder: (context, snapshotImage) {
               if (snapshotImage.hasData) {
                 Future.delayed(Duration.zero, () {
@@ -69,14 +63,12 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           children: [
                             const Breadcrumb(
                               title: "Chi tiết phim",
-                              imageUrl:
-                                  "assets/image/breadcrumb_movie_screen.png",
+                              imageUrl: "assets/image/breadcrumb_movie_screen.png",
                               description: "Mô tả chi tiết về bộ phim",
                             ),
                             DescriptionMovieDetail(
-                              movie: movieProvider.movie,
-                              image: firebaseProvider
-                                  .mapImage[movieProvider.movie!.imageVertical],
+                              movie: movie,
+                              image: firebaseProvider.mapImage[movie.imageVertical],
                               onTapTrailerVideo: _onTapTrailerVideo,
                             ),
                           ],
@@ -101,26 +93,17 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                           width: SizeConfig.screenWidth,
                                           height: SizeConfig.screenHeight,
                                           decoration: BoxDecoration(
-                                            color:
-                                                Colors.black.withOpacity(0.5),
+                                            color: Colors.black.withOpacity(0.5),
                                             boxShadow: [
-                                              BoxShadow(
-                                                  color: Colors.black
-                                                      .withOpacity(0.25),
-                                                  offset: Offset(0, 4),
-                                                  blurRadius: 6,
-                                                  spreadRadius: 5),
+                                              BoxShadow(color: Colors.black.withOpacity(0.25), offset: Offset(0, 4), blurRadius: 6, spreadRadius: 5),
                                             ],
                                           )),
                                       Container(
                                         width: SizeConfig.screenWidth * 0.7,
                                         height: SizeConfig.screenHeight * 0.7,
                                         child: TrailerVideo(
-                                          trailerVideoUrl:
-                                              movieProvider.movie!.trailerUrl,
-                                          thumbnail: firebaseProvider.mapImage[
-                                              movieProvider
-                                                  .movie!.imageHorizontal],
+                                          trailerVideoUrl: movie.trailerUrl,
+                                          thumbnail: firebaseProvider.mapImage[movie.imageHorizontal],
                                         ),
                                       ),
                                     ],

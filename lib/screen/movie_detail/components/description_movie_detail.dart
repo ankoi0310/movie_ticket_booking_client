@@ -1,5 +1,5 @@
-import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
 import 'package:movie_ticket_booking_flutter_nlu/widget/duration_format.dart';
 import 'package:movie_ticket_booking_flutter_nlu/widget/genres_format.dart';
 import 'package:movie_ticket_booking_flutter_nlu/widget/star_rating.dart';
@@ -114,7 +114,8 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                                       letterSpacing: 1.1,
                                     )),
                                 const SizedBox(width: 10),
-                                StarRating(widget.movie!.rating, MainAxisAlignment.start, getProportionateScreenWidth(30)),
+                                StarRating(
+                                    rating: widget.movie!.rating, mainAlignment: MainAxisAlignment.start, fontSize: getProportionateScreenWidth(30)),
                               ],
                             ),
                           ),

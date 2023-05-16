@@ -7,7 +7,10 @@ class UserLoginRequest {
 
   String password;
 
-  UserLoginRequest({required this.email, required this.password});
+  UserLoginRequest({
+    required this.email,
+    required this.password,
+  });
 
   factory UserLoginRequest.fromJson(Map<String, dynamic> json) {
     return UserLoginRequest(
@@ -35,14 +38,27 @@ class UserLoginResponse {
   @HiveField(2)
   String token;
 
-  UserLoginResponse(
-      {required this.id, required this.email, required this.token});
+  @HiveField(3)
+  String fullName;
+
+  @HiveField(4)
+  String avatar;
+
+  UserLoginResponse({
+    required this.id,
+    required this.email,
+    required this.token,
+    required this.fullName,
+    required this.avatar,
+  });
 
   factory UserLoginResponse.fromJson(Map<String, dynamic> json) {
     return UserLoginResponse(
       id: json['userId'],
       email: json['email'],
       token: json['token'],
+      fullName: json['fullName'],
+      avatar: json['avatar'],
     );
   }
 
@@ -51,6 +67,8 @@ class UserLoginResponse {
       'id': id,
       'email': email,
       'token': token,
+      'fullName': fullName,
+      'avatar': avatar,
     };
   }
 }

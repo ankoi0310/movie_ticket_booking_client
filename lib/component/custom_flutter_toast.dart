@@ -38,10 +38,8 @@ class CustomFlutterToast {
     fToast.showToast(
       child: toast,
       gravity: ToastGravity.TOP_RIGHT,
-      toastDuration: const Duration(seconds: 2),
+      toastDuration: Duration(seconds: success ? 2 : 5),
       positionedToastBuilder: (context, child) {
-        // top = status bar height + 16.0
-        // left = 16.0
         return Positioned(
           top: getProportionateScreenHeight(16),
           right: getProportionateScreenWidth(16),
