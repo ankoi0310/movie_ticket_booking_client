@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 import 'package:movie_ticket_booking_flutter_nlu/dto/payment/momo_response.dart';
+import 'package:movie_ticket_booking_flutter_nlu/handler/http_response.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/Combo.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/invoice_combo.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/seat.dart';
@@ -29,7 +31,7 @@ class CheckoutScreen extends StatefulWidget {
 class _CheckoutScreenState extends State<CheckoutScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final ShowTime? showTime;
-  final InvoiceCreate invoiceCreate = InvoiceCreate.empty();
+    final InvoiceCreate invoiceCreate = InvoiceCreate.empty();
   final List<Seat> listSeatSelected = [];
 
   @override
@@ -53,6 +55,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final appRouterDelegate = AppRouterDelegate.instance;
     final comboProvider = Provider.of<ComboProvider>(context, listen: false);
 
+
+
     int totalPrice() {
       int totalPrice = 0;
       totalPrice += showTime!.price * listSeatSelected.length;
@@ -67,7 +71,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
       invoiceCreate.totalPrice = totalPrice();
 
-      MomoResponse momoResponse = await checkoutProvider.createInvoice(invoice);
+      HttpResponse response = await checkoutProvider.createInvoice(invoice);
+      MomoResponse momoResponse = MomoResponse.fromJson(response.data);
       if (momoResponse.resultCode == 0) {
         if (await canLaunchUrl(Uri.parse(momoResponse.payUrl))) {
           loadingProvider.setLoading(false);
@@ -94,110 +99,114 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               imageUrl: "assets/image/breadcrumb_movie_screen.png",
               description: "Tất cả các phim đang chiếu và sắp chiếu tại rạp phim Cinema StarLineX Entertainment",
             ),
-            FutureBuilder(
-                future: comboProvider.getCombos(),
-                builder: (context, snapshot) {
-                  return snapshot.hasData
-                      ? Row(
-                          children: [
-                            Expanded(
-                              flex: 9,
-                              child: Column(
-                                children: [
-                                  FormCheckout(
-                                    formKey: _formKey,
-                                    invoice: invoiceCreate,
-                                    combos: comboProvider.combos,
-                                      setCombo: setCombo,
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 25,
-                                      horizontal: 50,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        // button back
-                                        InkWell(
-                                          onTap: () {
-                                            appRouterDelegate.setPathName(PublicRouteData.seat.name,
-                                                json: jsonEncode({
-                                                  'showtime': showTime!.toJson(),
-                                                  'listSeatSelected': listSeatSelected.map((e) => e.toJson()).toList(),
-                                                }));
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 10,
-                                              horizontal: 20,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: Theme.of(context).primaryColor,
-                                              borderRadius: BorderRadius.circular(10),
-                                            ),
-                                            child: const Text(
-                                              "Quay lại",
-                                              style: TextStyle(
-                                                fontSize: 17,
-                                                letterSpacing: 2,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
+            Builder(
+              builder: (context) {
+                return FutureBuilder(
+                    future: comboProvider.getCombos(),
+                    builder: (context, snapshot) {
+                      return snapshot.hasData
+                          ? Row(
+                              children: [
+                                Expanded(
+                                  flex: 9,
+                                  child: Column(
+                                    children: [
+                                      FormCheckout(
+                                        formKey: _formKey,
+                                        invoice: invoiceCreate,
+                                        combos: comboProvider.combos,
+                                          setCombo: setCombo,
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 25,
+                                          horizontal: 50,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            // button back
+                                            InkWell(
+                                              onTap: () {
+                                                appRouterDelegate.setPathName(PublicRouteData.seat.name,
+                                                    json: jsonEncode({
+                                                      'showtime': showTime!.toJson(),
+                                                      'listSeatSelected': listSeatSelected.map((e) => e.toJson()).toList(),
+                                                    }));
+                                              },
+                                              child: Container(
+                                                padding: const EdgeInsets.symmetric(
+                                                  vertical: 10,
+                                                  horizontal: 20,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: Theme.of(context).primaryColor,
+                                                  borderRadius: BorderRadius.circular(10),
+                                                ),
+                                                child: const Text(
+                                                  "Quay lại",
+                                                  style: TextStyle(
+                                                    fontSize: 17,
+                                                    letterSpacing: 2,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 2,
-                                        ),
-                                        // button confirm
-                                        InkWell(
-                                          onTap: () async {
-                                            if (_formKey.currentState!.validate()) {
-                                              _formKey.currentState!.save();
-                                              await checkout(invoiceCreate);
-                                            }
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 10,
-                                              horizontal: 20,
+                                            const SizedBox(
+                                              width: 2,
                                             ),
-                                            decoration: BoxDecoration(
-                                              color: Theme.of(context).primaryColor,
-                                              borderRadius: BorderRadius.circular(10),
-                                            ),
-                                            child: const Text(
-                                              "Thanh toán",
-                                              style: TextStyle(
-                                                fontSize: 17,
-                                                letterSpacing: 2,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
+                                            // button confirm
+                                            InkWell(
+                                              onTap: () async {
+                                                if (_formKey.currentState!.validate()) {
+                                                  _formKey.currentState!.save();
+                                                  await checkout(invoiceCreate);
+                                                }
+                                              },
+                                              child: Container(
+                                                padding: const EdgeInsets.symmetric(
+                                                  vertical: 10,
+                                                  horizontal: 20,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: Theme.of(context).primaryColor,
+                                                  borderRadius: BorderRadius.circular(10),
+                                                ),
+                                                child: const Text(
+                                                  "Thanh toán",
+                                                  style: TextStyle(
+                                                    fontSize: 17,
+                                                    letterSpacing: 2,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
                                               ),
                                             ),
-                                          ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: InfoCheckout(
-                                showTime: showTime,
-                                listSeatSelected: listSeatSelected,
-                                comboInvoices: invoiceCreate.invoiceCombos,
-                              ),
-                            ),
-                          ],
-                        )
-                      : const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                }),
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: InfoCheckout(
+                                    showTime: showTime,
+                                    listSeatSelected: listSeatSelected,
+                                    comboInvoices: invoiceCreate.invoiceCombos,
+                                  ),
+                                ),
+                              ],
+                            )
+                          : const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                    });
+              }
+            ),
             const SizedBox(
               height: 20,
             ),

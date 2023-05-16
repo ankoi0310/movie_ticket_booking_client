@@ -1,3 +1,4 @@
+
 import 'package:intl/intl.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/branch.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/general.dart';
@@ -39,9 +40,12 @@ class Room extends General {
   int row;
   int col;
   int totalSeat;
+  List<int> laneRows;
+  List<int> laneCols;
   RoomState roomState;
   RoomType type;
   List<Seat> seats = [];
+
 
   Room({
     required int id,
@@ -49,6 +53,8 @@ class Room extends General {
     required this.branch,
     required this.row,
     required this.col,
+    required this.laneRows,
+    required this.laneCols,
     required this.totalSeat,
     required this.seats,
     required this.roomState,
@@ -57,18 +63,32 @@ class Room extends General {
     required DateTime createdDate,
     required DateTime modifiedDate,
     required DateTime? deletedDate,
-  }) : super(id: id, state: state, createdDate: createdDate, modifiedDate: modifiedDate, deletedDate: deletedDate);
+  }) : super(
+      id: id,
+      state: state,
+      createdDate: createdDate,
+      modifiedDate: modifiedDate,
+      deletedDate: deletedDate);
 
   Room.empty()
       : name = '',
         branch = Branch.empty(),
         row = 0,
         col = 0,
+        laneRows = [],
+        laneCols = [],
         totalSeat = 0,
         seats = [],
         type = RoomType.normal,
         roomState = RoomState.available,
         super.empty();
+  @override
+  bool operator ==(other) {
+    return (other is Room) && other.id == id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
 
   factory Room.fromJson(Map<String, dynamic> json) {
     return Room(
@@ -77,14 +97,19 @@ class Room extends General {
       branch: Branch.fromJson(json['branch']),
       row: json['row'],
       col: json['col'],
+      laneRows: List<int>.from((json['laneRows']).toList()),
+      laneCols:List<int>.from((json['laneCols']).toList()),
       totalSeat: json['totalSeat'],
       seats: (json['seats'] as List).map((e) => Seat.fromJson(e)).toList(),
       roomState: RoomState.fromValue(json['roomState']),
       type: RoomType.fromValue(json['type']),
       state: GeneralState.fromValue(json['state']),
       createdDate: DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['createdDate']),
-      modifiedDate: DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['modifiedDate']),
-      deletedDate: json['deletedDate'] != null ? DateTime.parse(json['deletedDate']) : null,
+      modifiedDate:
+      DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['modifiedDate']),
+      deletedDate: json['deletedDate'] != null
+          ? DateTime.parse(json['deletedDate'])
+          : null,
     );
   }
 
@@ -96,13 +121,17 @@ class Room extends General {
       'totalSeat': totalSeat,
       'row': row,
       'col': col,
+      'laneCols': laneCols,
+      'laneRows': laneCols,
       'seats': seats.map((e) => e.toJson()).toList(),
       'roomState': roomState.value,
       'type': type.value,
       'state': state.value,
       'createdDate': DateFormat('dd-MM-yyyy HH:mm:ss').format(createdDate),
       'modifiedDate': DateFormat('dd-MM-yyyy HH:mm:ss').format(modifiedDate),
-      'deletedDate': deletedDate != null ? DateFormat('dd-MM-yyyy HH:mm:ss').format(deletedDate!) : null,
+      'deletedDate': deletedDate != null
+          ? DateFormat('dd-MM-yyyy HH:mm:ss').format(deletedDate!)
+          : null,
     };
   }
 }

@@ -4,6 +4,7 @@ import 'package:movie_ticket_booking_flutter_nlu/provider/api/branch_provider.da
 import 'package:movie_ticket_booking_flutter_nlu/provider/api/checkout_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/api/combo_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/api/show_time_provider.dart';
+import 'package:movie_ticket_booking_flutter_nlu/service/jwt_service.dart';
 
 void main() async {
   // usePathUrlStrategy();

@@ -3,7 +3,6 @@ import 'package:movie_ticket_booking_flutter_nlu/model/general.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/invoice.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/room.dart';
-import 'package:movie_ticket_booking_flutter_nlu/model/ticket.dart';
 
 class ShowTime extends General {
   Room? room;

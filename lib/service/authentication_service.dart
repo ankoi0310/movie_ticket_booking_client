@@ -1,4 +1,5 @@
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
+import 'package:movie_ticket_booking_flutter_nlu/service/jwt_service.dart';
 
 class AuthenticationService {
   AuthenticationService._();
@@ -6,10 +7,13 @@ class AuthenticationService {
   static final AuthenticationService _instance = AuthenticationService._();
 
   static final HiveProvider _hiveDataProvider = HiveProvider.instance;
+  static final JwtService _jwtService = JwtService.instance;
 
   factory AuthenticationService() => _instance;
 
   static AuthenticationService get instance => _instance;
+
+  String? _token;
 
   Future<void> init() async {
     await Hive.initFlutter();
@@ -31,6 +35,7 @@ class AuthenticationService {
   /// Method to login user
   Future<void> login(UserLoginResponse user) async {
     await _hiveDataProvider.insert("user", user.toJson());
+    _token = user.token;
   }
 
   /// Method to logout user
@@ -45,11 +50,20 @@ class AuthenticationService {
 
   Future<String?> getToken() async {
     Map response = await _hiveDataProvider.read("user");
+    _token = (response.isNotEmpty ? response["token"] : null);
     return (response.isNotEmpty ? response["token"] : null);
   }
 
-  Future<String?> getAvatar() async {
-    Map response = await _hiveDataProvider.read("user");
-    return (response.isNotEmpty ? response["avatar"] : null);
+  Future<Map<String, dynamic>?> getProfile() async {
+    String? token = await getToken();
+
+    if (token != null) {
+      Map<String, dynamic> payload = _jwtService.getPayload(token);
+      print('payload: $payload');
+      return payload;
+    }
+
+    return null;
   }
+
 }

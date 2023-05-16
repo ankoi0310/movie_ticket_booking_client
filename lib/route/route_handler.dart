@@ -1,5 +1,5 @@
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
-import 'package:movie_ticket_booking_flutter_nlu/dto/payment/payment_response.dart';
+import 'package:movie_ticket_booking_flutter_nlu/dto/payment/payment_momo_response.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/checkout/check_out_screen.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/error/not_found_screen.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/seating_booking/seat_booking_screen.dart';
@@ -75,7 +75,7 @@ class RouteHandler {
         return MovieDetailScreen(slug: slug);
       }
       if (uri.pathSegments[0] == "payment" && uri.pathSegments[1] == "return") {
-        return PaymentResponseScreen(paymentResponse: PaymentResponse.fromJson(queryParameters!));
+        return PaymentResponseScreen(paymentResponse: PaymentMomoResponse.fromJson(queryParameters!));
       }
       if (uri.pathSegments[0] == "ticket") {
         String? slug = uri.pathSegments[1];
