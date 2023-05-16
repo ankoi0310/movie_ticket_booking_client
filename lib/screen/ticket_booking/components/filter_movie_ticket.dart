@@ -2,6 +2,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
+import 'package:movie_ticket_booking_flutter_nlu/dto/branch/branch_search.dart';
 import 'package:movie_ticket_booking_flutter_nlu/dto/movie/movie_search.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/branch.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
@@ -162,7 +163,7 @@ class _FilterMovieTicketState extends State<FilterMovieTicket> {
                 }
               }),
           FutureBuilder(
-              future: isCallApiBranch ? null : branchProvider.getBranches(),
+              future: isCallApiBranch ? null : branchProvider.getBranches(BranchSearch()),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   List<DropdownMenuItem> items = [];

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:movie_ticket_booking_flutter_nlu/dto/payment/momo_response.dart';
+import 'package:movie_ticket_booking_flutter_nlu/handler/http_response.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/Combo.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/invoice_combo.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/seat.dart';
@@ -67,7 +68,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
       invoiceCreate.totalPrice = totalPrice();
 
-      MomoResponse momoResponse = await checkoutProvider.createInvoice(invoice);
+      HttpResponse response = await checkoutProvider.createInvoice(invoice);
+      MomoResponse momoResponse = MomoResponse.fromJson(response.data);
       if (momoResponse.resultCode == 0) {
         if (await canLaunchUrl(Uri.parse(momoResponse.payUrl))) {
           loadingProvider.setLoading(false);

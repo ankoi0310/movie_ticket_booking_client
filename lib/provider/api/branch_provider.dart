@@ -2,9 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:movie_ticket_booking_flutter_nlu/constant/api_constant.dart';
+import 'package:movie_ticket_booking_flutter_nlu/core.dart';
+import 'package:movie_ticket_booking_flutter_nlu/dto/branch/branch_search.dart';
+import 'package:movie_ticket_booking_flutter_nlu/handler/http_response.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/branch.dart';
 
 class BranchProvider with ChangeNotifier {
+  final apiProvider = ApiProvider.instance;
   Branch? _branch;
 
   Branch? get branch => _branch;
@@ -13,22 +18,22 @@ class BranchProvider with ChangeNotifier {
 
   List<Branch> get branches => _branches;
 
-  Future<List<Branch>> getBranches() async {
+  Future<HttpResponse> getBranches(BranchSearch search) async {
+    HttpResponse response = await apiProvider.post(
+      Uri.parse('$baseUrl/branch/search'),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(search.toJson()),
+    );
+
     try {
-      final response = await http.get(Uri.parse('http://localhost:8081/api/v1/branch'));
-
-      Map jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
-        final data = jsonResponse['data'] as List;
-        _branches = data.map((e) => Branch.fromJson(e)).toList();
-      }
-
-      return _branches;
-    } catch (_) {
-      print('error: $_');
-      rethrow;
+      _branches = response.data.map<Branch>((e) => Branch.fromJson(e)).toList();
+    } catch (e) {
+      print(e);
     }
+
+    return response;
   }
 
   Future<Branch?> getBranchById(int id) async {

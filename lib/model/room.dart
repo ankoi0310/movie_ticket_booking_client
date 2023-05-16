@@ -40,6 +40,8 @@ class Room extends General {
   int row;
   int col;
   int totalSeat;
+  List<int> laneRows;
+  List<int> laneCols;
   RoomState roomState;
   RoomType type;
   List<Seat> seats = [];
@@ -51,6 +53,8 @@ class Room extends General {
     required this.branch,
     required this.row,
     required this.col,
+    required this.laneRows,
+    required this.laneCols,
     required this.totalSeat,
     required this.seats,
     required this.roomState,
@@ -60,22 +64,31 @@ class Room extends General {
     required DateTime modifiedDate,
     required DateTime? deletedDate,
   }) : super(
-            id: id,
-            state: state,
-            createdDate: createdDate,
-            modifiedDate: modifiedDate,
-            deletedDate: deletedDate);
+      id: id,
+      state: state,
+      createdDate: createdDate,
+      modifiedDate: modifiedDate,
+      deletedDate: deletedDate);
 
   Room.empty()
       : name = '',
         branch = Branch.empty(),
         row = 0,
         col = 0,
+        laneRows = [],
+        laneCols = [],
         totalSeat = 0,
         seats = [],
         type = RoomType.normal,
         roomState = RoomState.available,
         super.empty();
+  @override
+  bool operator ==(other) {
+    return (other is Room) && other.id == id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
 
   factory Room.fromJson(Map<String, dynamic> json) {
     return Room(
@@ -84,6 +97,8 @@ class Room extends General {
       branch: Branch.fromJson(json['branch']),
       row: json['row'],
       col: json['col'],
+      laneRows: List<int>.from((json['laneRows']).toList()),
+      laneCols:List<int>.from((json['laneCols']).toList()),
       totalSeat: json['totalSeat'],
       seats: (json['seats'] as List).map((e) => Seat.fromJson(e)).toList(),
       roomState: RoomState.fromValue(json['roomState']),
@@ -106,6 +121,8 @@ class Room extends General {
       'totalSeat': totalSeat,
       'row': row,
       'col': col,
+      'laneCols': laneCols,
+      'laneRows': laneCols,
       'seats': seats.map((e) => e.toJson()).toList(),
       'roomState': roomState.value,
       'type': type.value,
