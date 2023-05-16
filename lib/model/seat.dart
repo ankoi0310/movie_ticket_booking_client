@@ -48,15 +48,11 @@ class Seat extends General {
         );
   // equals ==
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Seat &&
-          id == other.id;
+  bool operator ==(Object other) => identical(this, other) || other is Seat && id == other.id;
 
   // hashcode
   @override
   int get hashCode => id.hashCode;
-
 
   Seat.empty()
       : code = '',
@@ -82,11 +78,8 @@ class Seat extends General {
       room: json['room'] == null ? null : Room.fromJson(json['room']),
       state: GeneralState.fromValue(json['state']),
       createdDate: DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['createdDate']),
-      modifiedDate:
-      DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['modifiedDate']),
-      deletedDate: json['deletedDate'] != null
-          ? DateTime.parse(json['deletedDate'])
-          : null,
+      modifiedDate: DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['modifiedDate']),
+      deletedDate: json['deletedDate'] != null ? DateTime.parse(json['deletedDate']) : null,
     );
   }
 
@@ -104,9 +97,7 @@ class Seat extends General {
       'state': state.value,
       'createdDate': DateFormat('dd-MM-yyyy HH:mm:ss').format(createdDate),
       'modifiedDate': DateFormat('dd-MM-yyyy HH:mm:ss').format(modifiedDate),
-      'deletedDate': deletedDate != null
-          ? DateFormat('dd-MM-yyyy HH:mm:ss').format(deletedDate!)
-          : null,
+      'deletedDate': deletedDate != null ? DateFormat('dd-MM-yyyy HH:mm:ss').format(deletedDate!) : null,
     };
   }
 

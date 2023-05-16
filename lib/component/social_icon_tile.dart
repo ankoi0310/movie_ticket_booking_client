@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/social_icon.dart';
+import 'package:social_login_buttons/social_login_buttons.dart';
 
 class SocialIconTile extends StatelessWidget {
   const SocialIconTile({
@@ -14,10 +14,12 @@ class SocialIconTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Icon(
-      socialIcon.icon,
-      size: getProportionateScreenWidth(size),
-      color: socialIcon.color,
+    return SocialLoginButton(
+      buttonType: SocialLoginButtonType.facebook,
+      imagePath: socialIcon.image,
+      onPressed: () {
+        print('onPressed');
+      },
     );
   }
 }

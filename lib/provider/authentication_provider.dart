@@ -3,8 +3,7 @@ import 'package:movie_ticket_booking_flutter_nlu/handler/http_response.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
   final ApiProvider _apiProvider = ApiProvider.instance;
-  final AuthenticationService _authentacationService =
-      AuthenticationService.instance;
+  final AuthenticationService _authentacationService = AuthenticationService.instance;
 
   Future<HttpResponse> register(UserRegister userRegister) async {
     HttpResponse response = await _apiProvider.post(
@@ -12,7 +11,9 @@ class AuthenticationProvider extends ChangeNotifier {
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(userRegister.toJson()),
+      body: jsonEncode({
+        'userRegister': userRegister.toJson(),
+      }),
     );
 
     notifyListeners();
@@ -38,5 +39,10 @@ class AuthenticationProvider extends ChangeNotifier {
 
     notifyListeners();
     return response;
+  }
+
+  Future<void> logout() async {
+    await _authentacationService.logout();
+    notifyListeners();
   }
 }

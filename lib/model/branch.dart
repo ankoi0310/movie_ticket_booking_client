@@ -14,11 +14,12 @@ class Branch extends General {
     required DateTime modifiedDate,
     required DateTime? deletedDate,
   }) : super(
-            id: id,
-            state: state,
-            createdDate: createdDate,
-            modifiedDate: modifiedDate,
-            deletedDate: deletedDate);
+          id: id,
+          state: state,
+          createdDate: createdDate,
+          modifiedDate: modifiedDate,
+          deletedDate: deletedDate,
+        );
 
   @override
   bool operator ==(other) {
@@ -40,11 +41,8 @@ class Branch extends General {
       address: json['address'],
       state: GeneralState.fromValue(json['state']),
       createdDate: DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['createdDate']),
-      modifiedDate:
-      DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['modifiedDate']),
-      deletedDate: json['deletedDate'] != null
-          ? DateTime.parse(json['deletedDate'])
-          : null,
+      modifiedDate: DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['modifiedDate']),
+      deletedDate: json['deletedDate'] != null ? DateTime.parse(json['deletedDate']) : null,
     );
   }
 
@@ -56,9 +54,7 @@ class Branch extends General {
       'state': state.value,
       'createdDate': DateFormat('dd-MM-yyyy HH:mm:ss').format(createdDate),
       'modifiedDate': DateFormat('dd-MM-yyyy HH:mm:ss').format(modifiedDate),
-      'deletedDate': deletedDate != null
-          ? DateFormat('dd-MM-yyyy HH:mm:ss').format(deletedDate!)
-          : null,
+      'deletedDate': deletedDate != null ? DateFormat('dd-MM-yyyy HH:mm:ss').format(deletedDate!) : null,
     };
   }
 }

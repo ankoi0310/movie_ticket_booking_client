@@ -1,23 +1,25 @@
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 
 class LogoButton extends StatelessWidget {
   const LogoButton({
     Key? key,
     required this.path,
+    required this.onPressed,
   }) : super(key: key);
 
   final String path;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    final appRouterDelegate = AppRouterDelegate.instance;
-
     return Container(
       margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3)),
       child: IconButton(
         hoverColor: Colors.transparent,
+        highlightColor: Colors.transparent,
         icon: Image.asset(path, width: getProportionateScreenWidth(150)),
-        onPressed: () => appRouterDelegate.setPathName(PublicRouteData.home.name),
+        onPressed: onPressed,
       ),
     );
   }
@@ -88,7 +90,7 @@ class CustomTextButton extends StatelessWidget {
         label,
         style: TextStyle(
           color: color,
-          fontSize: getProportionateScreenWidth(28),
+          fontSize: 16,
           fontWeight: FontWeight.w500,
           letterSpacing: .5,
         ),
@@ -213,8 +215,9 @@ class _MenuButtonState extends State<MenuButton> {
           widget.label,
           style: TextStyle(
             color: _isHover ? widget.hoverColor : widget.color,
-            fontSize: getProportionateScreenWidth(32),
+            fontSize: 16,
             fontWeight: FontWeight.bold,
+            letterSpacing: .5,
           ),
         ),
       ),

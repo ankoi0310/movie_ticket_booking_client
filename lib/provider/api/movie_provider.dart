@@ -1,72 +1,50 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:movie_ticket_booking_flutter_nlu/model/movie_model.dart';
+import 'package:movie_ticket_booking_flutter_nlu/core.dart';
+import 'package:movie_ticket_booking_flutter_nlu/dto/movie/movie_search.dart';
+import 'package:movie_ticket_booking_flutter_nlu/handler/http_response.dart';
 
 class MovieProvider extends ChangeNotifier {
-  Movie? _movie;
+  final ApiProvider _apiProvider = ApiProvider.instance;
 
-  List<Movie> _movies = [];
-
-  Movie? get movie => _movie;
-
-  List<Movie> get movies => _movies;
-
-  Future<Movie> getMovie(int id) async {
+  Future<HttpResponse> getMovie(int id) async {
     try {
-      final response =
-          await http.get(Uri.parse('http://localhost:8081/api/v1/movie/$id'));
+      HttpResponse response = await _apiProvider.get(Uri.parse('http://localhost:8081/api/v1/movie/$id'));
 
-      Map jsonResponse = jsonDecode(response.body);
-
-      if (response.statusCode == 200) {
-        _movie = Movie.fromJson(jsonResponse['data']);
+      if (response.httpStatusCode == 200) {
+        notifyListeners();
+        return response;
       }
+
       notifyListeners();
-      return _movie!;
+      return response;
     } catch (_) {
       rethrow;
     }
   }
 
-  Future<Movie> getMovieBySlug(String slug) async {
+  Future<HttpResponse> getMovieBySlug(String slug) async {
     try {
-      final response = await http
-          .get(Uri.parse('http://localhost:8081/api/v1/movie/slug/$slug'));
+      HttpResponse response = await _apiProvider.get(Uri.parse('http://localhost:8081/api/v1/movie/slug/$slug'));
 
-      Map jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
-        _movie = Movie.fromJson(jsonResponse['data']);
-      } else if (response.statusCode == 404) {
-        throw Exception('Movie not found');
-      }
       notifyListeners();
-      return _movie!;
+      return response;
     } catch (_) {
       print('error: $_');
       rethrow;
     }
   }
 
-  Future<List<Movie>> getMoviesSearch(int id) async {
+  Future<HttpResponse> getMoviesSearch(MovieSearch search) async {
     try {
-      final response = await http.post(
-          Uri.parse('http://localhost:8081/api/v1/movie/search'),
-          headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode({}));
+      HttpResponse response = await _apiProvider.post(
+        Uri.parse('$baseUrl/movie/search'),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(search.toJson()),
+      );
 
-      Map jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
-        final data = jsonResponse['data'] as List;
-        _movies = data.map((e) => Movie.fromJson(e)).toList();
-      }
       notifyListeners();
-      return _movies;
+      return response;
     } catch (_) {
       print('error: $_');
       rethrow;

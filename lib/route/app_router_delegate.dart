@@ -31,7 +31,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
   late List<Page> _stack = [];
 
   @override
-  final GlobalKey<NavigatorState> navigatorKey = CustomNavigationKey.navigatorKey;
+  final GlobalKey<NavigatorState> navigatorKey = CustomKey.navigatorKey;
 
   List<Page> get _appStack {
     RouteData routeData = PublicRouteData.values.firstWhere((element) => pathName!.contains(element.name), orElse: () => PublicRouteData.home);
@@ -87,7 +87,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
 
     if (pathName == null) return RoutePath.home(PublicRouteData.home.name);
 
-    return RoutePath.otherPage(pathName, queryParameters: queryParameters);
+    return RoutePath.otherPage(pathName);
   }
 
   @override
@@ -185,6 +185,7 @@ class PublicRouteData extends RouteData {
   static const checkout = PublicRouteData._('checkout');
   static const payment = PublicRouteData._('payment');
   static const contact = PublicRouteData._('contact');
+  static const profile = PublicRouteData._('profile');
 
   static Set<PublicRouteData> values = {
     home,

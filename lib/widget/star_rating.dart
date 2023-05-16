@@ -5,10 +5,15 @@ class StarRating extends StatefulWidget {
   final dynamic mainAlignment;
   final double fontSize;
 
-  const StarRating(this.rating, this.mainAlignment, this.fontSize, {super.key});
+  const StarRating({
+    Key? key,
+    required this.rating,
+    this.mainAlignment,
+    required this.fontSize,
+  }) : super(key: key);
 
   @override
-  _StarRatingState createState() => _StarRatingState();
+  State<StarRating> createState() => _StarRatingState();
 }
 
 class _StarRatingState extends State<StarRating> {

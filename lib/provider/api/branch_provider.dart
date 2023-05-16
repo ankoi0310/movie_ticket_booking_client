@@ -1,55 +1,44 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:movie_ticket_booking_flutter_nlu/core.dart';
+import 'package:movie_ticket_booking_flutter_nlu/dto/branch/branch_search.dart';
+import 'package:movie_ticket_booking_flutter_nlu/handler/http_response.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/branch.dart';
 
 class BranchProvider with ChangeNotifier {
-  Branch? _branch;
+  final ApiProvider _apiProvider = ApiProvider.instance;
 
-  Branch? get branch => _branch;
-
-  List<Branch> _branches = [];
-
-  List<Branch> get branches => _branches;
-
-  Future<List<Branch>> getBranches() async {
+  Future<HttpResponse> searchBranch(BranchSearch search) async {
     try {
-      final response = await http.get(Uri.parse('http://localhost:8081/api/v1/branch'));
+      HttpResponse response = await _apiProvider.post(
+        Uri.parse('$baseUrl/branch/search'),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(search.toJson()),
+      );
 
-      Map jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
-        final data = jsonResponse['data'] as List;
-        _branches = data.map((e) => Branch.fromJson(e)).toList();
-      }
-
-      return _branches;
+      notifyListeners();
+      return response;
     } catch (_) {
       print('error: $_');
       rethrow;
     }
   }
 
-  Future<Branch?> getBranchById(int id) async {
+  Future<HttpResponse> getBranchById(int id) async {
     try {
-      final response = await http.get(Uri.parse('http://localhost:3000/api/branch/$id'));
+      HttpResponse response = await _apiProvider.get(
+        Uri.parse('$baseUrl/branch/$id'),
+      );
 
-      Map jsonResponse = jsonDecode(response.body);
-
-      if (response.statusCode == 200) {
-        _branch = Branch.fromJson(jsonResponse['data']);
-      }
-
-      return _branch;
+      return response;
     } catch (_) {
       rethrow;
     }
   }
 
-  Future<Branch?> createBranch(Branch branch) async {
+  Future<HttpResponse> createBranch(Branch branch) async {
     try {
-      final response = await http.post(
+      HttpResponse response = await _apiProvider.post(
         Uri.parse('http://localhost:3000/api/branch'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -60,21 +49,16 @@ class BranchProvider with ChangeNotifier {
         }),
       );
 
-      Map jsonResponse = jsonDecode(response.body);
-
-      if (response.statusCode == 201) {
-        _branch = Branch.fromJson(jsonResponse['data']);
-      }
-
-      return _branch;
+      notifyListeners();
+      return response;
     } catch (_) {
       rethrow;
     }
   }
 
-  Future<Branch?> updateBranch(Branch branch) async {
+  Future<HttpResponse> updateBranch(Branch branch) async {
     try {
-      final response = await http.put(
+      HttpResponse response = await _apiProvider.put(
         Uri.parse('http://localhost:3000/api/branch/${branch.id}'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -84,25 +68,21 @@ class BranchProvider with ChangeNotifier {
         }),
       );
 
-      Map jsonResponse = jsonDecode(response.body);
-
-      if (response.statusCode == 200) {
-        _branch = Branch.fromJson(jsonResponse['data']);
-      }
-
-      return _branch;
+      notifyListeners();
+      return response;
     } catch (_) {
       rethrow;
     }
   }
 
-  Future<void> deleteBranch(String id) async {
+  Future<HttpResponse> deleteBranch(String id) async {
     try {
-      final response = await http.delete(Uri.parse('http://localhost:3000/api/branch/$id'));
+      HttpResponse response = await _apiProvider.delete(
+        Uri.parse('http://localhost:3000/api/branch/$id'),
+      );
 
-      if (response.statusCode == 200) {
-        _branches.removeWhere((element) => element.id == id);
-      }
+      notifyListeners();
+      return response;
     } catch (_) {
       rethrow;
     }

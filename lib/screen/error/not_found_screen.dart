@@ -9,12 +9,7 @@ class NotFoundScreen extends StatefulWidget {
 }
 
 class _NotFoundScreenState extends State<NotFoundScreen> {
-  late RiveAnimationController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  final RiveAnimationController _controller = SimpleAnimation('404');
 
   @override
   Widget build(BuildContext context) {

@@ -9,16 +9,21 @@ export 'dart:typed_data';
 export 'package:dropdown_button2/dropdown_button2.dart';
 export 'package:firebase_core/firebase_core.dart';
 export 'package:firebase_storage/firebase_storage.dart';
+export 'package:flutter/foundation.dart';
 export 'package:flutter/gestures.dart';
 export 'package:flutter/material.dart';
+export 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 export 'package:flutter_web_plugins/url_strategy.dart';
 export 'package:fluttertoast/fluttertoast.dart';
 export 'package:hive_flutter/adapters.dart';
 export 'package:intl/date_symbol_data_local.dart';
 export 'package:provider/provider.dart';
+/*-------------------------------------*/
+/*----------------Url Launcher----------------------*/
+export 'package:url_launcher/url_launcher.dart';
 
 /*--------------- Addon ---------------*/
-export 'addon/custom_navigation_key.dart';
+export 'addon/custom_key.dart';
 export 'addon/custom_transition_delegate.dart';
 /*-------------------------------------*/
 
@@ -40,7 +45,6 @@ export 'dto/auth/user_register.dart';
 export 'dto/invoice/invoice_create.dart';
 export 'dto/payment/momo_response.dart';
 export 'dto/showtime/show_time_search.dart';
-
 /*-------------------------------------*/
 
 /*--------------- Layout ---------------*/
@@ -71,9 +75,9 @@ export 'screen/home/home_screen.dart';
 export 'screen/login/login_screen.dart';
 export 'screen/movie/movie_screen.dart';
 export 'screen/movie_detail/movie_detail_screen.dart';
+export 'screen/payment/payment_response_screen.dart';
 export 'screen/register/register_screen.dart';
 export 'screen/ticket_booking/ticket_booking_screen.dart';
-export 'screen/payment/payment_response_screen.dart';
 /*-----------------------------------------*/
 
 /*--------------- Service ---------------*/
@@ -86,7 +90,4 @@ export 'style/color.dart';
 
 /*--------------- Util ---------------*/
 export 'util/app_util.dart';
-/*-------------------------------------*/
-/*----------------Url Launcher----------------------*/
-export 'package:url_launcher/url_launcher.dart';
-
+/*-----------------------------------------*/

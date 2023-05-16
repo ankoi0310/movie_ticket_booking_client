@@ -10,6 +10,8 @@ class LargeBoldTextBlack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+
     return Text(
       label,
       style: TextStyle(
@@ -32,6 +34,8 @@ class NormalGreyText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+
     return Text(
       label,
       overflow: TextOverflow.visible,
@@ -56,6 +60,8 @@ class BoldBlackText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+
     return Text(
       label,
       style: TextStyle(
@@ -78,6 +84,8 @@ class SmallBlackText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+
     return Text(
       label,
       style: TextStyle(

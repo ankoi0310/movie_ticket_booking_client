@@ -16,14 +16,12 @@ class DurationFormat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: mainAlignment,
-      child: Text(
-        formatDuration(duration),
-        style: TextStyle(
-          color: color,
-          fontSize: fontSize,
-        ),
+    return Text(
+      formatDuration(duration),
+      style: TextStyle(
+        color: color,
+        fontSize: fontSize,
+        letterSpacing: 1.5,
       ),
     );
   }
