@@ -5,7 +5,7 @@ import 'package:movie_ticket_booking_flutter_nlu/model/combo.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/invoice.dart';
 import 'package:movie_ticket_booking_flutter_nlu/dto/invoice/invoice_create.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/invoice_combo.dart';
-import 'package:movie_ticket_booking_flutter_nlu/provider/jwt_provider.dart';
+import 'package:movie_ticket_booking_flutter_nlu/service/jwt_service.dart';
 import 'package:movie_ticket_booking_flutter_nlu/utilities/StringUtil.dart';
 import 'package:quantity_input/quantity_input.dart';
 
@@ -22,21 +22,18 @@ class FormCheckout extends StatefulWidget {
 }
 
 class _FormCheckoutState extends State<FormCheckout> {
-  final authService = AuthenticationService.instance;
+  final AuthenticationService authService = AuthenticationService.instance;
 
   @override
   Widget build(BuildContext context) {
-    final jwtService = JwtService.instance;
-
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 50,
         vertical: 25,
       ),
       child: FutureBuilder(
-          future: authService.getToken(),
+          future: authService.isLoggedIn(),
           builder: (context, snapshot) {
-            jwtService.decode("eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJET1VCTEVfQSIsImF1ZCI6Ik1vdmllIFRpY2tldCBCb29raW5nIEFQSSIsImlhdCI6MTY4NDIyMTMzMSwic3ViIjoiaHV5bmh2YWh1dWFuMzYyMEBnbWFpbC5jb20iLCJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sImV4cCI6MTY4NTA4NTMzMX0.YIVkpKym1BFecOf3u1oi5icQkLrTmbjaMzQCP2D-uMekBTbFX_KWVSAcPIQ77ZHOgNv-vkh6ZF6EbEgVQzFfRw");
 
             return Form(
               key: widget.formKey,
@@ -62,8 +59,8 @@ class _FormCheckoutState extends State<FormCheckout> {
                     height: 20,
                   ),
                   TextFormField(
-                    initialValue: '',
-                    // readOnly: isLoggedIn,
+                    initialValue: "",
+                    readOnly: snapshot.data == true,
                     decoration: const InputDecoration(
                       labelText: "Email",
                       hintText: "Nhập email",
