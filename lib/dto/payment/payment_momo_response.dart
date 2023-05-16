@@ -1,4 +1,4 @@
-class PaymentResponse {
+class PaymentMomoResponse {
   String? partnerCode;
   String? orderId;
   String? requestId;
@@ -13,7 +13,7 @@ class PaymentResponse {
   String? extraData;
   String? signature;
 
-  PaymentResponse({
+  PaymentMomoResponse({
     required this.partnerCode,
     required this.orderId,
     required this.requestId,
@@ -29,8 +29,8 @@ class PaymentResponse {
     required this.signature,
   });
 
-  factory PaymentResponse.fromJson(Map<String?, dynamic> json) {
-    return PaymentResponse(
+  factory PaymentMomoResponse.fromJson(Map<String?, dynamic> json) {
+    return PaymentMomoResponse(
       partnerCode: json['partnerCode'],
       orderId: json['orderId'],
       requestId: json['requestId'],
@@ -46,4 +46,23 @@ class PaymentResponse {
       signature: json['signature'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "partnerCode": partnerCode,
+      "orderId": orderId,
+      "requestId": requestId,
+      "amount": amount,
+      "orderInfo": orderInfo,
+      "orderType": orderType,
+      "transId": transId,
+      "resultCode": resultCode,
+      "message": message,
+      "payType": payType,
+      "responseTime": responseTime,
+      "extraData": extraData,
+      "signature": signature
+    };
+  }
+
 }

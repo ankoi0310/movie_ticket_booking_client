@@ -1,8 +1,9 @@
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
-import 'package:movie_ticket_booking_flutter_nlu/dto/payment/payment_response.dart';
+import 'package:movie_ticket_booking_flutter_nlu/dto/payment/payment_momo_response.dart';
+import 'package:movie_ticket_booking_flutter_nlu/provider/api/checkout_provider.dart';
 
 class PaymentResponseScreen extends StatefulWidget {
-  final PaymentResponse? paymentResponse;
+  final PaymentMomoResponse? paymentResponse;
   const PaymentResponseScreen({Key? key, required this.paymentResponse}) : super(key: key);
 
   @override
@@ -15,12 +16,18 @@ class _PaymentResponseScreenState extends State<PaymentResponseScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    final checkoutProvider = Provider.of<CheckoutProvider>(context, listen: false);
+    checkoutProvider.returnMomo(widget.paymentResponse!);
   }
 
   @override
   Widget build(BuildContext context) {
     final appRouterDelegate = AppRouterDelegate.instance;
+
+
+
     Widget buildResponseSuccess() {
+
       return Column(
         children: [
           const SizedBox(

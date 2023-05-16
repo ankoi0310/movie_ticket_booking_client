@@ -1,44 +1,60 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:movie_ticket_booking_flutter_nlu/constant/api_constant.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 import 'package:movie_ticket_booking_flutter_nlu/dto/branch/branch_search.dart';
 import 'package:movie_ticket_booking_flutter_nlu/handler/http_response.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/branch.dart';
 
 class BranchProvider with ChangeNotifier {
-  final ApiProvider _apiProvider = ApiProvider.instance;
+  final apiProvider = ApiProvider.instance;
+  Branch? _branch;
 
-  Future<HttpResponse> searchBranch(BranchSearch search) async {
+  Branch? get branch => _branch;
+
+  List<Branch> _branches = [];
+
+  List<Branch> get branches => _branches;
+
+  Future<HttpResponse> getBranches(BranchSearch search) async {
+    HttpResponse response = await apiProvider.post(
+      Uri.parse('$baseUrl/branch/search'),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(search.toJson()),
+    );
+
     try {
-      HttpResponse response = await _apiProvider.post(
-        Uri.parse('$baseUrl/branch/search'),
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(search.toJson()),
-      );
+      _branches = response.data.map<Branch>((e) => Branch.fromJson(e)).toList();
+    } catch (e) {
+      print(e);
+    }
 
-      notifyListeners();
-      return response;
+    return response;
+  }
+
+  Future<Branch?> getBranchById(int id) async {
+    try {
+      final response = await http.get(Uri.parse('http://localhost:3000/api/branch/$id'));
+
+      Map jsonResponse = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        _branch = Branch.fromJson(jsonResponse['data']);
+      }
+
+      return _branch;
     } catch (_) {
-      print('error: $_');
       rethrow;
     }
   }
 
-  Future<HttpResponse> getBranchById(int id) async {
+  Future<Branch?> createBranch(Branch branch) async {
     try {
-      HttpResponse response = await _apiProvider.get(
-        Uri.parse('$baseUrl/branch/$id'),
-      );
-
-      return response;
-    } catch (_) {
-      rethrow;
-    }
-  }
-
-  Future<HttpResponse> createBranch(Branch branch) async {
-    try {
-      HttpResponse response = await _apiProvider.post(
+      final response = await http.post(
         Uri.parse('http://localhost:3000/api/branch'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -49,16 +65,21 @@ class BranchProvider with ChangeNotifier {
         }),
       );
 
-      notifyListeners();
-      return response;
+      Map jsonResponse = jsonDecode(response.body);
+
+      if (response.statusCode == 201) {
+        _branch = Branch.fromJson(jsonResponse['data']);
+      }
+
+      return _branch;
     } catch (_) {
       rethrow;
     }
   }
 
-  Future<HttpResponse> updateBranch(Branch branch) async {
+  Future<Branch?> updateBranch(Branch branch) async {
     try {
-      HttpResponse response = await _apiProvider.put(
+      final response = await http.put(
         Uri.parse('http://localhost:3000/api/branch/${branch.id}'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -68,21 +89,25 @@ class BranchProvider with ChangeNotifier {
         }),
       );
 
-      notifyListeners();
-      return response;
+      Map jsonResponse = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        _branch = Branch.fromJson(jsonResponse['data']);
+      }
+
+      return _branch;
     } catch (_) {
       rethrow;
     }
   }
 
-  Future<HttpResponse> deleteBranch(String id) async {
+  Future<void> deleteBranch(String id) async {
     try {
-      HttpResponse response = await _apiProvider.delete(
-        Uri.parse('http://localhost:3000/api/branch/$id'),
-      );
+      final response = await http.delete(Uri.parse('http://localhost:3000/api/branch/$id'));
 
-      notifyListeners();
-      return response;
+      if (response.statusCode == 200) {
+        _branches.removeWhere((element) => element.id == id);
+      }
     } catch (_) {
       rethrow;
     }
