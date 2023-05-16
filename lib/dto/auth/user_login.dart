@@ -36,7 +36,7 @@ class UserLoginResponse {
   String token;
 
   UserLoginResponse(
-      {required this.id, required this.email, required this.token});
+      {required this.id, required this.email, required this.token,});
 
   factory UserLoginResponse.fromJson(Map<String, dynamic> json) {
     return UserLoginResponse(
