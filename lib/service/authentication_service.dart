@@ -47,9 +47,11 @@ class AuthenticationService {
     Map response = await _hiveDataProvider.read("user");
     return (response.isNotEmpty ? response["token"] : null);
   }
-
-  Future<String?> getAvatar() async {
+  Future<String?> getEmail() async {
     Map response = await _hiveDataProvider.read("user");
-    return (response.isNotEmpty ? response["avatar"] : null);
+    return (response.isNotEmpty ? response["email"] : null);
   }
+
+
+
 }
