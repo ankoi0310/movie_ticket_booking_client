@@ -61,6 +61,7 @@ dependencies:
   flutter_native_splash: ^2.2.19
   rive: ^0.10.4
   quantity_input: ^1.0.2
+  dart_jsonwebtoken: ^2.7.1
 
 
 dev_dependencies:
