@@ -185,7 +185,6 @@ class PublicRouteData extends RouteData {
   static const checkout = PublicRouteData._('checkout');
   static const payment = PublicRouteData._('payment');
   static const contact = PublicRouteData._('contact');
-  static const profile = PublicRouteData._('profile');
 
   static Set<PublicRouteData> values = {
     home,

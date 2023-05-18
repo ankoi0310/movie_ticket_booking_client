@@ -2,6 +2,7 @@ import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 import 'package:movie_ticket_booking_flutter_nlu/dto/payment/payment_momo_response.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/checkout/check_out_screen.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/error/not_found_screen.dart';
+import 'package:movie_ticket_booking_flutter_nlu/screen/profile/profile_screen.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/seating_booking/seat_booking_screen.dart';
 
 class RouteHandler {
@@ -38,7 +39,7 @@ class RouteHandler {
       final routeData = RouteData.values.firstWhere((element) => element.name == pathName, orElse: () => RouteData.notFound);
 
       if (routeData != RouteData.notFound) {
-        if (isLoggedIn) {
+        if (!isLoggedIn) {
           switch (routeData) {
             case AuthRouteData.profile:
               return const HomeScreen();
@@ -60,6 +61,8 @@ class RouteHandler {
             return isLoggedIn ? const HomeScreen() : const LoginScreen();
           case PublicRouteData.register:
             return const RegisterScreen();
+          case AuthRouteData.profile:
+            return const ProfileScreen();
           case PublicRouteData.home:
           default:
             return const HomeScreen();

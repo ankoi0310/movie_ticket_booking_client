@@ -4,11 +4,10 @@ import 'package:movie_ticket_booking_flutter_nlu/provider/api/branch_provider.da
 import 'package:movie_ticket_booking_flutter_nlu/provider/api/checkout_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/api/combo_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/api/show_time_provider.dart';
-import 'package:movie_ticket_booking_flutter_nlu/service/jwt_service.dart';
+import 'package:movie_ticket_booking_flutter_nlu/provider/user_provider.dart';
 
 void main() async {
   // usePathUrlStrategy();
-  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: const FirebaseOptions(
       apiKey: "AIzaSyARE8AOvdVKdvaYECInb1wvMoVnM1Qf_7M",
@@ -26,7 +25,7 @@ void main() async {
       appId: "611064467631238",
       cookie: true,
       xfbml: true,
-      version: "v16.0",
+      version: "v15.0",
     );
   }
   AuthenticationService.instance.init();
@@ -46,6 +45,7 @@ void main() async {
           ChangeNotifierProvider(create: (_) => BranchProvider()),
           ChangeNotifierProvider(create: (_) => CheckoutProvider()),
           ChangeNotifierProvider(create: (_) => ComboProvider()),
+          ChangeNotifierProvider(create: (_) => UserProvider()),
         ],
         child: MovieTicketBookingApplication(isLoggedIn: isLoggedIn),
       ),

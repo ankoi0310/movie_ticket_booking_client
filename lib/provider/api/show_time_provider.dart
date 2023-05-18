@@ -14,8 +14,6 @@ class ShowTimeProvider extends ChangeNotifier {
         body: jsonEncode(search.toJson()),
       );
 
-      print('response: $response');
-
       notifyListeners();
       return response;
     } catch (error) {
