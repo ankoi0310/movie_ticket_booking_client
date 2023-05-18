@@ -52,7 +52,7 @@ class RightSidePanel extends StatelessWidget {
                                   fontSize: getProportionateScreenWidth(24),
                                   fontWeight: FontWeight.bold,
                                 ),
-                                recognizer: TapGestureRecognizer()..onTap = () => appRouterDelegate.setPathName(PublicRouteData.profile.name),
+                                recognizer: TapGestureRecognizer()..onTap = () => appRouterDelegate.setPathName(AuthRouteData.profile.name),
                               ),
                             ],
                           ),
