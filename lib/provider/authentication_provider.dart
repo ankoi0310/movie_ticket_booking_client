@@ -34,7 +34,7 @@ class AuthenticationProvider extends ChangeNotifier {
 
     if (response.success) {
       UserLoginResponse userLogin = UserLoginResponse.fromJson(response.data);
-      await _authentacationService.login(userLogin);
+      await _authentacationService.saveUser(userLogin.toJson());
     }
 
     notifyListeners();

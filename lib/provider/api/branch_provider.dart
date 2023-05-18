@@ -1,8 +1,4 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_ticket_booking_flutter_nlu/constant/api_constant.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 import 'package:movie_ticket_booking_flutter_nlu/dto/branch/branch_search.dart';
 import 'package:movie_ticket_booking_flutter_nlu/handler/http_response.dart';
@@ -18,7 +14,7 @@ class BranchProvider with ChangeNotifier {
 
   List<Branch> get branches => _branches;
 
-  Future<HttpResponse> getBranches(BranchSearch search) async {
+  Future<HttpResponse> searchBranch(BranchSearch search) async {
     HttpResponse response = await apiProvider.post(
       Uri.parse('$baseUrl/branch/search'),
       headers: {

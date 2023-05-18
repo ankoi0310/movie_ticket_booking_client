@@ -1,5 +1,5 @@
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
-import 'package:movie_ticket_booking_flutter_nlu/service/jwt_service.dart';
+import 'package:movie_ticket_booking_flutter_nlu/dto/user/user_info.dart';
 
 class AuthenticationService {
   AuthenticationService._();
@@ -7,7 +7,6 @@ class AuthenticationService {
   static final AuthenticationService _instance = AuthenticationService._();
 
   static final HiveProvider _hiveDataProvider = HiveProvider.instance;
-  static final JwtService _jwtService = JwtService.instance;
 
   factory AuthenticationService() => _instance;
 
@@ -15,27 +14,31 @@ class AuthenticationService {
 
   String? _token;
 
+  String? get token => _token;
+
   Future<void> init() async {
     await Hive.initFlutter();
     Hive.registerAdapter<UserLoginResponse>(UserLoginResponseAdapter());
+    Hive.registerAdapter<UserInfo>(UserInfoAdapter());
   }
 
-  /// Method to get User
-  Future<UserLoginResponse> getUser() async {
-    Map<String, dynamic> response = await _hiveDataProvider.read("user");
-    return UserLoginResponse.fromJson(response);
+  Future<void> loadToken() async {
+    Map response = await _hiveDataProvider.read("user");
+    _token = (response.isNotEmpty ? response["token"] : null);
   }
 
   /// Method to check if user is logged in
   Future<bool> isLoggedIn() async {
-    String? token = await getToken();
-    return (token != null && token.isNotEmpty);
+    await loadToken();
+    return (_token != null && _token!.isNotEmpty);
   }
 
-  /// Method to login user
-  Future<void> login(UserLoginResponse user) async {
-    await _hiveDataProvider.insert("user", user.toJson());
-    _token = user.token;
+  Future<void> saveUser(Map<String, dynamic> user) async {
+    await _hiveDataProvider.insert("user", user);
+  }
+
+  Future<void> saveToken(String token) async {
+    await _hiveDataProvider.insert("user", {"token": token});
   }
 
   /// Method to logout user
@@ -48,22 +51,8 @@ class AuthenticationService {
     return (response.isNotEmpty ? response["id"] : null);
   }
 
-  Future<String?> getToken() async {
+  Future<String> getCurrentUserEmail() async {
     Map response = await _hiveDataProvider.read("user");
-    _token = (response.isNotEmpty ? response["token"] : null);
-    return (response.isNotEmpty ? response["token"] : null);
+    return (response.isNotEmpty ? response["email"] : null);
   }
-
-  Future<Map<String, dynamic>?> getProfile() async {
-    String? token = await getToken();
-
-    if (token != null) {
-      Map<String, dynamic> payload = _jwtService.getPayload(token);
-      print('payload: $payload');
-      return payload;
-    }
-
-    return null;
-  }
-
 }

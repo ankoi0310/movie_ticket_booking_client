@@ -31,7 +31,7 @@ class _BodyState extends State<Body> {
     super.initState();
     toast = CustomFlutterToast();
     toast.init(AppRouterDelegate.instance.navigatorKey.currentContext!);
-    _checkIfIsLogged();
+    // _checkIfIsLogged();
   }
 
   Future<void> _checkIfIsLogged() async {
@@ -67,7 +67,7 @@ class _BodyState extends State<Body> {
     final LoginResult result = await FacebookAuth.i.login(); // by default we request the email and the public profile
 
     // loginBehavior is only supported for Android devices, for ios it will be ignored
-    // final result = await FacebookAuth.instance.login(
+    // final LoginResult result = await FacebookAuth.instance.login(
     //   permissions: ['email', 'public_profile', 'user_birthday', 'user_friends', 'user_gender', 'user_link'],
     //   loginBehavior: LoginBehavior
     //       .DIALOG_ONLY, // (only android) show an authentication dialog instead of redirecting to facebook app
@@ -89,6 +89,21 @@ class _BodyState extends State<Body> {
     setState(() {
       _checking = false;
     });
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Login"),
+        content: Text(result.status.toString()),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("OK"))
+        ],
+      ),
+    );
   }
 
   @override
