@@ -1,17 +1,21 @@
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
+import 'package:movie_ticket_booking_flutter_nlu/dto/user/user_info.dart';
+import 'package:movie_ticket_booking_flutter_nlu/provider/user_provider.dart';
 
 class Avatar extends StatelessWidget {
   const Avatar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final AuthenticationService authenticationService = AuthenticationService.instance;
+    final UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+    final AuthenticationProvider authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false);
     final AppRouterDelegate appRouterDelegate = AppRouterDelegate.instance;
 
     return FutureBuilder(
-      future: authenticationService.getAvatar(),
+      future: userProvider.getProfile(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          UserInfo userInfo = snapshot.data!;
           return InkWell(
             focusColor: Colors.transparent,
             hoverColor: Colors.transparent,
@@ -39,11 +43,9 @@ class Avatar extends StatelessWidget {
                     ),
                   ),
                   PopupMenuItem(
-                    onTap: () {
-                      authenticationService.logout().then((_) {
-                        Navigator.pop(context);
-                        appRouterDelegate.setPathName(PublicRouteData.home.name);
-                      });
+                    onTap: () async {
+                      await authenticationProvider.logout();
+                      await appRouterDelegate.setPathName(PublicRouteData.home.name);
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -66,7 +68,7 @@ class Avatar extends StatelessWidget {
               child: CircleAvatar(
                 radius: 24,
                 backgroundColor: accentColor,
-                backgroundImage: NetworkImage(snapshot.data.toString()),
+                backgroundImage: NetworkImage(userInfo.avatar),
               ),
             ),
           );
