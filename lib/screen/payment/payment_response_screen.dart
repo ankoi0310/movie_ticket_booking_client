@@ -18,14 +18,12 @@ class _PaymentResponseScreenState extends State<PaymentResponseScreen> {
     super.initState();
     final checkoutProvider = Provider.of<CheckoutProvider>(context, listen: false);
     checkoutProvider.returnMomo(widget.paymentResponse!);
+    print('PaymentResponseScreen: ${widget.paymentResponse!.orderId}');
   }
 
   @override
   Widget build(BuildContext context) {
     final appRouterDelegate = AppRouterDelegate.instance;
-
-
-
     Widget buildResponseSuccess() {
 
       return Column(

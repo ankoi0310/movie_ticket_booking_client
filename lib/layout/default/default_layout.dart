@@ -45,7 +45,7 @@ class _DefaultLayoutState extends State<DefaultLayout> {
                       delegate: SliverChildListDelegate(
                         [
                           FutureBuilder(
-                            future: _routeHandler.getRouteWidget(widget.routeName, jsonObject: widget.jsonObject),
+                            future: _routeHandler.getRouteWidget(widget.routeName, jsonObject: widget.jsonObject, queryParameters: widget.queryParameters),
                             builder: (context, snapshot) {
                               if (snapshot.hasError) {
                                 _appRouterDelegate.setPathName(RouteData.notFound.name);

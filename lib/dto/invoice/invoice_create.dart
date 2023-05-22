@@ -9,7 +9,7 @@ class InvoiceCreate {
   ShowTime showtime;
   int totalPrice;
   List<Seat> seats;
-  Set<InvoiceCombo> invoiceCombos;
+  Set<InvoiceCombo>? invoiceCombos;
 
   InvoiceCreate({
     required this.name,
@@ -38,7 +38,7 @@ class InvoiceCreate {
       'showtime': showtime.toJson(),
       'totalPrice': totalPrice,
       'seats': seats.map((e) => e.toJson()).toList(),
-      'invoiceCombos': invoiceCombos.map((e) => e.toJson()).toList(),
+      'invoiceCombos': invoiceCombos!.map((e) => e.toJson()).toList(),
     };
   }
 

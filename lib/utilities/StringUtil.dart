@@ -1,6 +1,7 @@
 import 'package:movie_ticket_booking_flutter_nlu/model/combo.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/combo_item.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/notice.dart';
 
 class StringUtil {
   static String changeMovieFormat(MovieFormat movie) {
@@ -13,6 +14,16 @@ class StringUtil {
         return "4DX";
       case MovieFormat.voiceOver:
         return "Lồng tiếng";
+      default:
+        return "2D";
+    }
+  }
+  static String changeNoticeType(NoticeType type) {
+    switch (type) {
+      case NoticeType.booked:
+        return "Đã đặt vé";
+      case NoticeType.remind:
+        return "Nhắc nhở";
       default:
         return "2D";
     }
