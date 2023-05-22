@@ -73,7 +73,7 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                   widget.showTime!.movie!.name.toUpperCase(),
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: getProportionateScreenWidth(24),
+                    fontSize: getProportionateScreenWidth(18),
                     letterSpacing: 2,
                     color: Colors.white,
                     fontWeight: FontWeight.w500,
@@ -89,7 +89,7 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                       "Rạp: ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(20),
+                        fontSize: getProportionateScreenWidth(16),
                         letterSpacing: 2,
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
@@ -102,7 +102,7 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                       "${widget.showTime!.room!.branch.name} | ${widget.showTime!.room!.name}",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(20),
+                        fontSize: getProportionateScreenWidth(16),
                         letterSpacing: 2,
                         color: Colors.white,
                       ),
@@ -119,7 +119,7 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                       "Suất chiếu: ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(20),
+                        fontSize: getProportionateScreenWidth(16),
                         letterSpacing: 2,
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
@@ -132,7 +132,7 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                       "${DateFormat('dd-MM-yyyy').format(widget.showTime!.startTime!)} | ${DateFormat('HH : mm').format(widget.showTime!.startTime!)}",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(20),
+                        fontSize: getProportionateScreenWidth(16),
                         letterSpacing: 2,
                         color: Colors.white,
                       ),
@@ -150,7 +150,7 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                       "Ghế: ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(20),
+                        fontSize: getProportionateScreenWidth(16),
                         letterSpacing: 2,
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
@@ -168,7 +168,7 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                         overflow: TextOverflow.ellipsis,
                         textWidthBasis: TextWidthBasis.longestLine,
                         style: TextStyle(
-                          fontSize: getProportionateScreenWidth(18),
+                          fontSize: getProportionateScreenWidth(16),
                           letterSpacing: 2,
                           color: Colors.white,
                           fontWeight: FontWeight.w500,
@@ -187,7 +187,7 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                       "Hình thức: ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(20),
+                        fontSize: getProportionateScreenWidth(16),
                         letterSpacing: 2,
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
@@ -199,7 +199,7 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                     Text(
                       StringUtil.changeMovieFormat(widget.showTime!.movieFormat),
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(20),
+                        fontSize: getProportionateScreenWidth(16),
                         letterSpacing: 2,
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
@@ -230,7 +230,7 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                         child: Text(
                           "Quay lại",
                           style: TextStyle(
-                            fontSize: getProportionateScreenWidth(20),
+                            fontSize: getProportionateScreenWidth(16),
                             letterSpacing: 2,
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
@@ -262,7 +262,7 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                         child: Text(
                           "Tiếp tục",
                           style: TextStyle(
-                            fontSize: getProportionateScreenWidth(20),
+                            fontSize: getProportionateScreenWidth(16),
                             letterSpacing: 2,
                             color: Colors.white,
                             fontWeight: FontWeight.w500,

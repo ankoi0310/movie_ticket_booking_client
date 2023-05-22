@@ -8,9 +8,9 @@ class RoutePath {
         queryParameters = {};
 
   RoutePath.otherPage(
-    this.pathName, {
-    this.queryParameters = const {},
-  }) : isNotFound = false;
+    this.pathName,
+    this.queryParameters,
+  ) : isNotFound = false;
 
   RoutePath.notFound(this.pathName)
       : isNotFound = true,

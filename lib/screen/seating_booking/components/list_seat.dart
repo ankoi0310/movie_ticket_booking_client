@@ -91,7 +91,7 @@ class _ListSeatState extends State<ListSeat> {
                                         seat.code,
                                         style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: getProportionateScreenWidth(15),
+                                          fontSize: getProportionateScreenWidth(12),
                                         ),
                                       ),
                                     ),
@@ -113,7 +113,7 @@ class _ListSeatState extends State<ListSeat> {
                                             seat.code,
                                             style: TextStyle(
                                               color: Colors.white,
-                                              fontSize: getProportionateScreenWidth(15),
+                                              fontSize: getProportionateScreenWidth(12),
                                             ),
                                           ),
                                         ),

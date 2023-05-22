@@ -30,7 +30,7 @@ class _CarouselState extends State<Carousel> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: SizeConfig.screenHeight * 0.6,
+      height: 550,
       child: TransformerPageView(
         controller: _indexController,
         index: _currentPageIndex,

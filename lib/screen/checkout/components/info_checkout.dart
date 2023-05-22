@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 class InfoCheckout extends StatefulWidget {
   final ShowTime? showTime;
   final List<Seat> listSeatSelected;
-  final Set<InvoiceCombo> comboInvoices;
+  final Set<InvoiceCombo>? comboInvoices;
   const InfoCheckout({Key? key, required this.showTime, required this.listSeatSelected, required this.comboInvoices}) : super(key: key);
 
   @override
@@ -28,7 +28,7 @@ class _InfoCheckoutState extends State<InfoCheckout> {
     int totalPrice() {
       int totalPrice = 0;
       totalPrice += widget.showTime!.price * widget.listSeatSelected.length;
-      widget.comboInvoices.forEach((element) {
+      widget.comboInvoices!.forEach((element) {
         totalPrice += element.combo!.price * element.quantity;
       });
       return totalPrice;
@@ -91,7 +91,7 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                   widget.showTime!.movie!.name.toUpperCase(),
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: getProportionateScreenWidth(26),
+                    fontSize: getProportionateScreenWidth(18),
                     letterSpacing: 1.25,
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -107,7 +107,7 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                       "Rạp: ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(22),
+                        fontSize: getProportionateScreenWidth(16),
                         letterSpacing: 1.25,
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -120,7 +120,7 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                       "${widget.showTime!.room!.branch.name} | ${widget.showTime!.room!.name}",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(22),
+                        fontSize: getProportionateScreenWidth(16),
                         letterSpacing: 1.25,
                         color: Colors.black,
                       ),
@@ -137,7 +137,7 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                       "Suất chiếu: ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(22),
+                        fontSize: getProportionateScreenWidth(16),
                         letterSpacing: 1.25,
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -150,7 +150,7 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                       "${DateFormat('dd-MM-yyyy').format(widget.showTime!.startTime!)} | ${DateFormat('HH:mm').format(widget.showTime!.startTime!)}",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(22),
+                        fontSize: getProportionateScreenWidth(16),
                         letterSpacing: 1.25,
                         color: Colors.black,
                       ),
@@ -168,7 +168,7 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                       "Ghế: ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(22),
+                        fontSize: getProportionateScreenWidth(16),
                         letterSpacing: 1.25,
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -189,7 +189,7 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                         overflow: TextOverflow.ellipsis,
                         textWidthBasis: TextWidthBasis.longestLine,
                         style: TextStyle(
-                          fontSize: getProportionateScreenWidth(22),
+                          fontSize: getProportionateScreenWidth(16),
                           letterSpacing: 1.25,
                           color: Colors.black,
                           fontWeight: FontWeight.w500,
@@ -209,7 +209,7 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                       "Combo khuyến mãi: ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(22),
+                        fontSize: getProportionateScreenWidth(16),
                         letterSpacing: 1.25,
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -224,7 +224,7 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ...widget.comboInvoices.map((e) => e.quantity != 0? Container(
+                          ...widget.comboInvoices!.map((e) => e.quantity != 0? Container(
                             margin: const EdgeInsets.only(top: 5),
                             child: Text(
                               "${e.combo!.name} x ${e.quantity}",
@@ -234,7 +234,7 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                               overflow: TextOverflow.ellipsis,
                               textWidthBasis: TextWidthBasis.longestLine,
                               style: TextStyle(
-                                fontSize: getProportionateScreenWidth(22),
+                                fontSize: getProportionateScreenWidth(16),
                                 letterSpacing: 1.25,
                                 color: Colors.black,
                                 fontWeight: FontWeight.w500,
@@ -256,7 +256,7 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                       "Hình thức: ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(22),
+                        fontSize: getProportionateScreenWidth(16),
                         letterSpacing: 1.25,
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -268,7 +268,7 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                     Text(
                       StringUtil.changeMovieFormat(widget.showTime!.movieFormat),
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(22),
+                        fontSize: getProportionateScreenWidth(16),
                         letterSpacing: 1.25,
                         color: Colors.black,
                       ),
@@ -285,7 +285,7 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                       "Tổng giá: ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(22),
+                        fontSize: getProportionateScreenWidth(16),
                         letterSpacing: 1.25,
                         color: Colors.black,
                         fontWeight: FontWeight.bold,

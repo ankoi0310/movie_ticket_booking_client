@@ -10,14 +10,13 @@ class AppRouteInformationParser extends RouteInformationParser<RoutePath> {
     if (uri.pathSegments.length == 1) {
       final pathName = uri.pathSegments.elementAt(0).toString();
       if (RouteData.values.any((element) => element.name == pathName)) {
-        return RoutePath.otherPage(pathName, queryParameters: uri.queryParameters);
+        return RoutePath.otherPage(pathName, uri.queryParameters);
       }
-
       return RoutePath.notFound(pathName);
     }
     if (uri.pathSegments.length == 2) {
       final complexPath = '${uri.pathSegments.elementAt(0)}/${uri.pathSegments.elementAt(1)}';
-      return RoutePath.otherPage(complexPath, queryParameters: uri.queryParameters);
+      return RoutePath.otherPage(complexPath, uri.queryParameters);
     }
 
     // Handle notFound routes

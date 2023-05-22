@@ -123,7 +123,7 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
                                   widget.movies[index].name,
                                   style: TextStyle(
                                     color: Theme.of(context).textTheme.bodyMedium!.color,
-                                    fontSize: getProportionateScreenWidth(28),
+                                    fontSize: getProportionateScreenWidth(22),
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),

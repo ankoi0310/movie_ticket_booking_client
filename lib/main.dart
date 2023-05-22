@@ -46,6 +46,7 @@ void main() async {
           ChangeNotifierProvider(create: (_) => CheckoutProvider()),
           ChangeNotifierProvider(create: (_) => ComboProvider()),
           ChangeNotifierProvider(create: (_) => UserProvider()),
+          ChangeNotifierProvider(create: (_) => NoticeProvider()),
         ],
         child: MovieTicketBookingApplication(isLoggedIn: isLoggedIn),
       ),

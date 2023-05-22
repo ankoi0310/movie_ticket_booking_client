@@ -30,7 +30,6 @@ class CheckoutProvider extends ChangeNotifier {
       body: jsonEncode(create.toJson()),
     );
 
-
     notifyListeners();
     return response;
   }

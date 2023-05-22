@@ -88,7 +88,7 @@ class _BreadcrumbState extends State<Breadcrumb> {
                       widget.title.toUpperCase(),
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: getProportionateScreenWidth(60),
+                        fontSize: getProportionateScreenWidth(50),
                         fontWeight: FontWeight.bold,
                         letterSpacing: 2,
                       ),
@@ -102,7 +102,7 @@ class _BreadcrumbState extends State<Breadcrumb> {
                   widget.description,
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: getProportionateScreenWidth(30),
+                      fontSize: getProportionateScreenWidth(25),
                       height: getProportionateScreenHeight(1.8)),
                 ),
               ],

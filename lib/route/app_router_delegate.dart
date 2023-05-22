@@ -27,7 +27,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
 
   TransitionDelegate transitionDelegate = CustomTransitionDelegate();
 
-  final AuthenticationService _authentacationService = AuthenticationService.instance;
+  final AuthenticationService _authenticationService = AuthenticationService.instance;
   late List<Page> _stack = [];
 
   @override
@@ -87,7 +87,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
 
     if (pathName == null) return RoutePath.home(PublicRouteData.home.name);
 
-    return RoutePath.otherPage(pathName);
+    return RoutePath.otherPage(pathName, queryParameters);
   }
 
   @override
@@ -112,7 +112,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
 
   @override
   Future<void> setNewRoutePath(RoutePath configuration) async {
-    isLoggedIn = await _authentacationService.isLoggedIn();
+    isLoggedIn = await _authenticationService.isLoggedIn();
 
     if (isLoggedIn == true) {
       RouteData.values.addAll(AuthRouteData.values);
@@ -149,12 +149,11 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
     if (pathName == null) {
       await setNewRoutePath(RoutePath.home(PublicRouteData.home.name));
     }
-
     if (!RouteData.values.map((e) => e.name).contains(pathName)) {
       isError = true;
       await setNewRoutePath(RoutePath.notFound(pathName));
     } else {
-      await setNewRoutePath(RoutePath.otherPage(pathName, queryParameters: queryParameters));
+      await setNewRoutePath(RoutePath.otherPage(pathName, queryParameters));
     }
 
     notifyListeners();

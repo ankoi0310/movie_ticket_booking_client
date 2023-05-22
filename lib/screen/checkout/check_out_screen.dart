@@ -33,6 +33,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   late final ShowTime? showTime;
     final InvoiceCreate invoiceCreate = InvoiceCreate.empty();
   final List<Seat> listSeatSelected = [];
+  final AuthenticationService authService = AuthenticationService.instance;
 
   @override
   void initState() {
@@ -46,6 +47,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
     invoiceCreate.showtime = showTime!;
     invoiceCreate.seats = listSeatSelected;
+
+    authService.getCurrentUserEmail().then((value) {
+      invoiceCreate.email = value;
+    });
+
   }
 
   @override
@@ -56,11 +62,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final comboProvider = Provider.of<ComboProvider>(context, listen: false);
 
 
-
     int totalPrice() {
       int totalPrice = 0;
       totalPrice += showTime!.price * listSeatSelected.length;
-      invoiceCreate.invoiceCombos.forEach((element) {
+      invoiceCreate.invoiceCombos!.forEach((element) {
         totalPrice += element.combo!.price * element.quantity;
       });
       return totalPrice;
@@ -72,6 +77,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       invoiceCreate.totalPrice = totalPrice();
 
       HttpResponse response = await checkoutProvider.createInvoice(invoice);
+
       MomoResponse momoResponse = MomoResponse.fromJson(response.data);
       if (momoResponse.resultCode == 0) {
         if (await canLaunchUrl(Uri.parse(momoResponse.payUrl))) {
@@ -86,7 +92,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
     setCombo(InvoiceCombo combo) {
       setState(() {
-          invoiceCreate.invoiceCombos.add(combo);
+          invoiceCreate.invoiceCombos!.add(combo);
       });
     }
 

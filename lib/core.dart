@@ -61,6 +61,7 @@ export 'provider/hive/hive_provider.dart';
 export 'provider/information_ticket_selected_provider.dart';
 export 'provider/loading_provider.dart';
 export 'provider/searching_provider.dart';
+export 'provider/api/notice_provider.dart';
 /*---------------------------------------*/
 
 /*--------------- Routes ---------------*/
