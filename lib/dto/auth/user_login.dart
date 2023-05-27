@@ -38,10 +38,14 @@ class UserLoginResponse {
   @HiveField(2)
   String token;
 
+  @HiveField(3)
+  String avatar;
+
   UserLoginResponse({
     required this.id,
     required this.email,
     required this.token,
+    required this.avatar,
   });
 
   factory UserLoginResponse.fromJson(Map<String, dynamic> json) {
@@ -49,6 +53,7 @@ class UserLoginResponse {
       id: json['userId'],
       email: json['email'],
       token: json['token'],
+      avatar: json['avatar'],
     );
   }
 
@@ -57,6 +62,7 @@ class UserLoginResponse {
       'id': id,
       'email': email,
       'token': token,
+      'avatar': avatar,
     };
   }
 }

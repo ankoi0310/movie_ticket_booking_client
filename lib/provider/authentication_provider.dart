@@ -1,5 +1,4 @@
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
-import 'package:movie_ticket_booking_flutter_nlu/handler/http_response.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
   final ApiProvider _apiProvider = ApiProvider.instance;
@@ -34,6 +33,7 @@ class AuthenticationProvider extends ChangeNotifier {
 
     if (response.success) {
       UserLoginResponse userLogin = UserLoginResponse.fromJson(response.data);
+      print(userLogin.toJson());
       await _authentacationService.saveUser(userLogin.toJson());
     }
 
@@ -41,8 +41,43 @@ class AuthenticationProvider extends ChangeNotifier {
     return response;
   }
 
+  Future<bool> isLoggedIn() async {
+    return await _authentacationService.isLoggedIn();
+  }
+
   Future<void> logout() async {
     await _authentacationService.logout();
     notifyListeners();
+  }
+
+  Future<HttpResponse> forgotPassword(String email) async {
+    HttpResponse response = await _apiProvider.post(
+      Uri.parse('$baseUrl/auth/forgot-password'),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({
+        'email': email,
+      }),
+    );
+
+    notifyListeners();
+    return response;
+  }
+
+  Future<HttpResponse> resetPassword({required String token, required String password}) async {
+    HttpResponse response = await _apiProvider.put(
+      Uri.parse('$baseUrl/auth/reset-password'),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({
+        'token': token,
+        'password': password,
+      }),
+    );
+
+    notifyListeners();
+    return response;
   }
 }

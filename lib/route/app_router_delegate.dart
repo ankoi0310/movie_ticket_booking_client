@@ -38,10 +38,11 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
     switch (routeData) {
       case PublicRouteData.login:
       case PublicRouteData.register:
+      case PublicRouteData.resetPassword:
         return [
           MaterialPage(
             key: const ValueKey('auth'),
-            child: FullWidthLayout(routeName: routeData.name),
+            child: FullWidthLayout(routeName: routeData.name, parameters: queryParameters),
           )
         ];
       default:
@@ -68,7 +69,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
                   jsonObject: jsonObject,
                   queryParameters: queryParameters,
                 )
-              : FullWidthLayout(routeName: PublicRouteData.login.name),
+              : FullWidthLayout(routeName: PublicRouteData.login.name, parameters: queryParameters),
         ),
       ];
 
@@ -76,7 +77,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
   List<Page> get _errorStack => [
         MaterialPage(
           key: const ValueKey('error'),
-          child: FullWidthLayout(routeName: pathName!),
+          child: FullWidthLayout(routeName: pathName!, parameters: queryParameters),
         )
       ];
 
@@ -87,7 +88,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
 
     if (pathName == null) return RoutePath.home(PublicRouteData.home.name);
 
-    return RoutePath.otherPage(pathName);
+    return RoutePath.otherPage(pathName, queryParameters: queryParameters);
   }
 
   @override
@@ -164,12 +165,14 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
 class RouteData {
   static const notFound = RouteData._('not-found');
   static const internalServerError = RouteData._('internal-server-error');
+  static const unauthorized = RouteData._('unauthorized');
 
   final String name;
 
   static Set<RouteData> values = {
     notFound,
     internalServerError,
+    unauthorized,
   };
 
   const RouteData._(this.name);
@@ -185,6 +188,7 @@ class PublicRouteData extends RouteData {
   static const checkout = PublicRouteData._('checkout');
   static const payment = PublicRouteData._('payment');
   static const contact = PublicRouteData._('contact');
+  static const resetPassword = PublicRouteData._('reset-password');
 
   static Set<PublicRouteData> values = {
     home,
@@ -196,6 +200,7 @@ class PublicRouteData extends RouteData {
     checkout,
     contact,
     payment,
+    resetPassword,
   };
 
   const PublicRouteData._(String name) : super._(name);

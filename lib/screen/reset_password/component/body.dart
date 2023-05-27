@@ -1,22 +1,13 @@
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
-import 'package:movie_ticket_booking_flutter_nlu/screen/login/component/forgot_password_form.dart';
-import 'package:movie_ticket_booking_flutter_nlu/screen/login/component/login_form.dart';
+import 'package:movie_ticket_booking_flutter_nlu/screen/reset_password/component/reset_password_form.dart';
 
-class Body extends StatefulWidget {
-  const Body({Key? key}) : super(key: key);
+class Body extends StatelessWidget {
+  const Body({
+    Key? key,
+    required this.parameters,
+  }) : super(key: key);
 
-  @override
-  State<Body> createState() => _BodyState();
-}
-
-class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
-  final PageController _pageController = PageController(initialPage: 0);
-  bool isForgotPassword = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  final Map<String, String>? parameters;
 
   @override
   Widget build(BuildContext context) {
@@ -48,17 +39,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                 color: Theme.of(context).colorScheme.background,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: isForgotPassword
-                  ? ForgotPasswordField(goBack: () {
-                      setState(() {
-                        isForgotPassword = false;
-                      });
-                    })
-                  : LoginForm(onForgotPassword: () {
-                      setState(() {
-                        isForgotPassword = true;
-                      });
-                    }),
+              child: ResetPasswordForm(parameters: parameters),
             ),
           ],
         ),

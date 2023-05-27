@@ -1,7 +1,9 @@
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
-import 'package:movie_ticket_booking_flutter_nlu/dto/user/user_info.dart';
+import 'package:movie_ticket_booking_flutter_nlu/screen/profile/component/change_password_form.dart';
+import 'package:movie_ticket_booking_flutter_nlu/screen/profile/component/profile_form.dart';
+import 'package:movie_ticket_booking_flutter_nlu/screen/profile/component/reset_password_field.dart';
 
-class ProfileInfo extends StatelessWidget {
+class ProfileInfo extends StatefulWidget {
   const ProfileInfo({
     Key? key,
     required this.userInfo,
@@ -10,117 +12,46 @@ class ProfileInfo extends StatelessWidget {
   final UserInfo userInfo;
 
   @override
+  State<ProfileInfo> createState() => _ProfileInfoState();
+}
+
+class _ProfileInfoState extends State<ProfileInfo> {
+  @override
   Widget build(BuildContext context) {
-    bool isMobile = Responsive.isMobile(context) ? true : false;
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Container(
-                    width: isMobile ? SizeConfig.screenWidth * 0.3 : SizeConfig.screenWidth * 0.1,
-                    height: isMobile ? SizeConfig.screenWidth * 0.3 : SizeConfig.screenWidth * 0.1,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: NetworkImage(userInfo.avatar),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                  // upload avatar
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text('Chỉnh sửa'),
-                  ),
-                ],
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: getProportionateScreenHeight(10),
             ),
-            const VerticalDivider(thickness: 1, color: Colors.grey),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        'Họ và tên: ',
-                        style: TextStyle(
-                          color: Colors.grey[900],
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        userInfo.fullName,
-                        style: TextStyle(
-                          color: Colors.grey[900],
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 5),
-                  Row(
-                    children: [
-                      Text(
-                        'Giới tính: ',
-                        style: TextStyle(
-                          color: Colors.grey[900],
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        userInfo.isMale ? 'Nam' : 'Nữ',
-                        style: TextStyle(
-                          color: Colors.grey[900],
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
+            child: ProfileForm(userInfo: widget.userInfo),
+          ),
         ),
-      ),
+        Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: getProportionateScreenHeight(20),
+          ),
+          child: const Divider(
+            color: Colors.grey,
+            thickness: 1,
+            height: 10,
+          ),
+        ),
+        const Expanded(
+          child: Row(
+            children: [
+              Expanded(
+                child: ChangePasswordForm(),
+              ),
+              Expanded(
+                child: ResetPasswordField(),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
-
-  Widget buildSocialValue(String label, int value) => Container(
-        padding: const EdgeInsets.all(5),
-        height: 50,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              '$value',
-              style: TextStyle(
-                color: Colors.grey[900],
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              label,
-              style: TextStyle(
-                color: Colors.grey[900],
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-              ),
-            )
-          ],
-        ),
-      );
 }

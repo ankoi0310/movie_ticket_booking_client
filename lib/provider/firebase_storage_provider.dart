@@ -1,7 +1,4 @@
-import 'dart:typed_data';
-
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 
 Reference get storageRef => FirebaseStorage.instance.ref();
 
@@ -30,5 +27,14 @@ class FirebaseStorageProvider extends ChangeNotifier {
       print(e);
     }
     return null;
+  }
+
+  Future<String?> getImage(String path) async {
+    return await storageRef.child(path).getDownloadURL();
+  }
+
+  Future<String> uploadImage(String path, Uint8List imageBytes) async {
+    TaskSnapshot taskSnapshot = await storageRef.child(path).putData(imageBytes);
+    return await taskSnapshot.ref.getDownloadURL();
   }
 }

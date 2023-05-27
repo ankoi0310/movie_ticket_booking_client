@@ -3,14 +3,14 @@ import 'package:hive/hive.dart';
 part 'user_info.g.dart';
 
 class UserInfoRequest {
-  final String email;
-  final String fullName;
-  final bool isMale;
-  final String avatar;
-  final String dateOfBirth;
+  String? email;
+  String fullName;
+  bool isMale;
+  String avatar;
+  String dateOfBirth;
 
   UserInfoRequest({
-    required this.email,
+    this.email,
     required this.fullName,
     required this.isMale,
     required this.avatar,
@@ -24,6 +24,15 @@ class UserInfoRequest {
       isMale: json['isMale'],
       avatar: json['avatar'],
       dateOfBirth: json['dateOfBirth'],
+    );
+  }
+
+  factory UserInfoRequest.fromCurrent(UserInfo userInfo) {
+    return UserInfoRequest(
+      fullName: userInfo.fullName,
+      isMale: userInfo.isMale,
+      avatar: userInfo.avatar,
+      dateOfBirth: userInfo.dateOfBirth,
     );
   }
 

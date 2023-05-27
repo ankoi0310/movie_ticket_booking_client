@@ -1,5 +1,5 @@
-import 'package:movie_ticket_booking_flutter_nlu/component/footer/social_network.dart';
-import 'package:movie_ticket_booking_flutter_nlu/component/footer/web_info.dart';
+import 'package:movie_ticket_booking_flutter_nlu/component/social_network.dart';
+import 'package:movie_ticket_booking_flutter_nlu/component/web_info.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 
 class Footer extends StatelessWidget {

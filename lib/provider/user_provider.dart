@@ -1,21 +1,22 @@
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
-import 'package:movie_ticket_booking_flutter_nlu/dto/user/user_info.dart';
-import 'package:movie_ticket_booking_flutter_nlu/handler/http_response.dart';
 
 class UserProvider with ChangeNotifier {
   final ApiProvider _apiProvider = ApiProvider.instance;
   final AuthenticationService _authentacationService = AuthenticationService.instance;
+  final FirebaseStorageProvider _firebaseStorageProvider = FirebaseStorageProvider();
 
-  Future<HttpResponse> updateAvatar(String avatar) async {
-    String email = await _authentacationService.getCurrentUserEmail();
+  Future<HttpResponse> uploadAvatar(Uint8List imageBytes) async {
+    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    String avatarUrl = await _firebaseStorageProvider.uploadImage('user/avatar/$fileName', imageBytes);
+
     HttpResponse response = await _apiProvider.put(
-      Uri.parse('$baseUrl/user/profile'),
+      Uri.parse('$baseUrl/user/upload-avatar'),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${_authentacationService.token}',
       },
       body: jsonEncode({
-        'email': email,
-        'avatar': avatar,
+        'avatarUrl': avatarUrl,
       }),
     );
 
@@ -29,13 +30,11 @@ class UserProvider with ChangeNotifier {
       throw Exception('Chưa đăng nhập');
     }
 
-    String token = _authentacationService.token!;
-
     HttpResponse response = await _apiProvider.get(
       Uri.parse('$baseUrl/user/profile'),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $token',
+        'Authorization': 'Bearer ${_authentacationService.token}',
       },
     );
 
@@ -43,6 +42,7 @@ class UserProvider with ChangeNotifier {
       UserInfo userInfo = UserInfo.fromJson(response.data);
       await _authentacationService.saveUser(userInfo.toJson());
 
+      notifyListeners();
       return userInfo;
     }
 
@@ -50,10 +50,13 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<HttpResponse> updateProfile(UserInfoRequest userInfoRequest) async {
+    userInfoRequest.email = await _authentacationService.getCurrentUserEmail();
+
     HttpResponse response = await _apiProvider.put(
       Uri.parse('$baseUrl/user/profile'),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${_authentacationService.token}',
       },
       body: jsonEncode(userInfoRequest.toJson()),
     );
@@ -68,6 +71,7 @@ class UserProvider with ChangeNotifier {
       Uri.parse('$baseUrl/user/change-password'),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${_authentacationService.token}',
       },
       body: jsonEncode({
         'email': email,
