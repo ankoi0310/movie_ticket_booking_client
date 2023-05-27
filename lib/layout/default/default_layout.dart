@@ -1,12 +1,6 @@
-import 'package:movie_ticket_booking_flutter_nlu/component/custom_button.dart';
-import 'package:movie_ticket_booking_flutter_nlu/component/custom_loading_screen.dart';
-import 'package:movie_ticket_booking_flutter_nlu/component/custom_search_bar.dart';
-import 'package:movie_ticket_booking_flutter_nlu/component/footer.dart';
-import 'package:movie_ticket_booking_flutter_nlu/component/list_menu.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
-import 'package:movie_ticket_booking_flutter_nlu/layout/default/component/notification_button.dart';
-
-import 'component/avatar.dart';
+import 'package:movie_ticket_booking_flutter_nlu/layout/default/component/footer/footer.dart';
+import 'package:movie_ticket_booking_flutter_nlu/layout/default/component/header/header.dart';
 
 class DefaultLayout extends StatefulWidget {
   final String? routeName;
@@ -29,22 +23,12 @@ class _DefaultLayoutState extends State<DefaultLayout> {
   final AppRouterDelegate _appRouterDelegate = AppRouterDelegate.instance;
   final GlobalKey<ScaffoldState> _scaffoldKey = CustomKey.scaffoldKey;
   final RouteHandler _routeHandler = RouteHandler.instance;
-  final double _seacrhBarHeight = 90;
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  late final LoadingProvider loadingProvider = Provider.of<LoadingProvider>(context);
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    final loadingProvider = Provider.of<LoadingProvider>(context);
 
     return Consumer<SearchingProvider>(
       builder: (context, searchingProvider, child) => Stack(
@@ -56,57 +40,7 @@ class _DefaultLayoutState extends State<DefaultLayout> {
               body: SafeArea(
                 child: CustomScrollView(
                   slivers: [
-                    SliverAppBar(
-                      pinned: true,
-                      elevation: 0,
-                      automaticallyImplyLeading: false,
-                      scrolledUnderElevation: 0,
-                      backgroundColor: Theme.of(context).colorScheme.background,
-                      toolbarHeight: _seacrhBarHeight,
-                      centerTitle: true,
-                      title: const CustomSearchBar(),
-                      bottom: const ListMenu(),
-                      leadingWidth: SizeConfig.screenWidth * 0.1,
-                      leading: LogoButton(
-                        path: 'image/logo.png',
-                        onPressed: () => _appRouterDelegate.setPathName(PublicRouteData.home.name),
-                      ),
-                      actions: [
-                        FutureBuilder(
-                          future: authentacationService.isLoggedIn(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData && snapshot.data == true) {
-                              return Row(
-                                children: [
-                                  const NotificationButton(),
-                                  SizedBox(width: getProportionateScreenWidth(20)),
-                                  const Avatar(),
-                                ],
-                              );
-                            }
-
-                            return TextButton(
-                              style: TextButton.styleFrom(
-                                backgroundColor: Theme.of(context).colorScheme.secondary,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                              ),
-                              onPressed: () => _appRouterDelegate.setPathName(PublicRouteData.login.name),
-                              child: const Text(
-                                'Đăng nhập',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        SizedBox(width: SizeConfig.screenWidth * 0.02),
-                      ],
-                    ),
+                    const Header(),
                     SliverList(
                       delegate: SliverChildListDelegate(
                         [

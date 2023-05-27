@@ -1,22 +1,22 @@
 /// This file contains all the error messages that are used in the app
 
 // Name error
-const nullNameError = 'Please enter your name';
+const nullNameError = 'Vui lòng nhập tên';
 
 // Email error
-const nullEmailError = 'Please enter your email';
-const invalidEmailError = 'Please enter a valid email';
+const nullEmailError = 'Vui lòng nhập email';
+const invalidEmailError = 'Vui lòng nhập email hợp lệ';
 
 // Phone error
-const nullPhoneError = 'Please enter your phone number';
-const invalidPhoneError = 'Please enter a valid phone number';
+const nullPhoneError = 'Vui lòng nhập số điện thoại';
+const invalidPhoneError = 'Vui lòng nhập số điện thoại hợp lệ';
 
 // Birthday error
-const nullBirthdayError = 'Please enter your birthday';
-const invalidBirthdayError = 'Please enter a valid birthday';
+const nullBirthdayError = 'Vui lòng nhập ngày sinh';
+const invalidBirthdayError = 'Vui lòng nhập ngày sinh hợp lệ';
 
 // Password error
-const nullPasswordError = 'Please enter your password';
-const nullRetypePasswordError = 'Please enter your password again';
-const shortPasswordError = 'Password must be at least 6 characters';
-const notMatchPasswordError = 'Password does not match';
+const nullPasswordError = 'Vui lòng nhập mật khẩu';
+const nullRetypePasswordError = 'Vui lòng nhập lại mật khẩu';
+const shortPasswordError = 'Mật khẩu phải có ít nhất 8 ký tự';
+const notMatchPasswordError = 'Mật khẩu không khớp';

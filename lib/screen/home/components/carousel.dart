@@ -1,8 +1,5 @@
-import 'package:another_transformer_page_view/another_transformer_page_view.dart';
-import 'package:movie_ticket_booking_flutter_nlu/addon/buildin_transformers.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
-import 'package:movie_ticket_booking_flutter_nlu/widget/hover_builder.dart';
 
 class Carousel extends StatefulWidget {
   final List<Movie> movies;
@@ -19,7 +16,7 @@ class Carousel extends StatefulWidget {
 }
 
 class _CarouselState extends State<Carousel> with TickerProviderStateMixin {
-  final IndexController _indexController = IndexController();
+  final PageController _pageController = PageController(initialPage: 0);
   late int _currentPageIndex = 0;
 
   @override
@@ -29,51 +26,50 @@ class _CarouselState extends State<Carousel> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: SizeConfig.screenHeight * 0.6,
-      child: TransformerPageView(
-        controller: _indexController,
-        index: _currentPageIndex,
-        itemCount: widget.movies.length,
-        loop: true,
+      child: PageView(
+        controller: _pageController,
         onPageChanged: (index) {
           setState(() {
-            _currentPageIndex = index!;
+            _currentPageIndex = index;
           });
         },
-        transformer: ScaleAndFadeTransformer(),
-        itemBuilder: (context, index) {
-          final movie = widget.movies[index];
-          return Stack(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: Image.memory(widget.images[movie.imageHorizontal]!).image,
-                    fit: BoxFit.fill,
+        children: List.generate(
+          widget.movies.length,
+          (index) {
+            final Movie movie = widget.movies[index];
+            return Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: Image.memory(widget.images[movie.imageHorizontal]!).image,
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                height: SizeConfig.screenHeight * 0.6,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.center,
-                    colors: [
-                      Colors.black.withOpacity(0.8),
-                      Colors.black.withOpacity(0.6),
-                      Colors.black.withOpacity(0.2),
-                      Colors.transparent,
-                    ],
+                Container(
+                  height: SizeConfig.screenHeight * 0.6,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.center,
+                      colors: [
+                        Colors.black.withOpacity(0.8),
+                        Colors.black.withOpacity(0.6),
+                        Colors.black.withOpacity(0.2),
+                        Colors.transparent,
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              buildPreviousButton(context),
-              builNextButton(context),
-            ],
-          );
-        },
+                buildPreviousButton(context),
+                builNextButton(context),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -106,7 +102,11 @@ class _CarouselState extends State<Carousel> with TickerProviderStateMixin {
                 setState(() {
                   _currentPageIndex = (_currentPageIndex + 1) % widget.movies.length;
                 });
-                _indexController.move(_currentPageIndex);
+                _pageController.animateToPage(
+                  _currentPageIndex,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeInOut,
+                );
               },
               icon: Icon(
                 Icons.arrow_forward_ios,
@@ -146,7 +146,11 @@ class _CarouselState extends State<Carousel> with TickerProviderStateMixin {
               setState(() {
                 _currentPageIndex = (_currentPageIndex - 1) % widget.movies.length;
               });
-              _indexController.move(_currentPageIndex);
+              _pageController.animateToPage(
+                _currentPageIndex,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+              );
             },
             icon: Icon(
               Icons.arrow_back_ios,

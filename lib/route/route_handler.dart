@@ -1,9 +1,6 @@
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 import 'package:movie_ticket_booking_flutter_nlu/dto/payment/payment_momo_response.dart';
-import 'package:movie_ticket_booking_flutter_nlu/screen/checkout/check_out_screen.dart';
-import 'package:movie_ticket_booking_flutter_nlu/screen/error/not_found_screen.dart';
-import 'package:movie_ticket_booking_flutter_nlu/screen/profile/profile_screen.dart';
-import 'package:movie_ticket_booking_flutter_nlu/screen/seating_booking/seat_booking_screen.dart';
+import 'package:movie_ticket_booking_flutter_nlu/screen/error/unauthorized_screen.dart';
 
 class RouteHandler {
   static final RouteHandler _instance = RouteHandler._();
@@ -26,6 +23,7 @@ class RouteHandler {
 
     if (uri.pathSegments.isEmpty) return const HomeScreen();
 
+    // No path parameters
     if (uri.pathSegments.length == 1) {
       final pathName = uri.pathSegments.elementAt(0).toString();
 
@@ -67,10 +65,16 @@ class RouteHandler {
           default:
             return const HomeScreen();
         }
-      } else {
-        return const NotFoundScreen();
       }
+
+      if (AuthRouteData.values.any((element) => element.name == pathName) && !isLoggedIn) {
+        return const UnauthorizedScreen();
+      }
+
+      return const NotFoundScreen();
     }
+
+    // Has path parameters
     if (uri.pathSegments.length == 2) {
       if (uri.pathSegments[0] == "movie") {
         String? slug = uri.pathSegments[1];

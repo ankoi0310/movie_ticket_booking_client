@@ -20,19 +20,22 @@ class UserLoginResponseAdapter extends TypeAdapter<UserLoginResponse> {
       id: fields[0] as int,
       email: fields[1] as String,
       token: fields[2] as String,
+      avatar: fields[3] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserLoginResponse obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.email)
       ..writeByte(2)
-      ..write(obj.token);
+      ..write(obj.token)
+      ..writeByte(3)
+      ..write(obj.avatar);
   }
 
   @override

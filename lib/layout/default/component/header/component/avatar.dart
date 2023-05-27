@@ -1,21 +1,18 @@
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
-import 'package:movie_ticket_booking_flutter_nlu/dto/user/user_info.dart';
-import 'package:movie_ticket_booking_flutter_nlu/provider/user_provider.dart';
 
 class Avatar extends StatelessWidget {
   const Avatar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+    final AuthenticationService authenticationService = AuthenticationService.instance;
     final AuthenticationProvider authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false);
     final AppRouterDelegate appRouterDelegate = AppRouterDelegate.instance;
 
     return FutureBuilder(
-      future: userProvider.getProfile(),
+      future: authenticationService.getCurrentAvatar(),
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          UserInfo userInfo = snapshot.data!;
+        if (snapshot.hasData && snapshot.data != null) {
           return InkWell(
             focusColor: Colors.transparent,
             hoverColor: Colors.transparent,
@@ -45,7 +42,10 @@ class Avatar extends StatelessWidget {
                   PopupMenuItem(
                     onTap: () async {
                       await authenticationProvider.logout();
-                      await appRouterDelegate.setPathName(PublicRouteData.home.name);
+
+                      if (appRouterDelegate.currentConfiguration?.pathName == AuthRouteData.profile.name) {
+                        appRouterDelegate.setPathName(PublicRouteData.home.name);
+                      }
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -68,7 +68,7 @@ class Avatar extends StatelessWidget {
               child: CircleAvatar(
                 radius: 24,
                 backgroundColor: accentColor,
-                backgroundImage: NetworkImage(userInfo.avatar),
+                backgroundImage: NetworkImage(snapshot.data as String),
               ),
             ),
           );

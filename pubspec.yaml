@@ -35,13 +35,13 @@ dependencies:
     sdk: flutter
 
   intl: ^0.17.0
-  http: ^0.13.5
+  http: ^0.13.3
   flutter_format_money_vietnam: ^0.0.2
   flutter_svg: ^2.0.2
   awesome_notifications: ^0.7.4+1
-  flutter_launcher_icons: ^0.12.0
-  fluttertoast: ^8.2.1
-  url_launcher: ^6.1.10
+  flutter_launcher_icons: ^0.13.1
+  fluttertoast: ^8.2.2
+  url_launcher: ^6.1.11
   font_awesome_flutter: ^10.4.0
 
 
@@ -54,14 +54,19 @@ dependencies:
   flutter_inappwebview: ^5.7.2+3
   flutter_expandable_text: ^1.0.0
   dropdown_button2: ^2.1.0
-  firebase_storage: ^11.1.1
-  firebase_core: ^2.10.0
+  firebase_storage: ^11.2.1
+  firebase_core: ^2.13.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  flutter_native_splash: ^2.2.19
-  rive: ^0.10.4
+  flutter_native_splash: ^2.3.0
+  rive: ^0.11.1
+  vector_math: ^2.1.4
   quantity_input: ^1.0.2
+  flutter_facebook_auth: ^5.0.11
+  social_login_buttons: ^1.0.7
+  flutter_social_button: ^1.1.4+1
   dart_jsonwebtoken: ^2.7.1
+  file_picker: ^5.3.1
 
 
 dev_dependencies:
@@ -93,6 +98,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/icons/
     - assets/image/
     - assets/rive/
 

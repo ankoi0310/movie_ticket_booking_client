@@ -1,7 +1,6 @@
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
-import 'package:movie_ticket_booking_flutter_nlu/dto/user/user_info.dart';
 
-class AuthenticationService {
+class AuthenticationService with ChangeNotifier {
   AuthenticationService._();
 
   static final AuthenticationService _instance = AuthenticationService._();
@@ -35,6 +34,12 @@ class AuthenticationService {
 
   Future<void> saveUser(Map<String, dynamic> user) async {
     await _hiveDataProvider.insert("user", user);
+    notifyListeners();
+  }
+
+  Future<void> saveCurrentAvatar(String avatar) async {
+    await _hiveDataProvider.update("user", {"avatar": avatar});
+    notifyListeners();
   }
 
   Future<void> saveToken(String token) async {
@@ -43,6 +48,7 @@ class AuthenticationService {
 
   /// Method to logout user
   Future<void> logout() async {
+    _token = null;
     await _hiveDataProvider.delete("user");
   }
 
@@ -54,5 +60,12 @@ class AuthenticationService {
   Future<String> getCurrentUserEmail() async {
     Map response = await _hiveDataProvider.read("user");
     return (response.isNotEmpty ? response["email"] : null);
+  }
+
+  Future<String> getCurrentAvatar() async {
+    Map response = await _hiveDataProvider.read("user");
+    print(response);
+    notifyListeners();
+    return (response.isNotEmpty ? response["avatar"] : null);
   }
 }

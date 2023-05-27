@@ -4,9 +4,9 @@ import 'package:movie_ticket_booking_flutter_nlu/provider/api/branch_provider.da
 import 'package:movie_ticket_booking_flutter_nlu/provider/api/checkout_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/api/combo_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/api/show_time_provider.dart';
-import 'package:movie_ticket_booking_flutter_nlu/provider/user_provider.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   // usePathUrlStrategy();
   await Firebase.initializeApp(
     options: const FirebaseOptions(
@@ -36,6 +36,7 @@ void main() async {
         providers: [
           Provider(create: (_) => ApiProvider(_)),
           ChangeNotifierProvider(create: (_) => AuthenticationProvider()),
+          ChangeNotifierProvider(create: (_) => AuthenticationService()),
           ChangeNotifierProvider(create: (_) => SearchingProvider()),
           ChangeNotifierProvider(create: (_) => InformationTicketSelectedProvider()),
           ChangeNotifierProvider(create: (_) => FirebaseStorageProvider()),
