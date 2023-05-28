@@ -23,7 +23,6 @@ class _PaymentResponseScreenState extends State<PaymentResponseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appRouterDelegate = AppRouterDelegate.instance;
     Widget buildResponseSuccess() {
 
       return Column(
@@ -71,7 +70,7 @@ class _PaymentResponseScreenState extends State<PaymentResponseScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              appRouterDelegate.setPathName(PublicRouteData.home.name);
+              AppRouterDelegate().setPathName(PublicRouteData.home.name);
             },
             child: const Text('Quay về trang chủ'),
           ),

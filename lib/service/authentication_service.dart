@@ -53,6 +53,6 @@ class AuthenticationService {
 
   Future<String> getCurrentUserEmail() async {
     Map response = await _hiveDataProvider.read("user");
-    return (response.isNotEmpty ? response["email"] : null);
+    return (response.isNotEmpty ? response["email"] : '');
   }
 }

@@ -24,10 +24,10 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
     return Container(
       width: SizeConfig.screenWidth,
       padding: EdgeInsets.only(
-        right: getProportionateScreenWidth(100),
-        left: getProportionateScreenWidth(100),
-        top: getProportionateScreenHeight(50),
-        bottom: getProportionateScreenHeight(10),
+        right: getProportionateScreenWidth(50),
+        left: getProportionateScreenWidth(50),
+        top: getProportionateScreenHeight(30),
+        bottom: getProportionateScreenHeight(20),
       ),
       child: Column(
         children: [
@@ -38,7 +38,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                 child: Stack(
                   children: [
                     Container(
-                      height: getProportionateScreenHeight(600),
+                      height: getProportionateScreenHeight(500),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         image: DecorationImage(
@@ -51,7 +51,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                       ),
                     ),
                     Container(
-                      height: getProportionateScreenHeight(600),
+                      height: getProportionateScreenHeight(500),
                       decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.5),
                         borderRadius: BorderRadius.circular(10),
@@ -78,8 +78,8 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                   flex: 8,
                   child: Container(
                       padding: EdgeInsets.only(
-                        right: getProportionateScreenWidth(100),
-                        left: getProportionateScreenWidth(100),
+                        right: getProportionateScreenWidth(50),
+                        left: getProportionateScreenWidth(70),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,7 +87,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                           Text(
                             widget.movie!.name,
                             style: TextStyle(
-                              fontSize: getProportionateScreenWidth(60),
+                              fontSize: getProportionateScreenWidth(40),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -97,7 +97,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                                 genres: widget.movie!.genres,
                                 color: Colors.black.withOpacity(0.75),
                                 mainAlignment: MainAxisAlignment.start,
-                                fontSize: getProportionateScreenWidth(30)),
+                                fontSize: getProportionateScreenWidth(18)),
                           ),
                           Container(
                             margin: EdgeInsets.only(top: getProportionateScreenHeight(3)),
@@ -108,7 +108,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                                 Text("${(widget.movie!.rating / 2).toStringAsFixed(1)}/5",
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: getProportionateScreenWidth(30),
+                                      fontSize: getProportionateScreenWidth(18),
                                       fontWeight: FontWeight.w400,
                                       height: 1.5,
                                       letterSpacing: 1.1,
@@ -123,7 +123,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                           Text(
                             widget.movie!.storyLine,
                             style: TextStyle(
-                              fontSize: getProportionateScreenWidth(22),
+                              fontSize: getProportionateScreenWidth(18),
                               color: Colors.black.withOpacity(0.75),
                               height: 1.5,
                             ),
@@ -134,7 +134,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                               Text(
                                 "Nhà sản xuất: ",
                                 style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(22),
+                                  fontSize: getProportionateScreenWidth(18),
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -142,7 +142,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                               Text(
                                 widget.movie!.producer,
                                 style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(22),
+                                  fontSize: getProportionateScreenWidth(18),
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
@@ -154,7 +154,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                               Text(
                                 "Quốc gia: ",
                                 style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(22),
+                                  fontSize: getProportionateScreenWidth(18),
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -162,7 +162,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                               Text(
                                 widget.movie!.country,
                                 style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(22),
+                                  fontSize: getProportionateScreenWidth(18),
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
@@ -174,7 +174,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                               Text(
                                 "Ngôn ngữ:  ",
                                 style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(22),
+                                  fontSize: getProportionateScreenWidth(18),
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -182,7 +182,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                               Text(
                                 widget.movie!.language,
                                 style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(22),
+                                  fontSize: getProportionateScreenWidth(18),
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
@@ -194,7 +194,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                               Text(
                                 "Phụ đề: ",
                                 style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(22),
+                                  fontSize: getProportionateScreenWidth(18),
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -202,7 +202,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                               Text(
                                 widget.movie!.subtitle,
                                 style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(22),
+                                  fontSize: getProportionateScreenWidth(18),
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
@@ -214,7 +214,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                               Text(
                                 "Đạo diễn: ",
                                 style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(22),
+                                  fontSize: getProportionateScreenWidth(18),
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -222,7 +222,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                               Text(
                                 widget.movie!.director,
                                 style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(22),
+                                  fontSize: getProportionateScreenWidth(18),
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
@@ -234,7 +234,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                               Text(
                                 "Dàn diễn viên: ",
                                 style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(22),
+                                  fontSize: getProportionateScreenWidth(18),
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -247,7 +247,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                                     (index) => Text(
                                       "${widget.movie!.actors[index]}${widget.movie!.actors.length == index ? "" : ", "}",
                                       style: TextStyle(
-                                        fontSize: getProportionateScreenWidth(22),
+                                        fontSize: getProportionateScreenWidth(18),
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),
@@ -262,14 +262,14 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                               Text(
                                 "Thời gian phim: ",
                                 style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(22),
+                                  fontSize: getProportionateScreenWidth(18),
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               const SizedBox(width: 5),
                               DurationFormat(
                                 duration: widget.movie!.duration,
-                                fontSize: getProportionateScreenWidth(22),
+                                fontSize: getProportionateScreenWidth(18),
                                 color: Colors.black.withOpacity(0.95),
                                 mainAlignment: Alignment.centerLeft,
                               ),
@@ -287,9 +287,9 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                                 child: Container(
                                   padding: EdgeInsets.symmetric(
                                     horizontal: getProportionateScreenWidth(20),
-                                    vertical: getProportionateScreenHeight(20),
+                                    vertical: getProportionateScreenHeight(10),
                                   ),
-                                  width: getProportionateScreenWidth(250),
+                                  width: getProportionateScreenWidth(200),
                                   height: 50,
                                   decoration: BoxDecoration(
                                     color: Theme.of(context).primaryColor,
@@ -301,7 +301,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                                       Icon(
                                         Icons.notifications_active,
                                         color: Colors.white,
-                                        size: getProportionateScreenWidth(26),
+                                        size: getProportionateScreenWidth(22),
                                       ),
                                       SizedBox(width: getProportionateScreenWidth(20)),
                                       Text(
@@ -309,7 +309,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: getProportionateScreenWidth(20),
+                                          fontSize: getProportionateScreenWidth(16),
                                           fontWeight: FontWeight.bold,
                                           height: 1.5,
                                         ),
@@ -330,9 +330,9 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                                 child: Container(
                                   padding: EdgeInsets.symmetric(
                                     horizontal: getProportionateScreenWidth(20),
-                                    vertical: getProportionateScreenHeight(20),
+                                    vertical: getProportionateScreenHeight(10),
                                   ),
-                                  width: getProportionateScreenWidth(250),
+                                  width: getProportionateScreenWidth(200),
                                   height: 50,
                                   decoration: BoxDecoration(
                                     color: Colors.blue,
@@ -344,7 +344,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                                       Icon(
                                         Icons.ondemand_video,
                                         color: Colors.white,
-                                        size: getProportionateScreenWidth(26),
+                                        size: getProportionateScreenWidth(22),
                                       ),
                                       const SizedBox(width: 10),
                                       Text(
@@ -352,7 +352,7 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: getProportionateScreenWidth(20),
+                                          fontSize: getProportionateScreenWidth(16),
                                           fontWeight: FontWeight.bold,
                                           height: 1.5,
                                         ),

@@ -117,7 +117,37 @@ class _InfoCheckoutState extends State<InfoCheckout> {
                       width: 5,
                     ),
                     Text(
-                      "${widget.showTime!.room!.branch.name} | ${widget.showTime!.room!.name}",
+                      widget.showTime!.room!.branch.name,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: getProportionateScreenWidth(16),
+                        letterSpacing: 1.25,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Phòng: ",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: getProportionateScreenWidth(16),
+                        letterSpacing: 1.25,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      widget.showTime!.room!.name,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: getProportionateScreenWidth(16),

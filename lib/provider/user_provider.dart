@@ -4,10 +4,10 @@ import 'package:movie_ticket_booking_flutter_nlu/handler/http_response.dart';
 
 class UserProvider with ChangeNotifier {
   final ApiProvider _apiProvider = ApiProvider.instance;
-  final AuthenticationService _authentacationService = AuthenticationService.instance;
+  final AuthenticationService _authenticationService = AuthenticationService.instance;
 
   Future<HttpResponse> updateAvatar(String avatar) async {
-    String email = await _authentacationService.getCurrentUserEmail();
+    String email = await _authenticationService.getCurrentUserEmail();
     HttpResponse response = await _apiProvider.put(
       Uri.parse('$baseUrl/user/profile'),
       headers: {
@@ -24,12 +24,12 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<UserInfo> getProfile() async {
-    bool isLoggedIn = await _authentacationService.isLoggedIn();
+    bool isLoggedIn = await _authenticationService.isLoggedIn();
     if (!isLoggedIn) {
       throw Exception('Chưa đăng nhập');
     }
 
-    String token = _authentacationService.token!;
+    String token = _authenticationService.token!;
 
     HttpResponse response = await _apiProvider.get(
       Uri.parse('$baseUrl/user/profile'),
@@ -41,7 +41,7 @@ class UserProvider with ChangeNotifier {
 
     if (response.success) {
       UserInfo userInfo = UserInfo.fromJson(response.data);
-      await _authentacationService.saveUser(userInfo.toJson());
+      await _authenticationService.saveUser(userInfo.toJson());
 
       return userInfo;
     }
@@ -63,7 +63,7 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<HttpResponse> changePassword(String password, String newPassword) async {
-    String email = await _authentacationService.getCurrentUserEmail();
+    String email = await _authenticationService.getCurrentUserEmail();
     HttpResponse response = await _apiProvider.put(
       Uri.parse('$baseUrl/user/change-password'),
       headers: {

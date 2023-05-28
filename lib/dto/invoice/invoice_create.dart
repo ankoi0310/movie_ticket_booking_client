@@ -35,7 +35,9 @@ class InvoiceCreate {
       'name': name,
       'email': email,
       'paymentMethod': paymentMethod,
-      'showtime': showtime.toJson(),
+      'showtime': {
+        "id": showtime.id,
+      },
       'totalPrice': totalPrice,
       'seats': seats.map((e) => e.toJson()).toList(),
       'invoiceCombos': invoiceCombos!.map((e) => e.toJson()).toList(),
