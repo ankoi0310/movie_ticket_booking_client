@@ -1,7 +1,5 @@
-import 'package:movie_ticket_booking_flutter_nlu/component/social_icon_tile.dart';
+import 'package:movie_ticket_booking_flutter_nlu/component/social_login_field.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
-import 'package:movie_ticket_booking_flutter_nlu/model/social_icon.dart';
-import 'package:movie_ticket_booking_flutter_nlu/widget/hover_builder.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({
@@ -377,12 +375,7 @@ class _RegisterFormState extends State<RegisterForm> {
             ],
           ),
           SizedBox(height: getProportionateScreenHeight(20)),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: List.from(
-              socialIcons.map((socialIcon) => SocialIconTile(socialIcon: socialIcon)),
-            ),
-          ),
+          const SocialLoginField(),
           Padding(
             padding: EdgeInsets.symmetric(
               vertical: getProportionateScreenHeight(20),

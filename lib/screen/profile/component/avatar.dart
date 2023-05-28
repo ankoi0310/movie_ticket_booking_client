@@ -1,5 +1,3 @@
-import 'package:file_picker/_internal/file_picker_web.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 
 class Avatar extends StatefulWidget {

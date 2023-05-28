@@ -15,6 +15,7 @@ class ProfileForm extends StatefulWidget {
 
 class _ProfileFormState extends State<ProfileForm> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  late final TextEditingController dateOfBirthController = TextEditingController(text: widget.userInfo.dateOfBirth);
 
   late final UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
   late UserInfoRequest userInfoRequest;
@@ -73,7 +74,7 @@ class _ProfileFormState extends State<ProfileForm> {
       children: [
         Container(
           padding: EdgeInsets.symmetric(
-            horizontal: getProportionateScreenHeight(20),
+            horizontal: getProportionateScreenHeight(25),
             vertical: getProportionateScreenHeight(10),
           ),
           decoration: BoxDecoration(
@@ -113,7 +114,6 @@ class _ProfileFormState extends State<ProfileForm> {
                             Flexible(
                               flex: 2,
                               child: SizedBox(
-                                width: getProportionateScreenWidth(200),
                                 child: TextFormField(
                                   initialValue: widget.userInfo.fullName,
                                   style: TextStyle(
@@ -123,7 +123,6 @@ class _ProfileFormState extends State<ProfileForm> {
                                   ),
                                   decoration: const InputDecoration(
                                     border: InputBorder.none,
-                                    contentPadding: EdgeInsets.zero,
                                   ),
                                   onSaved: (value) {
                                     setState(() {
@@ -201,7 +200,7 @@ class _ProfileFormState extends State<ProfileForm> {
                             Flexible(
                               flex: 2,
                               child: TextFormField(
-                                initialValue: widget.userInfo.dateOfBirth,
+                                controller: dateOfBirthController,
                                 style: TextStyle(
                                   color: Colors.grey[900],
                                   fontWeight: FontWeight.bold,
@@ -210,11 +209,19 @@ class _ProfileFormState extends State<ProfileForm> {
                                 ),
                                 decoration: const InputDecoration(
                                   border: InputBorder.none,
-                                  contentPadding: EdgeInsets.zero,
                                 ),
                                 onTap: () async {
                                   DateTime? date = await showDatePicker(
                                     context: context,
+                                    errorFormatText: 'Sai định dạng ngày tháng',
+                                    errorInvalidText: 'Ngày tháng không hợp lệ',
+                                    cancelText: 'Hủy',
+                                    confirmText: 'Chọn',
+                                    fieldLabelText: 'Ngày sinh',
+                                    useRootNavigator: true,
+                                    selectableDayPredicate: (DateTime val) {
+                                      return val.year <= DateTime.now().year;
+                                    },
                                     initialDate: DateTime.now(),
                                     firstDate: DateTime(1900),
                                     lastDate: DateTime.now(),
@@ -222,7 +229,7 @@ class _ProfileFormState extends State<ProfileForm> {
 
                                   if (date != null) {
                                     setState(() {
-                                      userInfoRequest.dateOfBirth = DateFormat('dd/MM/yyyy').format(date);
+                                      dateOfBirthController.text = DateFormat('dd-MM-yyyy').format(date);
                                     });
                                   }
                                 },
@@ -258,8 +265,12 @@ class _ProfileFormState extends State<ProfileForm> {
                   ),
                 ),
               ),
-              Expanded(
+              const Expanded(
                 flex: 2,
+                child: SizedBox(),
+              ),
+              Expanded(
+                flex: 3,
                 child: Avatar(avatar: widget.userInfo.avatar),
               ),
             ],

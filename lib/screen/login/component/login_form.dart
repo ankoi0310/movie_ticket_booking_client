@@ -1,3 +1,4 @@
+import 'package:movie_ticket_booking_flutter_nlu/component/social_login_field.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 
 class LoginForm extends StatefulWidget {
@@ -21,9 +22,6 @@ class _LoginFormState extends State<LoginForm> {
 
   String _email = '', _password = '';
   bool _isLoggingIn = false, _isObscure = true, _remember = false;
-  Map<String, dynamic>? _userData;
-  AccessToken? _accessToken;
-  bool _checking = true;
 
   Future<void> login() async {
     if (_formKey.currentState!.validate()) {
@@ -47,78 +45,6 @@ class _LoginFormState extends State<LoginForm> {
         }
       });
     }
-  }
-
-  Future<void> _checkIfIsLogged() async {
-    final accessToken = await FacebookAuth.instance.accessToken;
-    setState(() {
-      _checking = false;
-    });
-    if (accessToken != null) {
-      print("is Logged:::: ${prettyPrint(accessToken.toJson())}");
-      // now you can call to  FacebookAuth.instance.getUserData();
-      final userData = await FacebookAuth.instance.getUserData();
-      // final userData = await FacebookAuth.instance.getUserData(fields: "email,birthday,friends,gender,link");
-      _accessToken = accessToken;
-      setState(() {
-        _userData = userData;
-      });
-    }
-  }
-
-  Future<void> loginFacebook() async {
-    final LoginResult result = await FacebookAuth.i.login(); // by default we request the email and the public profile
-
-    // loginBehavior is only supported for Android devices, for ios it will be ignored
-    // final LoginResult result = await FacebookAuth.instance.login(
-    //   permissions: ['email', 'public_profile', 'user_birthday', 'user_friends', 'user_gender', 'user_link'],
-    //   loginBehavior: LoginBehavior
-    //       .DIALOG_ONLY, // (only android) show an authentication dialog instead of redirecting to facebook app
-    // );
-
-    if (result.status == LoginStatus.success) {
-      _accessToken = result.accessToken;
-      _printCredentials();
-      // get the user data
-      // by default we get the userId, email,name and picture
-      final userData = await FacebookAuth.instance.getUserData();
-      // final userData = await FacebookAuth.instance.getUserData(fields: "email,birthday,friends,gender,link");
-      _userData = userData;
-    } else {
-      print(result.status);
-      print(result.message);
-    }
-
-    setState(() {
-      _checking = false;
-    });
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text("Login"),
-        content: Text(result.status.toString()),
-        actions: [
-          TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text("OK"))
-        ],
-      ),
-    );
-  }
-
-  String prettyPrint(Map json) {
-    JsonEncoder encoder = const JsonEncoder.withIndent('  ');
-    String pretty = encoder.convert(json);
-    return pretty;
-  }
-
-  void _printCredentials() {
-    print(
-      prettyPrint(_accessToken!.toJson()),
-    );
   }
 
   @override
@@ -323,16 +249,7 @@ class _LoginFormState extends State<LoginForm> {
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(20)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                FlutterSocialButton(
-                  onTap: loginFacebook,
-                  mini: true,
-                  buttonType: ButtonType.facebook, // Button type for different type buttons
-                ),
-              ],
-            ),
+            const SocialLoginField(),
             SizedBox(height: getProportionateScreenHeight(20)),
             Text.rich(
               TextSpan(

@@ -100,7 +100,6 @@ class _CustomSearchBarState extends State<CustomSearchBar> with SingleTickerProv
             AnimatedPositioned(
               duration: const Duration(milliseconds: 375),
               left: getProportionateScreenWidth(isToggle ? 0 : collapsedWidth),
-              top: getProportionateScreenWidth(isToggle ? 0 : 4),
               curve: Curves.easeOut,
               child: AnimatedOpacity(
                 duration: const Duration(milliseconds: 200),
@@ -108,7 +107,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> with SingleTickerProv
                 child: SizedBox(
                   height: height,
                   width: expandedWidth - collapsedWidth * 2,
-                  child: TextField(
+                  child: TextFormField(
                     controller: _searchController,
                     focusNode: _searchFocusNode,
                     cursorRadius: const Radius.circular(10),
@@ -117,7 +116,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> with SingleTickerProv
                     clipBehavior: Clip.antiAlias,
                     style: const TextStyle(
                       color: Colors.black,
-                      fontSize: 17,
+                      fontSize: 15,
                       fontWeight: FontWeight.w500,
                     ),
                     decoration: InputDecoration(
@@ -128,6 +127,10 @@ class _CustomSearchBarState extends State<CustomSearchBar> with SingleTickerProv
                         borderSide: BorderSide.none,
                       ),
                       focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(height / 2),
+                        borderSide: BorderSide.none,
+                      ),
+                      enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(height / 2),
                         borderSide: BorderSide.none,
                       ),

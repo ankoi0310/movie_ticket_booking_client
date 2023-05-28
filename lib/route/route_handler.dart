@@ -53,8 +53,8 @@ class RouteHandler {
             return SeatBookingScreen(jsonObject: jsonObject);
           case PublicRouteData.checkout:
             return CheckoutScreen(jsonObject: jsonObject);
-          // case RouteData.contact:
-          //   return const ContactScreen();
+          case PublicRouteData.resetPassword:
+            return ResetPasswordScreen(parameters: queryParameters);
           case PublicRouteData.login:
             return isLoggedIn ? const HomeScreen() : const LoginScreen();
           case PublicRouteData.register:

@@ -37,4 +37,8 @@ class FirebaseStorageProvider extends ChangeNotifier {
     TaskSnapshot taskSnapshot = await storageRef.child(path).putData(imageBytes);
     return await taskSnapshot.ref.getDownloadURL();
   }
+
+  Future<void> removeImage(String path) async {
+    await storageRef.child(path).delete();
+  }
 }
