@@ -11,15 +11,6 @@ import 'package:movie_ticket_booking_flutter_nlu/dto/invoice/invoice_create.dart
 
 class CheckoutProvider extends ChangeNotifier {
   final apiProvider = ApiProvider.instance;
-  Invoice? _invoice;
-  final List<Invoice> _invoices = [];
-  MomoResponse? _momoResponse;
-
-  Invoice? get invoice => _invoice;
-
-  List<Invoice> get invoices => _invoices;
-
-  MomoResponse? get momoResponse => _momoResponse;
 
   Future<HttpResponse> createInvoice(InvoiceCreate create) async {
     HttpResponse response = await apiProvider.post(
@@ -29,7 +20,6 @@ class CheckoutProvider extends ChangeNotifier {
       },
       body: jsonEncode(create.toJson()),
     );
-
 
     notifyListeners();
     return response;

@@ -34,7 +34,7 @@ class _FilterMovieTicketState extends State<FilterMovieTicket> {
         text,
         style: TextStyle(
           color: Colors.black,
-          fontSize: getProportionateScreenWidth(24),
+          fontSize: getProportionateScreenWidth(20),
         ),
       ),
     );
@@ -55,7 +55,7 @@ class _FilterMovieTicketState extends State<FilterMovieTicket> {
       width: SizeConfig.screenWidth,
       height: getProportionateScreenHeight(150),
       padding: EdgeInsets.symmetric(
-        horizontal: getProportionateScreenWidth(100),
+        horizontal: getProportionateScreenWidth(20),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -91,8 +91,8 @@ class _FilterMovieTicketState extends State<FilterMovieTicket> {
                             padding: EdgeInsets.symmetric(
                               horizontal: getProportionateScreenWidth(20),
                             ),
-                            width: getProportionateScreenWidth(400),
-                            height: getProportionateScreenHeight(80),
+                            width: getProportionateScreenWidth(350),
+                            height: getProportionateScreenHeight(60),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
@@ -112,7 +112,7 @@ class _FilterMovieTicketState extends State<FilterMovieTicket> {
                           dropdownStyleData: DropdownStyleData(
                             elevation: 1,
                             maxHeight: getProportionateScreenHeight(300),
-                            width: getProportionateScreenWidth(400),
+                            width: getProportionateScreenWidth(350),
                             scrollbarTheme: ScrollbarThemeData(
                               radius: const Radius.circular(10),
                               thickness: MaterialStateProperty.all(5),
@@ -122,7 +122,7 @@ class _FilterMovieTicketState extends State<FilterMovieTicket> {
                             ),
                           ),
                           menuItemStyleData: MenuItemStyleData(
-                            height: getProportionateScreenHeight(75),
+                            height: getProportionateScreenHeight(60),
                             padding: EdgeInsets.symmetric(
                               horizontal: getProportionateScreenWidth(20),
                             ),
@@ -134,8 +134,8 @@ class _FilterMovieTicketState extends State<FilterMovieTicket> {
                           padding: EdgeInsets.symmetric(
                             horizontal: getProportionateScreenWidth(20),
                           ),
-                          width: getProportionateScreenWidth(400),
-                          height: getProportionateScreenHeight(80),
+                          width: getProportionateScreenWidth(350),
+                          height: getProportionateScreenHeight(60),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
@@ -150,7 +150,7 @@ class _FilterMovieTicketState extends State<FilterMovieTicket> {
                               _selectedMovie!.name,
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: getProportionateScreenWidth(24),
+                                fontSize: getProportionateScreenWidth(20),
                               ),
                             ),
                           ),
@@ -186,8 +186,8 @@ class _FilterMovieTicketState extends State<FilterMovieTicket> {
                     padding: EdgeInsets.symmetric(
                       horizontal: getProportionateScreenWidth(20),
                     ),
-                    width: getProportionateScreenWidth(400),
-                    height: getProportionateScreenHeight(80),
+                    width: getProportionateScreenWidth(350),
+                    height: getProportionateScreenHeight(60),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
@@ -207,7 +207,7 @@ class _FilterMovieTicketState extends State<FilterMovieTicket> {
                   dropdownStyleData: DropdownStyleData(
                     elevation: 1,
                     maxHeight: getProportionateScreenHeight(300),
-                    width: getProportionateScreenWidth(400),
+                    width: getProportionateScreenWidth(350),
                     scrollbarTheme: ScrollbarThemeData(
                       radius: const Radius.circular(10),
                       thickness: MaterialStateProperty.all(5),
@@ -217,7 +217,7 @@ class _FilterMovieTicketState extends State<FilterMovieTicket> {
                     ),
                   ),
                   menuItemStyleData: MenuItemStyleData(
-                    height: getProportionateScreenHeight(75),
+                    height: getProportionateScreenHeight(60),
                     padding: EdgeInsets.symmetric(
                       horizontal: getProportionateScreenWidth(20),
                     ),
@@ -231,14 +231,15 @@ class _FilterMovieTicketState extends State<FilterMovieTicket> {
             },
           ),
           // text field chose date
-          SizedBox(
-            width: getProportionateScreenWidth(400),
-            height: getProportionateScreenHeight(80),
+          Container(
+            color: Colors.white,
+            width: getProportionateScreenWidth(350),
+            height: getProportionateScreenHeight(60),
             child: TextField(
               controller: _datePickerController,
               style: TextStyle(
                 color: Colors.black,
-                fontSize: getProportionateScreenWidth(24),
+                fontSize: getProportionateScreenWidth(20),
                 height: 1.5,
               ),
               readOnly: true,
@@ -262,7 +263,7 @@ class _FilterMovieTicketState extends State<FilterMovieTicket> {
                 ),
                 hintStyle: TextStyle(
                   color: Colors.black,
-                  fontSize: getProportionateScreenWidth(24),
+                  fontSize: getProportionateScreenWidth(20),
                   height: 1.5,
                 ),
                 suffixIcon: Icon(

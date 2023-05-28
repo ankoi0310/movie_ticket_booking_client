@@ -11,7 +11,7 @@ class RouteHandler {
 
   static RouteHandler get instance => _instance;
 
-  final AuthenticationService _authentacationService = AuthenticationService.instance;
+  final AuthenticationService _authenticationService = AuthenticationService.instance;
 
   /// Return [WidgetToRender, PathName]
   /// [WidgetToRender] - Render specific widget
@@ -29,11 +29,10 @@ class RouteHandler {
 
       RouteData.values.addAll(PublicRouteData.values);
 
-      bool isLoggedIn = await _authentacationService.isLoggedIn();
+      bool isLoggedIn = await _authenticationService.isLoggedIn();
       if (isLoggedIn) {
         RouteData.values.addAll(AuthRouteData.values);
       }
-
       final routeData = RouteData.values.firstWhere((element) => element.name == pathName, orElse: () => RouteData.notFound);
 
       if (routeData != RouteData.notFound) {
@@ -78,7 +77,7 @@ class RouteHandler {
     if (uri.pathSegments.length == 2) {
       if (uri.pathSegments[0] == "movie") {
         String? slug = uri.pathSegments[1];
-        if (slug.isEmpty) return const NotFoundScreen();
+        if (slug.isEmpty) return const MovieScreen();
         return MovieDetailScreen(slug: slug);
       }
       if (uri.pathSegments[0] == "payment" && uri.pathSegments[1] == "return") {
@@ -86,7 +85,7 @@ class RouteHandler {
       }
       if (uri.pathSegments[0] == "ticket") {
         String? slug = uri.pathSegments[1];
-        if (slug.isEmpty) return const NotFoundScreen();
+        if (slug.isEmpty) return const TicketBookingScreen(slug: "");
         return TicketBookingScreen(slug: slug);
       }
       return const NotFoundScreen();

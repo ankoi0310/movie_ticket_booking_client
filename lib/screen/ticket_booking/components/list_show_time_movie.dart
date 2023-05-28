@@ -59,7 +59,7 @@ class _ListShowTimeMovieState extends State<ListShowTimeMovie> {
                           height: 40,
                           padding: EdgeInsets.symmetric(
                             horizontal: getProportionateScreenWidth(20),
-                            vertical: getProportionateScreenWidth(15),
+                            vertical: getProportionateScreenWidth(12),
                           ),
                           margin: EdgeInsets.only(
                             top: getProportionateScreenWidth(20),
@@ -84,7 +84,7 @@ class _ListShowTimeMovieState extends State<ListShowTimeMovie> {
                           child: Text(
                             branchList[branchIndex].name,
                             style: TextStyle(
-                              fontSize: getProportionateScreenWidth(22),
+                              fontSize: getProportionateScreenWidth(16),
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
@@ -93,13 +93,15 @@ class _ListShowTimeMovieState extends State<ListShowTimeMovie> {
                       ),
                       Column(
                         children: List.generate(movies.length, (movieIndex) {
+                          List<MovieFormat> movieFormats =
+                              showTimes.where((element) => movies[movieIndex]!.id == element.movie!.id && branchList[branchIndex].id == element.room!.branch.id).map((e) => e.movieFormat).toSet().toList();
                           return showTimes
                                   .where((showtime) => showtime.movie == movies[movieIndex] && showtime.room!.branch == branchList[branchIndex])
                                   .isNotEmpty
                               ? Container(
                                   padding: EdgeInsets.symmetric(
                                     horizontal: getProportionateScreenWidth(30),
-                                    vertical: getProportionateScreenWidth(30),
+                                    vertical: getProportionateScreenWidth(20),
                                   ),
                                   margin: EdgeInsets.only(
                                     bottom: getProportionateScreenWidth(20),
@@ -111,79 +113,109 @@ class _ListShowTimeMovieState extends State<ListShowTimeMovie> {
                                       width: 1,
                                     ),
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 4,
-                                        child: Text(
-                                          movies[movieIndex]!.name,
-                                          style: TextStyle(
-                                            fontSize: getProportionateScreenWidth(30),
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                  child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                        movies[movieIndex]!.name,
+                                        style: TextStyle(
+                                          fontSize: getProportionateScreenWidth(25),
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          showTimes[movieIndex].movieFormat.value,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: getProportionateScreenWidth(24),
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 6,
-                                        child: Wrap(
-                                            alignment: WrapAlignment.start,
-                                            children: showTimes
-                                                .where((showtime) =>
-                                                    showtime.movie?.id == movies[movieIndex]?.id &&
-                                                    showtime.room?.branch.id == branchList[branchIndex].id)
-                                                .map(
-                                                  (showtime) => HoverBuilder(builder: (isHovering) {
-                                                    return InkWell(
-                                                      onTap: () {
-                                                        appRouterDelegate.setPathName(PublicRouteData.seat.name,
-                                                            json: jsonEncode({
-                                                              'showtime': showtime.toJson(),
-                                                              'listSeatSelected': [],
-                                                            }));
-                                                      },
-                                                      child: Container(
-                                                          margin: EdgeInsets.only(right: getProportionateScreenWidth(20)),
-                                                          padding: EdgeInsets.symmetric(
-                                                            horizontal: getProportionateScreenWidth(20),
-                                                            vertical: getProportionateScreenWidth(10),
-                                                          ),
-                                                          width: getProportionateScreenWidth(150),
-                                                          decoration: BoxDecoration(
-                                                            color: isHovering ? Theme.of(context).primaryColor : Colors.white,
-                                                            borderRadius: BorderRadius.circular(10),
-                                                            border: Border.all(
-                                                              color: Colors.black,
-                                                              width: 1,
-                                                            ),
-                                                          ),
+                                    ),
+                                    Expanded(
+                                      flex: 8,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: movieFormats
+                                            .map((e) => Container(
+                                                  margin: EdgeInsets.only(top: 20, bottom: 20),
+                                                  padding: EdgeInsets.symmetric(
+                                                    horizontal: getProportionateScreenWidth(20),
+                                                    vertical: getProportionateScreenWidth(20),
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(10),
+                                                    border: Border.all(
+                                                      color: Colors.black,
+                                                      width: 1,
+                                                    ),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    children: [
+                                                      Expanded(
+                                                        flex: 3,
+                                                        child: Container(
+                                                          margin: EdgeInsets.only(right: 50),
                                                           child: Text(
-                                                            DateFormat('HH : mm').format(showtime.startTime!),
+                                                            e.value,
                                                             textAlign: TextAlign.center,
                                                             style: TextStyle(
-                                                              color: isHovering ? Colors.white : Colors.black,
-                                                              fontSize: getProportionateScreenWidth(24),
+                                                              fontSize: getProportionateScreenWidth(18),
                                                               fontWeight: FontWeight.bold,
                                                             ),
-                                                          )),
-                                                    );
-                                                  }),
-                                                )
-                                                .toList()),
-                                      )
-                                    ],
-                                  ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                        flex: 7,
+                                                        child: Wrap(
+                                                          spacing: 10,
+                                                            runSpacing: 15,
+                                                            alignment: WrapAlignment.start,
+                                                            children: showTimes
+                                                                .where((showtime) =>
+                                                                    showtime.movie?.id == movies[movieIndex]?.id &&
+                                                                    showtime.room?.branch.id == branchList[branchIndex].id &&
+                                                                    showtime.movieFormat.value == e.value)
+                                                                .map(
+                                                                  (showtime) => HoverBuilder(builder: (isHovering) {
+                                                                    return InkWell(
+                                                                      onTap: () {
+                                                                        appRouterDelegate.setPathName(PublicRouteData.seat.name,
+                                                                            json: jsonEncode({
+                                                                              'showtime': showtime.toJson(),
+                                                                              'listSeatSelected': [],
+                                                                            }));
+                                                                      },
+                                                                      child: Container(
+                                                                          padding: EdgeInsets.symmetric(
+                                                                            horizontal: getProportionateScreenWidth(20),
+                                                                            vertical: getProportionateScreenWidth(10),
+                                                                          ),
+                                                                          width: getProportionateScreenWidth(100),
+                                                                          decoration: BoxDecoration(
+                                                                            color: isHovering ? Theme.of(context).primaryColor : Colors.white,
+                                                                            borderRadius: BorderRadius.circular(10),
+                                                                            border: Border.all(
+                                                                              color: Colors.black,
+                                                                              width: 1,
+                                                                            ),
+                                                                          ),
+                                                                          child: Text(
+                                                                            DateFormat('HH : mm').format(showtime.startTime!),
+                                                                            textAlign: TextAlign.center,
+                                                                            style: TextStyle(
+                                                                              color: isHovering ? Colors.white : Colors.black,
+                                                                              fontSize: getProportionateScreenWidth(18),
+                                                                              fontWeight: FontWeight.bold,
+                                                                            ),
+                                                                          )),
+                                                                    );
+                                                                  }),
+                                                                )
+                                                                .toList()),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ))
+                                            .toList(),
+                                      ),
+                                    ),
+                                  ]),
                                 )
                               : Container();
                         }),

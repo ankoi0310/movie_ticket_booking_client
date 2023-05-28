@@ -9,7 +9,7 @@ class InvoiceCreate {
   ShowTime showtime;
   int totalPrice;
   List<Seat> seats;
-  Set<InvoiceCombo> invoiceCombos;
+  Set<InvoiceCombo>? invoiceCombos;
 
   InvoiceCreate({
     required this.name,
@@ -35,10 +35,12 @@ class InvoiceCreate {
       'name': name,
       'email': email,
       'paymentMethod': paymentMethod,
-      'showtime': showtime.toJson(),
+      'showtime': {
+        "id": showtime.id,
+      },
       'totalPrice': totalPrice,
       'seats': seats.map((e) => e.toJson()).toList(),
-      'invoiceCombos': invoiceCombos.map((e) => e.toJson()).toList(),
+      'invoiceCombos': invoiceCombos!.map((e) => e.toJson()).toList(),
     };
   }
 
