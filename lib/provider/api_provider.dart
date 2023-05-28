@@ -1,6 +1,5 @@
 import 'package:http/http.dart' as http;
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
-import 'package:movie_ticket_booking_flutter_nlu/handler/http_response.dart';
 
 class ApiProvider {
   static final ApiProvider _instance = ApiProvider._();

@@ -33,7 +33,6 @@ class AuthenticationProvider extends ChangeNotifier {
 
     if (response.success) {
       UserLoginResponse userLogin = UserLoginResponse.fromJson(response.data);
-      print(userLogin.toJson());
       await _authentacationService.saveUser(userLogin.toJson());
     }
 
@@ -41,13 +40,14 @@ class AuthenticationProvider extends ChangeNotifier {
     return response;
   }
 
-  Future<bool> isLoggedIn() async {
-    return await _authentacationService.isLoggedIn();
+  loginGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
   }
 
-  Future<void> logout() async {
-    await _authentacationService.logout();
-    notifyListeners();
+  Future<bool> isLoggedIn() async {
+    return await _authentacationService.isLoggedIn();
   }
 
   Future<HttpResponse> forgotPassword(String email) async {

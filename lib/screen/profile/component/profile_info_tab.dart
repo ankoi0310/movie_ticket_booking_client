@@ -3,8 +3,8 @@ import 'package:movie_ticket_booking_flutter_nlu/screen/profile/component/change
 import 'package:movie_ticket_booking_flutter_nlu/screen/profile/component/profile_form.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/profile/component/reset_password_field.dart';
 
-class ProfileInfo extends StatefulWidget {
-  const ProfileInfo({
+class ProfileInfoTab extends StatefulWidget {
+  const ProfileInfoTab({
     Key? key,
     required this.userInfo,
   }) : super(key: key);
@@ -12,10 +12,10 @@ class ProfileInfo extends StatefulWidget {
   final UserInfo userInfo;
 
   @override
-  State<ProfileInfo> createState() => _ProfileInfoState();
+  State<ProfileInfoTab> createState() => _ProfileInfoTabState();
 }
 
-class _ProfileInfoState extends State<ProfileInfo> {
+class _ProfileInfoTabState extends State<ProfileInfoTab> {
   @override
   Widget build(BuildContext context) {
     return Column(

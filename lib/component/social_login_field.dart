@@ -8,6 +8,17 @@ class SocialLoginField extends StatefulWidget {
 }
 
 class _SocialLoginFieldState extends State<SocialLoginField> {
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    clientId: '915458067606-b9t0ncrd28ugfahtp2qjbp6de2kbg233.apps.googleusercontent.com',
+    signInOption: SignInOption.standard,
+    scopes: [
+      'email',
+      'https://www.googleapis.com/auth/contacts.readonly',
+      'https://www.googleapis.com/auth/user.birthday.read',
+      'https://www.googleapis.com/auth/user.gender.read',
+    ],
+  );
+
   Map<String, dynamic>? _userData;
   AccessToken? _accessToken;
   bool _checking = true;
@@ -84,6 +95,19 @@ class _SocialLoginFieldState extends State<SocialLoginField> {
     );
   }
 
+  Future<void> loginGoogle() async {
+    try {
+      GoogleSignInAccount? account = await _googleSignIn.signIn();
+      if (account == null) {
+        return;
+      }
+      final googleKey = await account.authentication;
+      print(googleKey.idToken);
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -99,6 +123,11 @@ class _SocialLoginFieldState extends State<SocialLoginField> {
           onTap: loginFacebook,
           mini: true,
           buttonType: ButtonType.facebook, // Button type for different type buttons
+        ),
+        FlutterSocialButton(
+          onTap: loginGoogle,
+          mini: true,
+          buttonType: ButtonType.google, // Button type for different type buttons
         ),
       ],
     );

@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:movie_ticket_booking_flutter_nlu/model/invoice.dart';
 
 part 'user_info.g.dart';
 
@@ -61,11 +62,15 @@ class UserInfo {
   @HiveField(4)
   final String dateOfBirth;
 
+  @HiveField(5)
+  final List<Invoice> invoices;
+
   UserInfo({
     required this.fullName,
     required this.isMale,
     required this.avatar,
     required this.dateOfBirth,
+    required this.invoices,
   });
 
   factory UserInfo.fromJson(Map<String, dynamic> json) {
@@ -74,6 +79,7 @@ class UserInfo {
       isMale: json['isMale'],
       avatar: json['avatar'],
       dateOfBirth: json['dateOfBirth'],
+      invoices: (json['invoices'] as List<dynamic>).map((e) => Invoice.fromJson(e)).toList(),
     );
   }
 
@@ -83,6 +89,7 @@ class UserInfo {
       'isMale': isMale,
       'avatar': avatar,
       'dateOfBirth': dateOfBirth,
+      'invoices': invoices.map((e) => e.toJson()).toList(),
     };
   }
 }

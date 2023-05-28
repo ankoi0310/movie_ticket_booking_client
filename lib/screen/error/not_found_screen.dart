@@ -15,11 +15,11 @@ class _NotFoundScreenState extends State<NotFoundScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        // child: RiveAnimation.asset(
-        //   'assets/rive/404.riv',
-        //   fit: BoxFit.cover,
-        //   controllers: [_controller],
-        // ),
+        child: RiveAnimation.asset(
+          'assets/rive/404.riv',
+          fit: BoxFit.cover,
+          controllers: [_controller],
+        ),
       ),
     );
   }

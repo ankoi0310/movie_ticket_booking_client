@@ -5,8 +5,7 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthenticationService authenticationService = AuthenticationService.instance;
-    final AuthenticationProvider authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false);
+    final AuthenticationService authenticationService = Provider.of<AuthenticationService>(context);
     final AppRouterDelegate appRouterDelegate = AppRouterDelegate.instance;
 
     return FutureBuilder(
@@ -25,7 +24,7 @@ class Avatar extends StatelessWidget {
                 position: const RelativeRect.fromLTRB(21, 64, 20, 0),
                 items: [
                   PopupMenuItem(
-                    onTap: () {
+                    onTap: () async {
                       Navigator.pop(context);
                       appRouterDelegate.setPathName(AuthRouteData.profile.name);
                     },
@@ -41,10 +40,12 @@ class Avatar extends StatelessWidget {
                   ),
                   PopupMenuItem(
                     onTap: () async {
-                      await authenticationProvider.logout();
+                      Navigator.pop(context);
+
+                      authenticationService.logout();
 
                       if (appRouterDelegate.currentConfiguration?.pathName == AuthRouteData.profile.name) {
-                        appRouterDelegate.setPathName(PublicRouteData.home.name);
+                        await appRouterDelegate.setPathName(PublicRouteData.home.name);
                       }
                     },
                     child: Row(

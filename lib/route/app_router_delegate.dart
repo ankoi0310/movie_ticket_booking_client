@@ -6,7 +6,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
   bool? isLoggedIn;
   String? pathName = "";
   String? jsonObject;
-  Map<String, String> queryParameters = {};
+  Map<String, String>? queryParameters = {};
   bool isError = false;
 
   factory AppRouterDelegate({bool? isLoggedIn}) {
@@ -27,21 +27,22 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
 
   TransitionDelegate transitionDelegate = CustomTransitionDelegate();
 
-  final AuthenticationService _authenticationService = AuthenticationService.instance;
+  final AuthenticationService _authentacationService = AuthenticationService.instance;
   late List<Page> _stack = [];
 
   @override
-  final GlobalKey<NavigatorState> navigatorKey = CustomKey.navigatorKey;
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   List<Page> get _appStack {
     RouteData routeData = PublicRouteData.values.firstWhere((element) => pathName!.contains(element.name), orElse: () => PublicRouteData.home);
     switch (routeData) {
       case PublicRouteData.login:
       case PublicRouteData.register:
+      case PublicRouteData.resetPassword:
         return [
           MaterialPage(
             key: const ValueKey('auth'),
-            child: FullWidthLayout(routeName: routeData.name),
+            child: FullWidthLayout(routeName: routeData.name, parameters: queryParameters),
           )
         ];
       default:
@@ -68,7 +69,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
                   jsonObject: jsonObject,
                   queryParameters: queryParameters,
                 )
-              : FullWidthLayout(routeName: PublicRouteData.login.name),
+              : FullWidthLayout(routeName: PublicRouteData.login.name, parameters: queryParameters),
         ),
       ];
 
@@ -76,7 +77,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
   List<Page> get _errorStack => [
         MaterialPage(
           key: const ValueKey('error'),
-          child: FullWidthLayout(routeName: pathName!),
+          child: FullWidthLayout(routeName: pathName!, parameters: queryParameters),
         )
       ];
 
@@ -112,7 +113,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
 
   @override
   Future<void> setNewRoutePath(RoutePath configuration) async {
-    isLoggedIn = await _authenticationService.isLoggedIn();
+    isLoggedIn = await _authentacationService.isLoggedIn();
 
     if (isLoggedIn == true) {
       RouteData.values.addAll(AuthRouteData.values);
@@ -145,15 +146,16 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
   Future<void> setPathName(String? path, {String? json, Map<String, String>? params}) async {
     pathName = path;
     jsonObject = json;
-    queryParameters = params ?? {};
+    queryParameters = params;
     if (pathName == null) {
       await setNewRoutePath(RoutePath.home(PublicRouteData.home.name));
     }
-    if (!RouteData.values.map((e) => e.name).contains(pathName)) {
+    List<String> routeNames = RouteData.values.map((e) => e.name).toList();
+    if (routeNames.any((element) => pathName!.contains(element))) {
+      await setNewRoutePath(RoutePath.otherPage(pathName, queryParameters));
+    } else {
       isError = true;
       await setNewRoutePath(RoutePath.notFound(pathName));
-    } else {
-      await setNewRoutePath(RoutePath.otherPage(pathName, queryParameters));
     }
 
     notifyListeners();
@@ -163,12 +165,14 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
 class RouteData {
   static const notFound = RouteData._('not-found');
   static const internalServerError = RouteData._('internal-server-error');
+  static const unauthorized = RouteData._('unauthorized');
 
   final String name;
 
   static Set<RouteData> values = {
     notFound,
     internalServerError,
+    unauthorized,
   };
 
   const RouteData._(this.name);
@@ -184,6 +188,7 @@ class PublicRouteData extends RouteData {
   static const checkout = PublicRouteData._('checkout');
   static const payment = PublicRouteData._('payment');
   static const contact = PublicRouteData._('contact');
+  static const resetPassword = PublicRouteData._('reset-password');
 
   static Set<PublicRouteData> values = {
     home,
@@ -195,6 +200,7 @@ class PublicRouteData extends RouteData {
     checkout,
     contact,
     payment,
+    resetPassword,
   };
 
   const PublicRouteData._(String name) : super._(name);

@@ -75,12 +75,7 @@ class Movie extends General {
     required DateTime createdDate,
     required DateTime modifiedDate,
     required DateTime? deletedDate,
-  }) : super(
-            id: id,
-            state: state,
-            createdDate: createdDate,
-            modifiedDate: modifiedDate,
-            deletedDate: deletedDate);
+  }) : super(id: id, state: state, createdDate: createdDate, modifiedDate: modifiedDate, deletedDate: deletedDate);
 
   @override
   bool operator ==(other) {
@@ -118,7 +113,7 @@ class Movie extends General {
       storyLine: json['storyLine'],
       imageVertical: json['imageVertical'],
       imageHorizontal: json['imageHorizontal'],
-      genres: (json['genres'] as List).map((e) => Genre.fromJson(e)).toList(),
+      genres: json['genres'] != null ? (json['genres'] as List).map((e) => Genre.fromJson(e)).toList() : [],
       rating: json['rating'],
       slug: json['slug'],
       language: json['language'],
@@ -130,18 +125,12 @@ class Movie extends General {
       director: json['director'],
       producer: json['producer'],
       releaseDate: DateFormat('dd-MM-yyyy').parse(json['releaseDate']),
-      movieState:
-          MovieState.values.firstWhere((e) => e.value == json['movieState']),
-      movieFormats: (json['movieFormats'] as List)
-          .map((e) => MovieFormat.fromValue(e))
-          .toList(),
+      movieState: MovieState.values.firstWhere((e) => e.value == json['movieState']),
+      movieFormats: (json['movieFormats'] as List).map((e) => MovieFormat.fromValue(e)).toList(),
       state: GeneralState.values.firstWhere((e) => e.value == json['state']),
       createdDate: DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['createdDate']),
-      modifiedDate:
-          DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['modifiedDate']),
-      deletedDate: json['deletedDate'] != null
-          ? DateTime.parse(json['deletedDate'])
-          : null,
+      modifiedDate: DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['modifiedDate']),
+      deletedDate: json['deletedDate'] != null ? DateTime.parse(json['deletedDate']) : null,
     );
   }
 
@@ -169,9 +158,7 @@ class Movie extends General {
       'state': state.value,
       'createdDate': DateFormat('dd-MM-yyyy HH:mm:ss').format(createdDate),
       'modifiedDate': DateFormat('dd-MM-yyyy HH:mm:ss').format(modifiedDate),
-      'deletedDate': deletedDate != null
-          ? DateFormat('dd-MM-yyyy HH:mm:ss').format(deletedDate!)
-          : null,
+      'deletedDate': deletedDate != null ? DateFormat('dd-MM-yyyy HH:mm:ss').format(deletedDate!) : null,
     };
   }
 }

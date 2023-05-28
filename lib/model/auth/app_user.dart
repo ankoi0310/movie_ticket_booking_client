@@ -4,15 +4,15 @@ import 'package:movie_ticket_booking_flutter_nlu/model/auth/user_info.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/general.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/invoice.dart';
 
-class AppUser extends General{
+class AppUser extends General {
   String email;
   String phone;
   String password;
   bool enabled;
   bool accountNonLocked;
-  String facebookId;
-  String googleId;
-  List<AppRole> roles;
+  String? facebookId;
+  String? googleId;
+  List<AppRole> appRoles;
   UserInfo userInfo;
   List<Invoice> invoices;
 
@@ -25,19 +25,14 @@ class AppUser extends General{
     required this.accountNonLocked,
     required this.facebookId,
     required this.googleId,
-    required this.roles,
+    required this.appRoles,
     required this.userInfo,
     required this.invoices,
     required GeneralState state,
     required DateTime createdDate,
     required DateTime modifiedDate,
     required DateTime? deletedDate,
-  }) : super(
-          id: id,
-          state: state,
-          createdDate: createdDate,
-          modifiedDate: modifiedDate,
-          deletedDate: deletedDate);
+  }) : super(id: id, state: state, createdDate: createdDate, modifiedDate: modifiedDate, deletedDate: deletedDate);
 
   AppUser.empty()
       : email = '',
@@ -47,7 +42,7 @@ class AppUser extends General{
         accountNonLocked = false,
         facebookId = '',
         googleId = '',
-        roles = [],
+        appRoles = [],
         userInfo = UserInfo.empty(),
         invoices = [],
         super.empty();
@@ -70,20 +65,17 @@ class AppUser extends General{
       accountNonLocked: json['accountNonLocked'],
       facebookId: json['facebookId'],
       googleId: json['googleId'],
-      roles: (json['roles'] as List).map((e) => AppRole.fromJson(e)).toList(),
+      appRoles: (json['appRoles'] as List).map((e) => AppRole.fromJson(e)).toList(),
       userInfo: UserInfo.fromJson(json['userInfo']),
-      invoices: (json['invoices'] as List).map((e) => Invoice.fromJson(e)).toList(),
+      invoices: json['invoices'] != null ? (json['invoices'] as List).map((e) => Invoice.fromJson(e)).toList() : [],
       state: GeneralState.values.firstWhere((e) => e.value == json['state']),
       createdDate: DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['createdDate']),
-      modifiedDate:
-      DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['modifiedDate']),
-      deletedDate: json['deletedDate'] != null
-          ? DateTime.parse(json['deletedDate'])
-          : null,
+      modifiedDate: DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['modifiedDate']),
+      deletedDate: json['deletedDate'] != null ? DateTime.parse(json['deletedDate']) : null,
     );
   }
 
-Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'id': id,
       'email': email,
@@ -93,16 +85,13 @@ Map<String, dynamic> toJson() {
       'accountNonLocked': accountNonLocked,
       'facebookId': facebookId,
       'googleId': googleId,
-      'roles': roles.map((e) => e.toJson()).toList(),
+      'appRoles': appRoles.map((e) => e.toJson()).toList(),
       'userInfo': userInfo.toJson(),
       'invoices': invoices.map((e) => e.toJson()).toList(),
       'state': state.value,
       'createdDate': DateFormat('dd-MM-yyyy HH:mm:ss').format(createdDate),
       'modifiedDate': DateFormat('dd-MM-yyyy HH:mm:ss').format(modifiedDate),
-      'deletedDate': deletedDate != null
-          ? DateFormat('dd-MM-yyyy HH:mm:ss').format(deletedDate!)
-          : null,
+      'deletedDate': deletedDate != null ? DateFormat('dd-MM-yyyy HH:mm:ss').format(deletedDate!) : null,
     };
   }
-
 }

@@ -1,4 +1,3 @@
-import 'package:movie_ticket_booking_flutter_nlu/component/custom_button.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/menu_item.dart';
 
@@ -10,7 +9,7 @@ class Sidebar extends StatefulWidget {
 }
 
 class _SidebarState extends State<Sidebar> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = CustomKey.scaffoldKey;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {

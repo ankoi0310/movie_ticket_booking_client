@@ -11,6 +11,7 @@ class PaymentResponseScreen extends StatefulWidget {
 }
 
 class _PaymentResponseScreenState extends State<PaymentResponseScreen> {
+  final AppRouterDelegate _appRouterDelegate = AppRouterDelegate.instance;
 
   @override
   void initState() {
@@ -24,7 +25,6 @@ class _PaymentResponseScreenState extends State<PaymentResponseScreen> {
   @override
   Widget build(BuildContext context) {
     Widget buildResponseSuccess() {
-
       return Column(
         children: [
           const SizedBox(
@@ -59,7 +59,7 @@ class _PaymentResponseScreenState extends State<PaymentResponseScreen> {
             height: 50,
           ),
           const Text(
-            'Cảm ơn bạn đã mua vé',
+            'Vui lòng kiểm tra email để xem thông tin đặt vé',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -69,9 +69,7 @@ class _PaymentResponseScreenState extends State<PaymentResponseScreen> {
             height: 50,
           ),
           ElevatedButton(
-            onPressed: () {
-              AppRouterDelegate().setPathName(PublicRouteData.home.name);
-            },
+            onPressed: () async => await _appRouterDelegate.setPathName(PublicRouteData.home.name),
             child: const Text('Quay về trang chủ'),
           ),
         ],
@@ -113,7 +111,7 @@ class _PaymentResponseScreenState extends State<PaymentResponseScreen> {
             height: 50,
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () async => await _appRouterDelegate.setPathName(PublicRouteData.home.name),
             child: const Text('Quay về trang chủ'),
           ),
         ],
@@ -121,11 +119,12 @@ class _PaymentResponseScreenState extends State<PaymentResponseScreen> {
     }
 
     return SingleChildScrollView(
-        child: Container(
-          color: Theme.of(context).colorScheme.background,
-          child: Center(
-      child: widget.paymentResponse?.resultCode == 0?buildResponseSuccess(): buildResponseFailed(),
-    ),
-        ));
+      child: Container(
+        color: Theme.of(context).colorScheme.background,
+        child: Center(
+          child: widget.paymentResponse?.resultCode == 0 ? buildResponseSuccess() : buildResponseFailed(),
+        ),
+      ),
+    );
   }
 }

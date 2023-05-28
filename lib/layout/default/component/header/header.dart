@@ -15,7 +15,7 @@ class _HeaderState extends State<Header> {
   final AppRouterDelegate _appRouterDelegate = AppRouterDelegate.instance;
   final double _seacrhBarHeight = 90;
 
-  late final AuthenticationProvider _authenticationProvider = Provider.of<AuthenticationProvider>(context);
+  late final AuthenticationService _authenticationService = Provider.of<AuthenticationService>(context);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class _HeaderState extends State<Header> {
       ),
       actions: [
         FutureBuilder(
-          future: _authenticationProvider.isLoggedIn(),
+          future: _authenticationService.isLoggedIn(),
           builder: (context, snapshot) {
             if (snapshot.hasData && snapshot.data == true) {
               return Row(

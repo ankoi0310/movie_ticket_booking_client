@@ -21,13 +21,14 @@ class UserInfoAdapter extends TypeAdapter<UserInfo> {
       isMale: fields[2] as bool,
       avatar: fields[3] as String,
       dateOfBirth: fields[4] as String,
+      invoices: (fields[5] as List).cast<Invoice>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, UserInfo obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(1)
       ..write(obj.fullName)
       ..writeByte(2)
@@ -35,7 +36,9 @@ class UserInfoAdapter extends TypeAdapter<UserInfo> {
       ..writeByte(3)
       ..write(obj.avatar)
       ..writeByte(4)
-      ..write(obj.dateOfBirth);
+      ..write(obj.dateOfBirth)
+      ..writeByte(5)
+      ..write(obj.invoices);
   }
 
   @override

@@ -50,6 +50,7 @@ class AuthenticationService with ChangeNotifier {
   Future<void> logout() async {
     _token = null;
     await _hiveDataProvider.delete("user");
+    notifyListeners();
   }
 
   Future<int?> getUserId() async {
@@ -64,7 +65,6 @@ class AuthenticationService with ChangeNotifier {
 
   Future<String> getCurrentAvatar() async {
     Map response = await _hiveDataProvider.read("user");
-    print(response);
     notifyListeners();
     return (response.isNotEmpty ? response["avatar"] : null);
   }

@@ -10,7 +10,7 @@ class ResetPasswordField extends StatefulWidget {
 }
 
 class _ResetPasswordFieldState extends State<ResetPasswordField> {
-  final AuthenticationService _authenticationService = AuthenticationService.instance;
+  late final AuthenticationService _authenticationService = Provider.of<AuthenticationService>(context, listen: false);
 
   late final AuthenticationProvider _authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false);
   late final CustomFlutterToast toast = CustomFlutterToast();
@@ -35,7 +35,7 @@ class _ResetPasswordFieldState extends State<ResetPasswordField> {
     );
 
     if (response.success) {
-      _authenticationProvider.logout();
+      await _authenticationService.logout();
     }
   }
 
