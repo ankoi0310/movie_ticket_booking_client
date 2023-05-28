@@ -96,10 +96,7 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
                                 color: Colors.grey,
                                 fontSize: 14,
                               ),
-                              contentPadding: EdgeInsets.zero,
-                              border: OutlineInputBorder(
-                                gapPadding: 0,
-                              ),
+                              border: OutlineInputBorder(),
                             ),
                             validator: (value) {
                               if (value!.isEmpty) {

@@ -7,6 +7,8 @@ export 'dart:typed_data';
 
 /*--------------- Package ---------------*/
 export 'package:dropdown_button2/dropdown_button2.dart';
+export 'package:file_picker/_internal/file_picker_web.dart';
+export 'package:file_picker/file_picker.dart';
 export 'package:firebase_core/firebase_core.dart';
 export 'package:firebase_storage/firebase_storage.dart';
 export 'package:flutter/foundation.dart';
@@ -17,7 +19,6 @@ export 'package:flutter_social_button/flutter_social_button.dart';
 export 'package:flutter_web_plugins/url_strategy.dart';
 export 'package:fluttertoast/fluttertoast.dart';
 export 'package:hive_flutter/adapters.dart';
-export 'package:image_picker/image_picker.dart';
 export 'package:intl/date_symbol_data_local.dart';
 export 'package:intl/intl.dart' hide TextDirection;
 export 'package:provider/provider.dart';
