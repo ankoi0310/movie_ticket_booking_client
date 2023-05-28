@@ -5,7 +5,7 @@ import 'package:movie_ticket_booking_flutter_nlu/layout/default/component/header
 class DefaultLayout extends StatefulWidget {
   final String? routeName;
   final String? jsonObject;
-  final Map<String, String> queryParameters;
+  final Map<String, String>? queryParameters;
 
   const DefaultLayout({
     Key? key,
@@ -34,9 +34,9 @@ class _DefaultLayoutState extends State<DefaultLayout> {
       builder: (context, searchingProvider, child) => Stack(
         children: [
           TooltipVisibility(
+            key: _scaffoldKey,
             visible: false,
             child: Scaffold(
-              key: _scaffoldKey,
               body: SafeArea(
                 child: CustomScrollView(
                   slivers: [
@@ -45,7 +45,8 @@ class _DefaultLayoutState extends State<DefaultLayout> {
                       delegate: SliverChildListDelegate(
                         [
                           FutureBuilder(
-                            future: _routeHandler.getRouteWidget(widget.routeName, jsonObject: widget.jsonObject, queryParameters: widget.queryParameters),
+                            future: _routeHandler.getRouteWidget(widget.routeName,
+                                jsonObject: widget.jsonObject, queryParameters: widget.queryParameters),
                             builder: (context, snapshot) {
                               if (snapshot.hasError) {
                                 _appRouterDelegate.setPathName(RouteData.notFound.name);

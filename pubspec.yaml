@@ -68,6 +68,9 @@ dependencies:
   flutter_social_button: ^1.1.4+1
   dart_jsonwebtoken: ^2.7.1
   file_picker: ^5.3.1
+  data_table_2: ^2.5.0
+  google_sign_in: ^6.1.2
+  firebase_storage_web: ^3.6.1
 
 
 dev_dependencies:

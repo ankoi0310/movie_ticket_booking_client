@@ -1,5 +1,6 @@
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
-import 'package:movie_ticket_booking_flutter_nlu/screen/profile/component/profile_info.dart';
+import 'package:movie_ticket_booking_flutter_nlu/screen/profile/component/booking_history_tab.dart';
+import 'package:movie_ticket_booking_flutter_nlu/screen/profile/component/profile_info_tab.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -9,10 +10,9 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateMixin {
-  final AuthenticationService authenticationService = AuthenticationService.instance;
+  late final UserProvider _userProvider = Provider.of<UserProvider>(context);
 
   late TabController _tabController;
-  late AnimationController _animationController;
 
   int _selectedIndex = 0;
 
@@ -20,26 +20,17 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, initialIndex: 0, vsync: this);
-    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
     final bool isMobile = Responsive.isMobile(context);
-    final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return FutureBuilder(
-      future: userProvider.getProfile(),
+      future: _userProvider.getProfile(),
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          UserInfo userInfo = snapshot.data as UserInfo;
+        if (snapshot.hasData && snapshot.data != null) {
+          final UserInfo userInfo = snapshot.data as UserInfo;
           return Container(
             width: SizeConfig.screenWidth * 0.8,
             height: SizeConfig.screenHeight * 0.8,
@@ -130,8 +121,8 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                       child: TabBarView(
                         controller: _tabController,
                         children: [
-                          ProfileInfo(userInfo: userInfo),
-                          const Text('Lịch sử đặt vé'),
+                          ProfileInfoTab(userInfo: userInfo),
+                          BookingHistoryTab(invoices: userInfo.invoices),
                         ],
                       ),
                     ),

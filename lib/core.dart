@@ -18,6 +18,7 @@ export 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 export 'package:flutter_social_button/flutter_social_button.dart';
 export 'package:flutter_web_plugins/url_strategy.dart';
 export 'package:fluttertoast/fluttertoast.dart';
+export 'package:google_sign_in/google_sign_in.dart';
 export 'package:hive_flutter/adapters.dart';
 export 'package:intl/date_symbol_data_local.dart';
 export 'package:intl/intl.dart' hide TextDirection;
@@ -69,6 +70,7 @@ export 'layout/full_width/full_width_layout.dart';
 
 /*--------------- Provider ---------------*/
 export 'provider/api/movie_provider.dart';
+export 'provider/api/notice_provider.dart';
 export 'provider/api_provider.dart';
 export 'provider/authentication_provider.dart';
 export 'provider/firebase_storage_provider.dart';
@@ -76,7 +78,6 @@ export 'provider/hive/hive_provider.dart';
 export 'provider/information_ticket_selected_provider.dart';
 export 'provider/loading_provider.dart';
 export 'provider/searching_provider.dart';
-export 'provider/api/notice_provider.dart';
 export 'provider/user_provider.dart';
 /*---------------------------------------*/
 

@@ -6,7 +6,7 @@ class UserProvider with ChangeNotifier {
   final FirebaseStorageProvider _firebaseStorageProvider = FirebaseStorageProvider();
 
   Future<HttpResponse> uploadAvatar(Uint8List imageBytes) async {
-    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    String fileName = await _authentacationService.getCurrentUserEmail();
     String avatarUrl = await _firebaseStorageProvider.uploadImage('user/avatar/$fileName', imageBytes);
 
     HttpResponse response = await _apiProvider.put(
@@ -20,6 +20,7 @@ class UserProvider with ChangeNotifier {
       }),
     );
 
+    _authentacationService.saveCurrentAvatar(avatarUrl);
     notifyListeners();
     return response;
   }
@@ -39,13 +40,18 @@ class UserProvider with ChangeNotifier {
     );
 
     if (response.success) {
-      UserInfo userInfo = UserInfo.fromJson(response.data);
-      await _authentacationService.saveUser(userInfo.toJson());
+      try {
+        UserInfo userInfo = UserInfo.fromJson(response.data);
+        _authentacationService.saveUser(userInfo.toJson());
+        return userInfo;
+      } catch (e) {
+        print(e);
+      }
 
       notifyListeners();
-      return userInfo;
     }
 
+    notifyListeners();
     throw Exception('Không thể lấy thông tin người dùng');
   }
 
@@ -78,18 +84,6 @@ class UserProvider with ChangeNotifier {
         'password': password,
         'newPassword': newPassword,
       }),
-    );
-
-    notifyListeners();
-    return response;
-  }
-
-  Future<HttpResponse> getBookingHistory() async {
-    HttpResponse response = await _apiProvider.get(
-      Uri.parse('$baseUrl/user/booking-history'),
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
     );
 
     notifyListeners();

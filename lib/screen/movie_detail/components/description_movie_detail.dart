@@ -281,8 +281,8 @@ class _DescriptionMovieDetailState extends State<DescriptionMovieDetail> {
                               heightFactor: 1,
                               alignment: Alignment.centerLeft,
                               child: InkWell(
-                                onTap: () {
-                                  appRouterDelegate.setPathName("${PublicRouteData.ticket.name}/${widget.movie!.slug}");
+                                onTap: () async {
+                                  await appRouterDelegate.setPathName("${PublicRouteData.ticket.name}/${widget.movie!.slug}");
                                 },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(

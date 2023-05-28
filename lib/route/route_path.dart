@@ -1,6 +1,6 @@
 class RoutePath {
   final String? pathName;
-  final Map<String, String> queryParameters;
+  final Map<String, String>? queryParameters;
   final bool isNotFound;
 
   RoutePath.home(this.pathName)

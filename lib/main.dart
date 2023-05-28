@@ -1,4 +1,5 @@
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
+import 'package:movie_ticket_booking_flutter_nlu/firebase_options.dart';
 import 'package:movie_ticket_booking_flutter_nlu/movie_ticket_booking_application.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/api/branch_provider.dart';
 import 'package:movie_ticket_booking_flutter_nlu/provider/api/checkout_provider.dart';
@@ -7,18 +8,8 @@ import 'package:movie_ticket_booking_flutter_nlu/provider/api/show_time_provider
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // usePathUrlStrategy();
-  await Firebase.initializeApp(
-    options: const FirebaseOptions(
-      apiKey: "AIzaSyARE8AOvdVKdvaYECInb1wvMoVnM1Qf_7M",
-      authDomain: "movie-ticket-booking-383806.firebaseapp.com",
-      projectId: "movie-ticket-booking-383806",
-      storageBucket: "movie-ticket-booking-383806.appspot.com",
-      messagingSenderId: "915458067606",
-      appId: "1:915458067606:web:8e7fc8b87c32abcbaf06b7",
-      measurementId: "G-NJNWB7JVLV",
-    ),
-  );
+  usePathUrlStrategy();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   if (kIsWeb || defaultTargetPlatform == TargetPlatform.windows) {
     // initialiaze the facebook javascript SDK
     await FacebookAuth.i.webAndDesktopInitialize(

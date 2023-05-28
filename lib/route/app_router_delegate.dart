@@ -6,7 +6,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
   bool? isLoggedIn;
   String? pathName = "";
   String? jsonObject;
-  Map<String, String> queryParameters = {};
+  Map<String, String>? queryParameters = {};
   bool isError = false;
 
   factory AppRouterDelegate({bool? isLoggedIn}) {
@@ -31,7 +31,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
   late List<Page> _stack = [];
 
   @override
-  final GlobalKey<NavigatorState> navigatorKey = CustomKey.navigatorKey;
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   List<Page> get _appStack {
     RouteData routeData = PublicRouteData.values.firstWhere((element) => pathName!.contains(element.name), orElse: () => PublicRouteData.home);
@@ -88,7 +88,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
 
     if (pathName == null) return RoutePath.home(PublicRouteData.home.name);
 
-    return RoutePath.otherPage(pathName, queryParameters: queryParameters);
+    return RoutePath.otherPage(pathName, queryParameters);
   }
 
   @override
@@ -146,16 +146,16 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
   Future<void> setPathName(String? path, {String? json, Map<String, String>? params}) async {
     pathName = path;
     jsonObject = json;
-    queryParameters = params ?? {};
+    queryParameters = params;
     if (pathName == null) {
       await setNewRoutePath(RoutePath.home(PublicRouteData.home.name));
     }
-
-    if (!RouteData.values.map((e) => e.name).contains(pathName)) {
+    List<String> routeNames = RouteData.values.map((e) => e.name).toList();
+    if (routeNames.any((element) => pathName!.contains(element))) {
+      await setNewRoutePath(RoutePath.otherPage(pathName, queryParameters));
+    } else {
       isError = true;
       await setNewRoutePath(RoutePath.notFound(pathName));
-    } else {
-      await setNewRoutePath(RoutePath.otherPage(pathName, queryParameters: queryParameters));
     }
 
     notifyListeners();

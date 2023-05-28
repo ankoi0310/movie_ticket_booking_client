@@ -1,5 +1,4 @@
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
-import 'package:movie_ticket_booking_flutter_nlu/handler/http_response.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/movie.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/movie/components/breadcrumb.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/movie_detail/components/description_movie_detail.dart';
