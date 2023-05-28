@@ -138,11 +138,13 @@ class _MoviesState extends State<Movies> with SingleTickerProviderStateMixin {
                     padding: const EdgeInsets.only(
                       top: 20,
                       bottom: 10,
+                      left: 20,
+                      right: 20,
                     ),
                     child: Wrap(
                       spacing: 20,
                       runSpacing: 20,
-                      alignment: WrapAlignment.center,
+                      alignment: WrapAlignment.start,
                       children: [
                         ...List.generate(
                           widget.movies.length,

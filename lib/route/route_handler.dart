@@ -11,7 +11,7 @@ class RouteHandler {
 
   static RouteHandler get instance => _instance;
 
-  final AuthenticationService _authentacationService = AuthenticationService.instance;
+  final AuthenticationService _authenticationService = AuthenticationService.instance;
 
   /// Return [WidgetToRender, PathName]
   /// [WidgetToRender] - Render specific widget
@@ -29,7 +29,7 @@ class RouteHandler {
 
       RouteData.values.addAll(PublicRouteData.values);
 
-      bool isLoggedIn = await _authentacationService.isLoggedIn();
+      bool isLoggedIn = await _authenticationService.isLoggedIn();
       if (isLoggedIn) {
         RouteData.values.addAll(AuthRouteData.values);
       }

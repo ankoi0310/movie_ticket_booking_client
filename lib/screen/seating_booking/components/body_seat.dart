@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_ticket_booking_flutter_nlu/config/size_config.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/seat.dart';
 import 'package:movie_ticket_booking_flutter_nlu/screen/seating_booking/components/list_seat.dart';
@@ -136,18 +137,19 @@ class _BodySeatState extends State<BodySeat> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Container(
-                                width: 20,
-                                height: 20,
+                              SvgPicture.asset(
+                                'assets/image/seat.svg',
+                                width: 40,
+                                height: 40,
                                 color: Theme.of(context).primaryColor,
                               ),
                               const SizedBox(
-                                width: 5,
+                                width: 10,
                               ),
                               Text(
                                 "Ghế đã đặt",
                                 style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(18),
+                                  fontSize: getProportionateScreenWidth(16),
                                   letterSpacing: 2,
                                   color: Colors.white,
                                 ),
@@ -163,18 +165,19 @@ class _BodySeatState extends State<BodySeat> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Container(
-                                width: 20,
-                                height: 20,
+                              SvgPicture.asset(
+                                'assets/image/seat.svg',
+                                width: 40,
+                                height: 40,
                                 color: Colors.green,
                               ),
                               const SizedBox(
-                                width: 5,
+                                width: 10,
                               ),
                               Text(
                                 "Ghế đang chọn",
                                 style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(18),
+                                  fontSize: getProportionateScreenWidth(16),
                                   letterSpacing: 2,
                                   color: Colors.white,
                                 ),
@@ -190,18 +193,19 @@ class _BodySeatState extends State<BodySeat> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Container(
-                                width: 20,
-                                height: 20,
-                                color: const Color.fromRGBO(42, 60, 109, 1),
+                              SvgPicture.asset(
+                                'assets/image/seat.svg',
+                                width: 40,
+                                height: 40,
+                                color: Colors.grey,
                               ),
                               const SizedBox(
-                                width: 5,
+                                width: 10,
                               ),
                               Text(
                                 "Ghế chưa chọn",
                                 style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(18),
+                                  fontSize: getProportionateScreenWidth(16),
                                   letterSpacing: 2,
                                   color: Colors.white,
                                 ),
@@ -217,18 +221,19 @@ class _BodySeatState extends State<BodySeat> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Container(
-                                width: 20,
-                                height: 20,
+                              SvgPicture.asset(
+                                'assets/image/seat.svg',
+                                width: 40,
+                                height: 40,
                                 color: Colors.black,
                               ),
                               const SizedBox(
-                                width: 5,
+                                width: 10,
                               ),
                               Text(
                                 "Không được chọn",
                                 style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(18),
+                                  fontSize: getProportionateScreenWidth(16),
                                   letterSpacing: 2,
                                   color: Colors.white,
                                 ),

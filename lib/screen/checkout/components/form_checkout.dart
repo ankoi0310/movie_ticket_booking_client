@@ -22,8 +22,11 @@ class FormCheckout extends StatefulWidget {
 class _FormCheckoutState extends State<FormCheckout> {
   final AuthenticationService authService = AuthenticationService.instance;
 
+
   @override
   Widget build(BuildContext context) {
+    final FirebaseStorageProvider storageProvider = Provider.of<FirebaseStorageProvider>(context, listen: false);
+
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 50,
@@ -141,24 +144,41 @@ class _FormCheckoutState extends State<FormCheckout> {
                       children: [
                         Expanded(
                           flex: 2,
-                          child: Container(
-                            height: 100,
-                            padding: const EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: Colors.grey,
-                              ),
-                              // image: DecorationImage(
-                              //   image: ,
-                              //   fit: BoxFit.cover,
-                              // ),
-                            ),
-                            child: const Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.red,
-                              ),
-                            ),
+                          child: FutureBuilder(
+                            future: storageProvider.getImages([combo.image]),
+                            builder: (context,snapshot) {
+                              if(snapshot.hasData) {
+                                return Container(
+                                  height: 100,
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: Colors.grey,
+                                    ),
+                                    image: DecorationImage(
+                                      image: Image.memory(storageProvider.mapImage[combo.image]!).image,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                );
+                              }
+                              return Container(
+                                height: 100,
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                child: const Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              );
+                            }
                           ),
                         ),
                         Expanded(

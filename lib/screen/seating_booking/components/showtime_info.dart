@@ -1,7 +1,9 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/seat.dart';
 import 'package:movie_ticket_booking_flutter_nlu/model/show_time.dart';
+import 'package:movie_ticket_booking_flutter_nlu/util/popup_util.dart';
 import 'package:movie_ticket_booking_flutter_nlu/utilities/StringUtil.dart';
 
 class ShowtimeInfo extends StatefulWidget {
@@ -18,7 +20,6 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
   @override
   Widget build(BuildContext context) {
     final firebaseStorageProvider = Provider.of<FirebaseStorageProvider>(context);
-    final AppRouterDelegate routerDelegate = AppRouterDelegate.instance;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -99,11 +100,40 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                       width: 5,
                     ),
                     Text(
-                      "${widget.showTime!.room!.branch.name} | ${widget.showTime!.room!.name}",
+                      widget.showTime!.room!.branch.name,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: getProportionateScreenWidth(16),
                         letterSpacing: 2,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Phòng: ",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: getProportionateScreenWidth(16),
+                        letterSpacing: 1.25,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      widget.showTime!.room!.name,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: getProportionateScreenWidth(16),
+                        letterSpacing: 1.25,
                         color: Colors.white,
                       ),
                     ),
@@ -216,7 +246,7 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                     // button back
                     InkWell(
                       onTap: () {
-                        Navigator.pop(context);
+                        // Navigator.pop(context);
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -244,11 +274,20 @@ class _ShowtimeInfoState extends State<ShowtimeInfo> {
                     // button confirm
                     InkWell(
                       onTap: () {
-                        String jsonObject = jsonEncode({
-                          "showTime": widget.showTime!.toJson(),
-                          "seatsSelected": widget.seatsSelected.map((e) => e.toJson()).toList(),
-                        });
-                        routerDelegate.setPathName(PublicRouteData.checkout.name, json: jsonObject);
+                        if (widget.seatsSelected.length == 0) {
+                          PopupUtil.showError(
+                              context: context,
+                              message: "Vui lòng chọn ghế",
+                              width: SizeConfig.screenWidth * 0.4);
+
+                          return;
+                        } else {
+                          String jsonObject = jsonEncode({
+                            "showTime": widget.showTime!.toJson(),
+                            "seatsSelected": widget.seatsSelected.map((e) => e.toJson()).toList(),
+                          });
+                          AppRouterDelegate().setPathName(PublicRouteData.checkout.name, json: jsonObject);
+                        }
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
