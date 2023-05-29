@@ -1,7 +1,32 @@
 import 'package:movie_ticket_booking_flutter_nlu/core.dart';
 
-class RegisterSuccess extends StatelessWidget {
+class RegisterSuccess extends StatefulWidget {
   const RegisterSuccess({Key? key}) : super(key: key);
+
+  @override
+  State<RegisterSuccess> createState() => _RegisterSuccessState();
+}
+
+class _RegisterSuccessState extends State<RegisterSuccess> {
+  late final AuthenticationProvider _authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false);
+  late final CustomFlutterToast _toast = CustomFlutterToast();
+
+  final TextEditingController _emailController = TextEditingController();
+
+  Future<void> resendVerifyMail() async {
+    HttpResponse response = await _authenticationProvider.resendVerifyMail(_emailController.text);
+
+    _toast.showToast(
+      success: response.success,
+      message: response.message,
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _toast.init(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +72,14 @@ class RegisterSuccess extends StatelessWidget {
               SizedBox(
                 height: 50,
                 child: TextFormField(
+                  controller: _emailController,
                   decoration: InputDecoration(
                     labelText: 'Email',
                     hintText: 'Nhập email của bạn',
                     suffixIcon: SizedBox(
                       height: 50,
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () async => await resendVerifyMail(),
                         style: TextButton.styleFrom(
                           foregroundColor: Colors.white,
                           shape: const RoundedRectangleBorder(
