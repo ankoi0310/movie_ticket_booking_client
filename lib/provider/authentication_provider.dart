@@ -63,10 +63,22 @@ class AuthenticationProvider extends ChangeNotifier {
     return response;
   }
 
-  loginGoogle() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  Future<HttpResponse> loginGoogle(final accessToken) async {
+    HttpResponse response = await _apiProvider.post(
+      Uri.parse('$baseUrl/auth/login/google?access-token=$accessToken'),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({}),
+    );
 
-    final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+    if (response.success) {
+      UserLoginResponse userLogin = UserLoginResponse.fromJson(response.data);
+      await _authentacationService.saveUser(userLogin.toJson());
+    }
+
+    notifyListeners();
+    return response;
   }
 
   Future<bool> isLoggedIn() async {

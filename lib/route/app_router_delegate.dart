@@ -34,7 +34,8 @@ class AppRouterDelegate extends RouterDelegate<RoutePath> with ChangeNotifier, P
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   List<Page> get _appStack {
-    RouteData routeData = PublicRouteData.values.firstWhere((element) => pathName!.contains(element.name), orElse: () => PublicRouteData.home);
+    RouteData routeData =
+        PublicRouteData.values.firstWhere((element) => pathName != null && pathName!.contains(element.name), orElse: () => PublicRouteData.home);
     switch (routeData) {
       case PublicRouteData.login:
       case PublicRouteData.register:
