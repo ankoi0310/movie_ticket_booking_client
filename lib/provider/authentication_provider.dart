@@ -11,7 +11,30 @@ class AuthenticationProvider extends ChangeNotifier {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode({
-        'userRegister': userRegister.toJson(),
+        'userRegister': {
+          'email': userRegister.email,
+          'phone': userRegister.phone,
+          'password': userRegister.password,
+          'userInfo': {
+            'fullName': userRegister.name,
+            'dateOfBirth': DateFormat("dd-MM-yyyy").format(userRegister.birthday!),
+          }
+        }
+      }),
+    );
+
+    notifyListeners();
+    return response;
+  }
+
+  Future<HttpResponse> resendVerifyMail(String email) async {
+    HttpResponse response = await _apiProvider.post(
+      Uri.parse('$baseUrl/auth/resend-email/register'),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({
+        'email': email,
       }),
     );
 
