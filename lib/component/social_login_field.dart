@@ -8,6 +8,10 @@ class SocialLoginField extends StatefulWidget {
 }
 
 class _SocialLoginFieldState extends State<SocialLoginField> {
+  late final AuthenticationProvider _authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false);
+  late final CustomFlutterToast _toast = CustomFlutterToast();
+
+  final AppRouterDelegate _appRouterDelegate = AppRouterDelegate.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     clientId: '915458067606-b9t0ncrd28ugfahtp2qjbp6de2kbg233.apps.googleusercontent.com',
     signInOption: SignInOption.standard,
@@ -101,8 +105,32 @@ class _SocialLoginFieldState extends State<SocialLoginField> {
       if (account == null) {
         return;
       }
-      final googleKey = await account.authentication;
-      print(googleKey.idToken);
+      final googleAuth = await account.authentication;
+      final accessToken = googleAuth.accessToken;
+
+      if (accessToken == null) return;
+      HttpResponse response = await _authenticationProvider.loginGoogle(accessToken);
+
+      if (response.success) {
+        await _appRouterDelegate.setPathName(PublicRouteData.home.name);
+      } else {
+        _toast.showToast(
+          success: response.success,
+          message: response.message,
+        );
+      }
+
+      // UserCredential userCredential = await FirebaseAuth.instance.signInWithPopup(OAuthProvider('google.com'));
+      // print(userCredential.user!.email);
+      // print(userCredential.additionalUserInfo!.profile);
+      // print(userCredential.user!.providerData);
+      // FirebaseAuth.instance.userChanges().listen((User? user) {
+      //   if (user == null) {
+      //     print('User is currently signed out!');
+      //   } else {
+      //     print('User is signed in!');
+      //   }
+      // });
     } catch (error) {
       rethrow;
     }
@@ -112,6 +140,7 @@ class _SocialLoginFieldState extends State<SocialLoginField> {
   void initState() {
     super.initState();
     // _checkIfIsLogged();
+    _toast.init(context);
   }
 
   @override
